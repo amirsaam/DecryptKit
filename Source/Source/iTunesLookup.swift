@@ -77,7 +77,6 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
     let decoder = JSONDecoder()
     let jsonResult: ITunesResponse = try decoder.decode(ITunesResponse.self, from: data)
     if jsonResult.resultCount > 0 {
-      print("Returning jsonResult")
       return jsonResult
     } else {
       print("resultCount is smaller or equal to 0")

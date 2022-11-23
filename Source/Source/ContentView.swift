@@ -17,9 +17,9 @@ struct ContentView: View {
   @State var showLookup: Bool = false
   @State var searchSuccess: Bool = false
   @State var lookedup: ITunesResponse?
-  @State var lookedupIcon: String?
 
   @State var appID: String = ""
+  @State var idIsValid: Bool = false
   @State var appAttempts: Int = 0
   
   @State var emailAddress: String = ""
@@ -142,45 +142,52 @@ struct ContentView: View {
                         Text("*you need to use id numbers from app store share links, e.g `1517783697`*")
                           .font(.footnote)
                       } else {
-                        VStack(alignment: .leading, spacing: 10) {
-                          HStack(spacing: 10) {
-                            if let url = URL(string: lookedupIcon ?? "") {
-                              AsyncImage(url: url) { image in
-                                image
-                                  .resizable()
-                                  .aspectRatio(contentMode: .fit)
-                              } placeholder: {
-                                ProgressView()
+                        if idIsValid {
+                          VStack(alignment: .leading, spacing: 10) {
+                            HStack(spacing: 10) {
+                              if let url = URL(string: lookedup?.results[0].artworkUrl60 ?? "") {
+                                AsyncImage(url: url) { image in
+                                  image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                } placeholder: {
+                                  ProgressView()
+                                }
+                                .frame(width: 45, height: 45)
+                                .cornerRadius(12)
+                                .softOuterShadow()
                               }
-                              .frame(width: 40, height: 40)
-                              .cornerRadius(12)
-                              .softOuterShadow()
-                            }
-                            VStack(alignment: .leading, spacing: 5) {
-                              HStack(alignment: .center) {
-                                Text(lookedup?.results[0].trackName ?? "")
-                                  .font(.headline)
-                                Text(lookedup?.results[0].formattedPrice ?? "")
+                              VStack(alignment: .leading, spacing: 5) {
+                                HStack(alignment: .center) {
+                                  Text(lookedup?.results[0].trackName ?? "")
+                                    .font(.headline)
+                                  Text(lookedup?.results[0].formattedPrice ?? "")
+                                    .font(.caption)
+                                }
+                                Text("by \(lookedup?.results[0].artistName ?? "")")
                                   .font(.caption)
                               }
-                              Text("by \(lookedup?.results[0].artistName ?? "")")
-                                .font(.caption)
                             }
+                            HStack(spacing: 5) {
+                              Text("Version: \(lookedup?.results[0].version ?? "")")
+                              Divider()
+                                .frame(height: 10)
+                                .foregroundColor(.invertNeuPC)
+                              Text(lookedup?.results[0].genres[0] ?? "")
+                            }
+                            .font(.caption)
                           }
-                          HStack(spacing: 5) {
-                            Text("Version: \(lookedup?.results[0].version ?? "")")
-                            Divider()
-                              .frame(height: 5)
-                              .foregroundColor(.invertNeuPC)
-                            Text(lookedup?.results[0].genres[0] ?? "")
-                          }
-                          .font(.caption)
+                          .padding(.top)
+                        } else {
+                          Text("AppStore ID is not correct!")
+                            .font(.subheadline)
+                            .foregroundColor(.red)
                         }
-                        .padding(.top)
                       }
                       VStack(alignment: .leading) {
-                        TextField("Enter App/Game ID Here", text: $appID)
+                        TextField("Enter AppStore ID Here", text: $appID)
                           .modifier(Shake(animatableData: CGFloat(appAttempts)))
+                          .disabled(idIsValid && searchSuccess && !appID.isEmpty)
                           .onSubmit {
                             if appID.isEmpty {
                               withAnimation(.default) {
@@ -194,38 +201,64 @@ struct ContentView: View {
                               }
                             }
                           }
-                        if searchSuccess {
+                        if searchSuccess && idIsValid {
                           Divider()
                           TextField("Enter Your Email Address", text: $emailAddress)
                             .modifier(Shake(animatableData: CGFloat(emailAttempts)))
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled(true)
                           HStack {
+                            Button {
+                              withAnimation {
+                                appID = ""
+                                searchSuccess = false
+                              }
+                            } label: {
+                              Label("Edit AppStore ID", systemImage: "pencil")
+                                .font(.caption2)
+                            }
+                            .softButtonStyle(
+                              RoundedRectangle(cornerRadius: 7.5),
+                              padding: 8
+                            )
+                            .padding([.top, .trailing])
                             Spacer()
                             Button {
-                              emailIsValid = isValidEmailAddress(emailAddressString: emailAddress)
-                              if emailAddress.isEmpty || !emailIsValid {
-                                withAnimation(.default) {
-                                  self.emailAttempts += 1
+                              if appID.isEmpty {
+                                withAnimation {
+                                  self.appAttempts += 1
+                                  searchSuccess = false
                                 }
                               } else {
-                                
+                                emailIsValid = isValidEmailAddress(emailAddressString: emailAddress)
+                                if emailAddress.isEmpty || !emailIsValid {
+                                  withAnimation(.default) {
+                                    self.emailAttempts += 1
+                                  }
+                                } else {
+                                  
+                                }
                               }
                             } label: {
                               Label("Send Request", systemImage: "paperplane.fill")
                                 .font(.caption2)
                             }
                             .softButtonStyle(
-                              RoundedRectangle(cornerRadius: 5),
-                              padding: 8
+                              RoundedRectangle(cornerRadius: 7.5),
+                              padding: 8,
+                              mainColor: .red,
+                              textColor: .white,
+                              darkShadowColor: .redNeuDS,
+                              lightShadowColor: .redNeuLS
                             )
                             .padding([.top, .trailing])
+                            .disabled(!idIsValid)
                           }
                           Text("Download links will be emailed to your address, so make sure to enter a valid and available address!")
                             .font(.footnote)
                             .padding(.top)
                         }
-                        if !searchSuccess {
+                        if !searchSuccess || !idIsValid {
                           Text("*press return after*")
                             .font(.subheadline)
                         }
@@ -254,7 +287,7 @@ struct ContentView: View {
   func doGetLookup(_ appid: String) {
     Task {
       lookedup = await getITunesData(appid)
-      lookedupIcon = await getITunesData(appid)?.results[0].artworkUrl60
+      idIsValid = await getITunesData(appid)?.resultCount == 1 ? true : false
     }
   }
 }
