@@ -219,10 +219,9 @@ struct ContentView: View {
                             }
                             .softButtonStyle(
                               RoundedRectangle(cornerRadius: 7.5),
-                              padding: 8,
+                              padding: 10,
                               pressedEffect: .flat
                             )
-                            .padding([.top, .trailing])
                             Spacer()
                             Button {
                               if appID.isEmpty {
@@ -246,16 +245,16 @@ struct ContentView: View {
                             }
                             .softButtonStyle(
                               RoundedRectangle(cornerRadius: 7.5),
-                              padding: 8,
+                              padding: 10,
                               mainColor: .red,
                               textColor: .white,
                               darkShadowColor: .redNeuDS,
                               lightShadowColor: .redNeuLS,
                               pressedEffect: .flat
                             )
-                            .padding([.top, .trailing])
                             .disabled(!idIsValid)
                           }
+                          .padding(.top)
                           Text("Download links will be emailed to your address, so make sure to enter a valid and available address!")
                             .font(.footnote)
                             .padding(.top)
