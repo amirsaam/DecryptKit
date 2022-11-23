@@ -67,7 +67,7 @@ struct ContentView: View {
                 Text("This IPA Repository is non-profit and just for ease of PlayCover users and Mac Gaming Community")
                   .font(.headline)
                   .fontWeight(.medium)
-                Text("If you are a IPA Decryptor willing to donate your time to this community, feel free to drop in `amirsaam#3579` or 'Amachi -アマチ#1131' DM on Discord")
+                Text("If you are a IPA Decryptor willing to donate your time to this community, feel free to drop in `amirsaam#3579` or `Amachi -アマチ#1131` DM on Discord")
                   .font(.subheadline)
                   .fontWeight(.medium)
                 HStack(alignment: .center, spacing: 25.0) {
