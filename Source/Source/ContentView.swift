@@ -72,7 +72,7 @@ struct ContentView: View {
                   .fontWeight(.medium)
                 HStack(alignment: .center, spacing: 25.0) {
                   Button {
-                    if let url = URL(string: "playcover://addsource?url=https://repo.amrsm.ir/decrypted.json") {
+                    if let url = URL(string: "playcover:source?action=add&url=repo.amrsm.ir/decrypted.json") {
                       openURL(url)
                     }
                   } label: {
