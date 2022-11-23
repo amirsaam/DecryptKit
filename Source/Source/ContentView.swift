@@ -219,7 +219,8 @@ struct ContentView: View {
                             }
                             .softButtonStyle(
                               RoundedRectangle(cornerRadius: 7.5),
-                              padding: 8
+                              padding: 8,
+                              pressedEffect: .flat
                             )
                             .padding([.top, .trailing])
                             Spacer()
@@ -249,7 +250,8 @@ struct ContentView: View {
                               mainColor: .red,
                               textColor: .white,
                               darkShadowColor: .redNeuDS,
-                              lightShadowColor: .redNeuLS
+                              lightShadowColor: .redNeuLS,
+                              pressedEffect: .flat
                             )
                             .padding([.top, .trailing])
                             .disabled(!idIsValid)
@@ -262,6 +264,19 @@ struct ContentView: View {
                           Text("*press return after*")
                             .font(.subheadline)
                         }
+                      }
+                      HStack {
+                        Button {
+                          withAnimation(.spring()) {
+                            showLookup = false
+                          }
+                        } label: {
+                          Image(systemName: "chevron.compact.right")
+                        }
+                        .softButtonStyle(
+                          Circle(),
+                          pressedEffect: .flat
+                        )
                       }
                     }
                     .frame(width: geo.size.width * (2.25/10))
