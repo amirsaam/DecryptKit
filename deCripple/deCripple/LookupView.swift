@@ -119,7 +119,7 @@ struct LookupView: View {
                     } else {
                       HStack {
                         Spacer()
-                        Text("`deCripple` does not support Piracy!")
+                        Text("`deCripple` does not support paid apps!")
                           .font(.subheadline)
                           .foregroundColor(.red)
                           .padding(.top)
