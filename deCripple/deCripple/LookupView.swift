@@ -1,6 +1,6 @@
 //
 //  LookupStack.swift
-//  Source
+//  deCripple
 //
 //  Created by Amir Mohammadi on 9/3/1401 AP.
 //
@@ -8,21 +8,25 @@
 import SwiftUI
 import Neumorphic
 
-struct LookyoView: View {
+struct LookupView: View {
   
   @Binding var showLookup: Bool
   
   @State var lookedup: ITunesResponse?
+  @State var deCripple: deCrippleResult?
   
   @State var searchSuccess: Bool = false
   
   @State var appID: String = ""
   @State var idIsValid: Bool = false
+  @State var idIsFree: Bool = false
   @State var appAttempts: Int = 0
   
   @State var emailAddress: String = ""
   @State var emailIsValid: Bool = false
   @State var emailAttempts: Int = 0
+  
+  @State var promoCode: String? = ""
   
   var body: some View {
     GeometryReader { geo in
@@ -103,10 +107,25 @@ struct LookyoView: View {
                     }
                   if searchSuccess && idIsValid {
                     Divider()
-                    TextField("Enter Your Email Address", text: $emailAddress)
-                      .modifier(Shake(animatableData: CGFloat(emailAttempts)))
-                      .textInputAutocapitalization(.never)
-                      .autocorrectionDisabled(true)
+                    if idIsFree {
+                      TextField("Enter Your Email Address", text: $emailAddress)
+                        .modifier(Shake(animatableData: CGFloat(emailAttempts)))
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                      Divider()
+                      TextField("Promo Code?", text: $emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled(true)
+                    } else {
+                      HStack {
+                        Spacer()
+                        Text("`deCripple` does not support Piracy!")
+                          .font(.subheadline)
+                          .foregroundColor(.red)
+                          .padding(.top)
+                        Spacer()
+                      }
+                    }
                     HStack {
                       Button {
                         withAnimation {
@@ -136,7 +155,8 @@ struct LookyoView: View {
                               self.emailAttempts += 1
                             }
                           } else {
-                            
+//                            doRequest(lookedup?.results[0].bundleId ?? "", emailAddress, promoCode)
+                            doRequest(lookedup?.results[0].bundleId ?? "", emailAddress)
                           }
                         }
                       } label: {
@@ -152,7 +172,7 @@ struct LookyoView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(!idIsValid)
+                      .disabled(!idIsValid || !idIsFree)
                     }
                     .padding(.top)
                     Text("Download links will be emailed to your address, so make sure to enter a valid and available address!")
@@ -184,8 +204,10 @@ struct LookyoView: View {
           ZStack {
             mainColor
             VStack(alignment: .leading) {
-              Text("Special Thanks to:")
+              Text("`deCripple` Creators:")
                 .font(.subheadline)
+              Text("`amirsaam#3579`")
+                .padding(.top)
               Text("`Amachi -アマチ#1131`")
             }
           }
@@ -197,6 +219,14 @@ struct LookyoView: View {
     Task {
       lookedup = await getITunesData(appid)
       idIsValid = await getITunesData(appid)?.resultCount == 1 ? true : false
+      idIsFree = await getITunesData(appid)?.results[0].price == 0 ? true : false
+    }
+  }
+//  func doRequest(_ id: String, _ email: String, _ promo: String) {
+  func doRequest(_ id: String, _ email: String) {
+    Task {
+//      deCripple = await reqDecrypt(id, email, promo)
+      deCripple = await reqDecrypt(id, email)
     }
   }
 }

@@ -1,6 +1,6 @@
 //
 //  iTunesLookup.swift
-//  Source
+//  deCripple
 //
 //  Created by Amir Mohammadi on 9/1/1401 AP.
 //
@@ -62,13 +62,13 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
   let scheme = "https"
   let host = "itunes.apple.com"
   let path = "/lookup"
-  let queryItem = URLQueryItem(name: "id", value: id)
+  let query = [ URLQueryItem(name: "id", value: id) ]
   
   var urlComponents = URLComponents()
   urlComponents.scheme = scheme
   urlComponents.host = host
   urlComponents.path = path
-  urlComponents.queryItems = [queryItem]
+  urlComponents.queryItems = query
   guard let url = urlComponents.url else { return nil }
   print("\(url)")
 

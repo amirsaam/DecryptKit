@@ -57,9 +57,13 @@ struct ContentView: View {
                 Text("This IPA Repository is non-profit and just for ease of PlayCover users and Mac Gaming Community")
                   .font(.headline)
                   .fontWeight(.medium)
-                Text("If you are a IPA Decryptor willing to donate your time to this community, feel free to drop in `amirsaam#3579` or `Amachi -アマチ#1131` DM on Discord")
-                  .font(.subheadline)
-                  .fontWeight(.medium)
+                VStack(alignment: .leading) {
+                  Text("If you are a IPA Decryptor willing to donate your time to this community,")
+                    .fontWeight(.medium)
+                  Text("feel free to drop in `deCripple` creators' DM on Discord!")
+                    .fontWeight(.medium)
+                }
+                .font(.subheadline)
                 HStack(alignment: .center, spacing: 25.0) {
                   Button {
                     if let url = URL(string: "playcover:source?action=add&url=repo.amrsm.ir/decrypted.json") {
@@ -116,7 +120,7 @@ struct ContentView: View {
             }
             .foregroundColor(secondaryColor)
             .frame(width: geo.size.width * (4.25/10))
-            LookyoView(showLookup: $showLookup)
+            LookupView(showLookup: $showLookup)
           }
         }
         .foregroundColor(secondaryColor)
