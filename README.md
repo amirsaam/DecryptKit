@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/amirsaam/IPARepo">
+  <a href="https://github.com/amirsaam/deCripple">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -53,7 +53,7 @@ See the [open issues](https://github.com/amirsaam/IPARepo/issues) for a full lis
 
 Back-end - [@Amachik2](https://twitter.com/Amachik2) - amachi@hiyori.cz
 <br>
-Front-end - [@username](https://twitter.com/username) - email@email.cz
+Front-end - [@amirsaam](https://twitter.com/amirsaam) - boy.disks.0c@icloud.com
 
 Project Link: [https://github.com/amirsaam/IPARepo](https://github.com/your_username/repo_name)
 
