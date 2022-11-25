@@ -218,8 +218,8 @@ struct LookupView: View {
   func doGetLookup(_ appid: String) {
     Task {
       lookedup = await getITunesData(appid)
-      idIsValid = await getITunesData(appid)?.resultCount == 1 ? true : false
-      idIsFree = await getITunesData(appid)?.results[0].price == 0 ? true : false
+      idIsValid = lookedup?.resultCount == 1 ? true : false
+      idIsFree = lookedup?.results[0].price == 0 ? true : false
     }
   }
 //  func doRequest(_ id: String, _ email: String, _ promo: String) {

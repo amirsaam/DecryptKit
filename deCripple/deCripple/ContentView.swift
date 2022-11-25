@@ -42,31 +42,31 @@ struct ContentView: View {
                 Text("deCripple")
                   .font(.largeTitle.monospaced())
                   .fontWeight(.bold)
-                Text("repo.amrsm.ir")
-                  .font(.title.lowercaseSmallCaps())
+                Text("repo.`decripple`.tech")
+                  .font(.headline.lowercaseSmallCaps())
                   .fontWeight(.medium)
               }
               .foregroundColor(.invertNeuPC)
             }
             .softOuterShadow()
             VStack(alignment: .leading, spacing: geo.size.width * (0.35/10)) {
-              Text("Thank you for choosing this Repo!")
-                .font(.title.monospaced())
+              Text("The Decrypted IPAs, made easy!")
                 .fontWeight(.heavy)
+                .font(.title.monospaced())
               VStack(alignment: .leading, spacing: geo.size.width * (0.25/10)) {
-                Text("This IPA Repository is non-profit and just for ease of PlayCover users and Mac Gaming Community")
+                Text("`deCripple` is a free to use IPA Repository & Decrypting Service created just for ease of PlayCover users and Mac Gaming Community.")
                   .font(.headline)
                   .fontWeight(.medium)
                 VStack(alignment: .leading) {
                   Text("If you are a IPA Decryptor willing to donate your time to this community,")
                     .fontWeight(.medium)
-                  Text("feel free to drop in `deCripple` creators' DM on Discord!")
+                  Text("feel free to drop in `deCripple` creators DM on Discord!")
                     .fontWeight(.medium)
                 }
                 .font(.subheadline)
                 HStack(alignment: .center, spacing: 25.0) {
                   Button {
-                    if let url = URL(string: "playcover:source?action=add&url=repo.amrsm.ir/decrypted.json") {
+                    if let url = URL(string: "playcover:source?action=add&url=https://repo.decripple.tech/ZGVjcnlwdGVkLmpzb24=") {
                       openURL(url)
                     }
                   } label: {
@@ -127,6 +127,7 @@ struct ContentView: View {
         .padding(.leading, geo.size.width * (0.5/10))
       }
     }
+    .accentColor(.red)
   }
 }
 
