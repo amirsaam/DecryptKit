@@ -24,7 +24,7 @@ struct ContentView: View {
         VStack {
           HStack(alignment: .center, spacing: geo.size.width * (0.25/10)) {
             VStack(alignment: .center) {
-              Image("Source")
+              Image("deCripple")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: geo.size.width * (2/10), height: geo.size.width * (2/10))
