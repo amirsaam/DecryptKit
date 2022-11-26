@@ -18,7 +18,7 @@ struct LookupView: View {
   
   @State var searchSuccess: Bool = false
   
-  @State var appID: String = ""
+  @State var appLink: String = ""
   @State var idIsValid: Bool = false
   @State var idIsFree: Bool = false
   @State var idOnSource: Bool = false
@@ -91,17 +91,17 @@ struct LookupView: View {
                   }
                 }
                 VStack(alignment: .leading) {
-                  TextField("Enter AppStore ID Here", text: $appID)
+                  TextField("Enter AppStore ID Here", text: $appLink)
                     .modifier(Shake(animatableData: CGFloat(appAttempts)))
-                    .disabled(idIsValid && searchSuccess && !appID.isEmpty)
+                    .disabled(idIsValid && searchSuccess && !appLink.isEmpty)
                     .onSubmit {
-                      if appID.isEmpty {
+                      if appLink.isEmpty {
                         withAnimation(.default) {
                           self.appAttempts += 1
                           searchSuccess = false
                         }
                       } else {
-                        doGetLookup(appID)
+                        doGetLookup(appLink)
                         withAnimation {
                           searchSuccess = true
                         }
@@ -140,7 +140,7 @@ struct LookupView: View {
                     HStack {
                       Button {
                         withAnimation {
-                          appID = ""
+                          appLink = ""
                           searchSuccess = false
                         }
                       } label: {
@@ -154,7 +154,7 @@ struct LookupView: View {
                       )
                       Spacer()
                       Button {
-                        if appID.isEmpty {
+                        if appLink.isEmpty {
                           withAnimation {
                             self.appAttempts += 1
                             searchSuccess = false
