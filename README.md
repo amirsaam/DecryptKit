@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/amirsaam/deCripple">
-    <img src="https://github.com/amirsaam/deCripple/blob/main/deCripple/deCripple/Assets.xcassets/AppIcon.appiconset/source.jpg" alt="Logo" width="80" height="80">
+    <img src="deCripple.png" alt="Logo" width="120">
   </a>
 
   <h3 align="center">deCripple</h3>
