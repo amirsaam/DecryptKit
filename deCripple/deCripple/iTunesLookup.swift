@@ -59,16 +59,12 @@ struct ITunesResult: Decodable {
 }
 
 func getITunesData(_ id: String) async -> ITunesResponse? {
-  let scheme = "https"
-  let host = "itunes.apple.com"
-  let path = "/lookup"
-  let query = [ URLQueryItem(name: "id", value: id) ]
-  
+
   var urlComponents = URLComponents()
-  urlComponents.scheme = scheme
-  urlComponents.host = host
-  urlComponents.path = path
-  urlComponents.queryItems = query
+  urlComponents.scheme = "https"
+  urlComponents.host = "itunes.apple.com"
+  urlComponents.path = "/lookup"
+  urlComponents.queryItems = [URLQueryItem(name: "id", value: id)]
   guard let url = urlComponents.url else { return nil }
   print("\(url)")
 

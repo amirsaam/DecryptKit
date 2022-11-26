@@ -14,21 +14,17 @@ struct deCrippleResult: Codable {
 
 //func reqDecrypt(_ id: String, _ email: String, _ promo: String) async -> deCrippleResult? {
 func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
-  let scheme = "https"
-  let host = "decripple.tech"
-  let path = "/decrypt"
-  let querys = [
-//    URLQueryItem(name: "service", value: "decripple"),
-    URLQueryItem(name: "bundleID", value: id),
-    URLQueryItem(name: "email", value: email)
-//    URLQueryItem(name: "promo", value: promo)
-  ]
-  
+
   var urlComponents = URLComponents()
-  urlComponents.scheme = scheme
-  urlComponents.host = host
-  urlComponents.path = path
-  urlComponents.queryItems = querys
+  urlComponents.scheme = "https"
+  urlComponents.host = "decripple.tech"
+  urlComponents.path = "/decrypt"
+  urlComponents.queryItems = [
+    //    URLQueryItem(name: "service", value: "decripple"),
+        URLQueryItem(name: "bundleID", value: id),
+        URLQueryItem(name: "email", value: email)
+    //    URLQueryItem(name: "promo", value: promo)
+      ]
   guard let url = urlComponents.url else { return nil }
   print("\(url)")
 

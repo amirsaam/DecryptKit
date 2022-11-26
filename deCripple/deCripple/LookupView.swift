@@ -183,7 +183,7 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(!idIsValid || !idIsFree)
+                      .disabled(!idIsValid || !idIsFree || idOnSource)
                     }
                     .padding(.top)
                     Text("Download links will be emailed to your address, so make sure to enter a valid and available address!")
@@ -228,8 +228,9 @@ struct LookupView: View {
   }
   func doGetLookup(_ applink: String) {
     Task {
-      var id = applink.suffix(10)
-      lookedup = await getITunesData(String(id))
+      let components = applink.components(separatedBy: "/")
+      let id = String((components.last?.dropFirst(2))!)
+      lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1 ? true : false
       idIsFree = lookedup?.results[0].price == 0 ? true : false
       doGetSource()
