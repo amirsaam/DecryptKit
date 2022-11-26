@@ -13,13 +13,15 @@ struct LookupView: View {
   @Binding var showLookup: Bool
   
   @State var lookedup: ITunesResponse?
-  @State var deCripple: deCrippleResult?
+  @State var deResult: deCrippleResult?
+  @State var deSource: [deCrippleSource]?
   
   @State var searchSuccess: Bool = false
   
   @State var appID: String = ""
   @State var idIsValid: Bool = false
   @State var idIsFree: Bool = false
+  @State var idOnSource: Bool = false
   @State var appAttempts: Int = 0
   
   @State var emailAddress: String = ""
@@ -107,7 +109,7 @@ struct LookupView: View {
                     }
                   if searchSuccess && idIsValid {
                     Divider()
-                    if idIsFree {
+                    if idIsFree && !idOnSource {
                       TextField("Enter Your Email Address", text: $emailAddress)
                         .modifier(Shake(animatableData: CGFloat(emailAttempts)))
                         .textInputAutocapitalization(.never)
@@ -116,6 +118,15 @@ struct LookupView: View {
                       TextField("Promo Code?", text: $emailAddress)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
+                    } else if idOnSource {
+                      HStack {
+                        Spacer()
+                        Text("This app is already on `deCripple` source!")
+                          .font(.subheadline)
+                          .foregroundColor(.red)
+                          .padding(.top)
+                        Spacer()
+                      }
                     } else {
                       HStack {
                         Spacer()
@@ -215,18 +226,26 @@ struct LookupView: View {
       }
     }
   }
-  func doGetLookup(_ appid: String) {
+  func doGetLookup(_ applink: String) {
     Task {
-      lookedup = await getITunesData(appid)
+      var id = applink.suffix(10)
+      lookedup = await getITunesData(String(id))
       idIsValid = lookedup?.resultCount == 1 ? true : false
       idIsFree = lookedup?.results[0].price == 0 ? true : false
+      doGetSource()
+    }
+  }
+  func doGetSource() {
+    Task {
+      deSource = await getSourceData()
+      idOnSource = deSource?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
     }
   }
 //  func doRequest(_ id: String, _ email: String, _ promo: String) {
   func doRequest(_ id: String, _ email: String) {
     Task {
 //      deCripple = await reqDecrypt(id, email, promo)
-      deCripple = await reqDecrypt(id, email)
+      deResult = await reqDecrypt(id, email)
     }
   }
 }
