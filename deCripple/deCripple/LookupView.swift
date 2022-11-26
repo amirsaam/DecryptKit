@@ -42,11 +42,11 @@ struct LookupView: View {
             .softOuterShadow()
             .overlay {
               VStack(alignment: .leading, spacing: 25.0) {
-                Text("We have an `IPA Decryption` service, thanks to dear `Amachi`!")
+                Text("We have an IPA Decryption service, thanks to dear Amachi!")
                   .font(.headline)
                 if !searchSuccess {
-                  Text("*you need to use app store links or the number in the end of it, e.g `1517783697`*")
-                    .font(.footnote)
+                  Text("you need to use app store links or the number in the end of it, e.g 1517783697")
+                    .font(.footnote.italic())
                 } else {
                   if idIsValid {
                     VStack(alignment: .leading, spacing: 15) {
@@ -78,7 +78,7 @@ struct LookupView: View {
                         Text("vr\(lookedup?.results[0].version ?? "")")
                         Divider()
                           .frame(height: 10)
-                        Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0,countStyle: .file)) *or less*")
+                        Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0,countStyle: .file)) or less")
                         Divider()
                           .frame(height: 10)
                         Text(lookedup?.results[0].primaryGenreName ?? "")
@@ -125,7 +125,7 @@ struct LookupView: View {
                     } else if idOnSource {
                       HStack {
                         Spacer()
-                        Text("This app is already on `deCripple` source!")
+                        Text("This app is already on deCripple source!")
                           .font(.subheadline)
                           .foregroundColor(.red)
                           .padding(.top)
@@ -134,7 +134,7 @@ struct LookupView: View {
                     } else {
                       HStack {
                         Spacer()
-                        Text("`deCripple` does not support paid apps!")
+                        Text("deCripple does not support paid apps!")
                           .font(.subheadline)
                           .foregroundColor(.red)
                           .padding(.top)
@@ -196,8 +196,8 @@ struct LookupView: View {
                       .padding(.top)
                   }
                   if !searchSuccess || !idIsValid {
-                    Text("*press return after*")
-                      .font(.subheadline)
+                    Text("press return after")
+                      .font(.subheadline.italic())
                   }
                 }
                 HStack {
@@ -220,11 +220,14 @@ struct LookupView: View {
           ZStack {
             mainColor
             VStack(alignment: .leading) {
-              Text("`deCripple` Creators:")
+              Text("deCripple Creators:")
                 .font(.subheadline)
-              Text("`amirsaam#3579`")
-                .padding(.top)
-              Text("`Amachi -アマチ#1131`")
+              Group {
+                Text("amirsaam#3579")
+                  .padding(.top, 1)
+                Text("Amachi -アマチ#1131")
+              }
+              .font(.subheadline.monospaced())
             }
           }
         }

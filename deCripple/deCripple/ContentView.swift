@@ -42,8 +42,8 @@ struct ContentView: View {
                 Text("deCripple")
                   .font(.largeTitle.monospaced())
                   .fontWeight(.bold)
-                Text("repo.`decripple`.tech")
-                  .font(.headline.lowercaseSmallCaps())
+                Text("repo.decripple.tech")
+                  .font(.title3.lowercaseSmallCaps())
                   .fontWeight(.medium)
               }
               .foregroundColor(.invertNeuPC)
@@ -54,13 +54,13 @@ struct ContentView: View {
                 .fontWeight(.heavy)
                 .font(.title.monospaced())
               VStack(alignment: .leading, spacing: geo.size.width * (0.25/10)) {
-                Text("`deCripple` is a free to use IPA Repository & Decrypting Service created just for ease of PlayCover users and Mac Gaming Community.")
+                Text("deCripple is a free to use IPA Repository & Decrypting Service created just for ease of PlayCover users and Mac Gaming Community.")
                   .font(.headline)
                   .fontWeight(.medium)
                 VStack(alignment: .leading) {
                   Text("If you are a IPA Decryptor willing to donate your time to this community,")
                     .fontWeight(.medium)
-                  Text("feel free to drop in `deCripple` creators DM on Discord!")
+                  Text("feel free to drop in deCripple creators DM on Discord!")
                     .fontWeight(.medium)
                 }
                 .font(.subheadline)
