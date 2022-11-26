@@ -18,7 +18,7 @@ struct LookupView: View {
   
   @State var searchSuccess: Bool = false
   
-  @State var appLink: String = ""
+  @State var inputID: String = ""
   @State var idIsValid: Bool = false
   @State var idIsFree: Bool = false
   @State var idOnSource: Bool = false
@@ -45,11 +45,11 @@ struct LookupView: View {
                 Text("We have an `IPA Decryption` service, thanks to dear `Amachi`!")
                   .font(.headline)
                 if !searchSuccess {
-                  Text("*you need to use id numbers from app store share links, e.g `1517783697`*")
+                  Text("*you need to use app store links or the number in the end of it, e.g `1517783697`*")
                     .font(.footnote)
                 } else {
                   if idIsValid {
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 15) {
                       HStack(spacing: 10) {
                         if let url = URL(string: lookedup?.results[0].artworkUrl60 ?? "") {
                           AsyncImage(url: url) { image in
@@ -59,27 +59,29 @@ struct LookupView: View {
                           } placeholder: {
                             ProgressView()
                           }
-                          .frame(width: 45, height: 45)
+                          .frame(width: 50, height: 50)
                           .cornerRadius(12)
                           .softOuterShadow()
                         }
                         VStack(alignment: .leading, spacing: 5) {
-                          HStack(alignment: .center) {
-                            Text(lookedup?.results[0].trackName ?? "")
-                              .font(.headline)
-                            Text(lookedup?.results[0].formattedPrice ?? "")
-                              .font(.caption)
-                          }
+                          Text(lookedup?.results[0].trackName ?? "")
+                            .font(.headline)
                           Text("by \(lookedup?.results[0].artistName ?? "")")
                             .font(.caption)
                         }
                       }
                       HStack(spacing: 5) {
-                        Text("Version: \(lookedup?.results[0].version ?? "")")
+                        Text(lookedup?.results[0].formattedPrice ?? "")
+                          .font(.caption)
                         Divider()
                           .frame(height: 10)
-                          .foregroundColor(.invertNeuPC)
-                        Text(lookedup?.results[0].genres[0] ?? "")
+                        Text("ver\(lookedup?.results[0].version ?? "")")
+                        Divider()
+                          .frame(height: 10)
+                        Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0,countStyle: .file)) *or less*")
+                        Divider()
+                          .frame(height: 10)
+                        Text(lookedup?.results[0].primaryGenreName ?? "")
                       }
                       .font(.caption)
                     }
@@ -91,17 +93,17 @@ struct LookupView: View {
                   }
                 }
                 VStack(alignment: .leading) {
-                  TextField("Enter AppStore ID Here", text: $appLink)
+                  TextField("Enter AppStore ID Here", text: $inputID)
                     .modifier(Shake(animatableData: CGFloat(appAttempts)))
-                    .disabled(idIsValid && searchSuccess && !appLink.isEmpty)
+                    .disabled(idIsValid && searchSuccess && !inputID.isEmpty)
                     .onSubmit {
-                      if appLink.isEmpty {
+                      if inputID.isEmpty {
                         withAnimation(.default) {
                           self.appAttempts += 1
                           searchSuccess = false
                         }
                       } else {
-                        doGetLookup(appLink)
+                        doGetLookup(inputID)
                         withAnimation {
                           searchSuccess = true
                         }
@@ -140,7 +142,7 @@ struct LookupView: View {
                     HStack {
                       Button {
                         withAnimation {
-                          appLink = ""
+                          inputID = ""
                           searchSuccess = false
                         }
                       } label: {
@@ -154,7 +156,7 @@ struct LookupView: View {
                       )
                       Spacer()
                       Button {
-                        if appLink.isEmpty {
+                        if inputID.isEmpty {
                           withAnimation {
                             self.appAttempts += 1
                             searchSuccess = false
@@ -226,10 +228,15 @@ struct LookupView: View {
       }
     }
   }
-  func doGetLookup(_ applink: String) {
+  func doGetLookup(_ input: String) {
     Task {
-      let components = applink.components(separatedBy: "/")
-      let id = String((components.last?.dropFirst(2))!)
+      var id: String
+      if input.hasPrefix("https") {
+        let components = input.components(separatedBy: "/")
+        id = String(components.last?.replacingOccurrences(of: "id", with: "") ?? "")
+      } else {
+        id = input
+      }
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1 ? true : false
       idIsFree = lookedup?.results[0].price == 0 ? true : false
