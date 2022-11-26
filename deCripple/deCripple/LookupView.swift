@@ -75,7 +75,7 @@ struct LookupView: View {
                           .font(.caption)
                         Divider()
                           .frame(height: 10)
-                        Text("ver\(lookedup?.results[0].version ?? "")")
+                        Text("vr\(lookedup?.results[0].version ?? "")")
                         Divider()
                           .frame(height: 10)
                         Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0,countStyle: .file)) *or less*")
@@ -87,13 +87,13 @@ struct LookupView: View {
                     }
                     .padding(.top)
                   } else {
-                    Text("AppStore ID is not correct!")
+                    Text("AppStore Link or ID is not correct!")
                       .font(.subheadline)
                       .foregroundColor(.red)
                   }
                 }
                 VStack(alignment: .leading) {
-                  TextField("Enter AppStore ID Here", text: $inputID)
+                  TextField("Enter AppStore Link or ID Here", text: $inputID)
                     .modifier(Shake(animatableData: CGFloat(appAttempts)))
                     .disabled(idIsValid && searchSuccess && !inputID.isEmpty)
                     .onSubmit {
@@ -104,8 +104,10 @@ struct LookupView: View {
                         }
                       } else {
                         doGetLookup(inputID)
-                        withAnimation {
-                          searchSuccess = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                          withAnimation {
+                            searchSuccess = true
+                          }
                         }
                       }
                     }
@@ -145,6 +147,7 @@ struct LookupView: View {
                           inputID = ""
                           searchSuccess = false
                         }
+                        lookedup = nil
                       } label: {
                         Label("Edit AppStore ID", systemImage: "pencil")
                           .font(.caption2)
@@ -239,8 +242,12 @@ struct LookupView: View {
       }
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1 ? true : false
-      idIsFree = lookedup?.results[0].price == 0 ? true : false
-      doGetSource()
+      if idIsValid {
+        idIsFree = lookedup?.results[0].price == 0 ? true : false
+        if idIsValid && idIsFree {
+          doGetSource()
+        }
+      }
     }
   }
   func doGetSource() {
