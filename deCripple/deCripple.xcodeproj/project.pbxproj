@@ -16,6 +16,7 @@
 		6843C62F292FB6DE008FDA73 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6843C62E292FB6DD008FDA73 /* Launch Screen.storyboard */; };
 		6843C631292FB6F5008FDA73 /* LookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C630292FB6F5008FDA73 /* LookupView.swift */; };
 		6843C633292FDA93008FDA73 /* DecryptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C632292FDA93008FDA73 /* DecryptionRequest.swift */; };
+		684EB84E2933A22500F3C57A /* AppDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EB84D2933A22500F3C57A /* AppDetails.swift */; };
 		685B3EE3293292130010E24D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C61B292FB586008FDA73 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		6843C62E292FB6DD008FDA73 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		6843C630292FB6F5008FDA73 /* LookupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LookupView.swift; sourceTree = "<group>"; };
 		6843C632292FDA93008FDA73 /* DecryptionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionRequest.swift; sourceTree = "<group>"; };
+		684EB84D2933A22500F3C57A /* AppDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				6843C619292FB586008FDA73 /* deCrippleApp.swift */,
 				6843C61B292FB586008FDA73 /* ContentView.swift */,
 				6843C630292FB6F5008FDA73 /* LookupView.swift */,
+				684EB84D2933A22500F3C57A /* AppDetails.swift */,
 				6843C62C292FB6C8008FDA73 /* Extensions.swift */,
 				6843C62A292FB69F008FDA73 /* iTunesLookup.swift */,
 				6843C632292FDA93008FDA73 /* DecryptionRequest.swift */,
@@ -169,6 +172,7 @@
 				6843C62B292FB6A0008FDA73 /* iTunesLookup.swift in Sources */,
 				6843C62D292FB6C8008FDA73 /* Extensions.swift in Sources */,
 				6843C631292FB6F5008FDA73 /* LookupView.swift in Sources */,
+				684EB84E2933A22500F3C57A /* AppDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

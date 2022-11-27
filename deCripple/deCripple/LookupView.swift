@@ -8,28 +8,38 @@
 import SwiftUI
 import Neumorphic
 
+struct ErrorMessage: View {
+
+  @State var errorLog: String
+
+  var body: some View {
+      Text(errorLog)
+        .font(.subheadline)
+        .foregroundColor(.red)
+  }
+}
+
 struct LookupView: View {
-  
+
   @Binding var showLookup: Bool
-  
+
   @State var lookedup: ITunesResponse?
   @State var deResult: deCrippleResult?
-  @State var deSource: [deCrippleSource]?
-  
+
   @State var searchSuccess: Bool = false
-  
+
   @State var inputID: String = ""
   @State var idIsValid: Bool = false
-  @State var idIsFree: Bool = false
+  @State var idIsPaid: Bool = false
   @State var idOnSource: Bool = false
   @State var appAttempts: Int = 0
-  
+
   @State var emailAddress: String = ""
   @State var emailIsValid: Bool = false
   @State var emailAttempts: Int = 0
-  
-  @State var promoCode: String? = ""
-  
+
+  @State var promoCode: String = ""
+
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -48,48 +58,10 @@ struct LookupView: View {
                   Text("you need to use app store links or the number in the end of it, e.g 1517783697")
                     .font(.footnote.italic())
                 } else {
-                  if idIsValid {
-                    VStack(alignment: .leading, spacing: 15) {
-                      HStack(spacing: 10) {
-                        if let url = URL(string: lookedup?.results[0].artworkUrl60 ?? "") {
-                          AsyncImage(url: url) { image in
-                            image
-                              .resizable()
-                              .aspectRatio(contentMode: .fit)
-                          } placeholder: {
-                            ProgressView()
-                          }
-                          .frame(width: 50, height: 50)
-                          .cornerRadius(12)
-                          .softOuterShadow()
-                        }
-                        VStack(alignment: .leading, spacing: 5) {
-                          Text(lookedup?.results[0].trackName ?? "")
-                            .font(.headline)
-                          Text("by \(lookedup?.results[0].artistName ?? "")")
-                            .font(.caption)
-                        }
-                      }
-                      HStack(spacing: 5) {
-                        Text(lookedup?.results[0].formattedPrice ?? "")
-                          .font(.caption)
-                        Divider()
-                          .frame(height: 10)
-                        Text("vr\(lookedup?.results[0].version ?? "")")
-                        Divider()
-                          .frame(height: 10)
-                        Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0,countStyle: .file)) or less")
-                        Divider()
-                          .frame(height: 10)
-                        Text(lookedup?.results[0].primaryGenreName ?? "")
-                      }
-                      .font(.caption)
-                    }
-                    .padding(.top)
+                  if lookedup != nil && idIsValid {
+                    AppDetails(lookedup: $lookedup)
                   } else {
-                    Text("AppStore Link or ID is not correct!")
-                      .font(.subheadline)
-                      .foregroundColor(.red)
+                    ErrorMessage(errorLog: "AppStore Link or ID is not correct!")
                   }
                 }
                 VStack(alignment: .leading) {
@@ -104,50 +76,34 @@ struct LookupView: View {
                         }
                       } else {
                         doGetLookup(inputID)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                          withAnimation {
-                            searchSuccess = true
-                          }
+                        withAnimation {
+                          searchSuccess = true
                         }
                       }
                     }
                   if searchSuccess && idIsValid {
                     Divider()
-                    if idIsFree && !idOnSource {
+                    if idIsPaid {
+                      ErrorMessage(errorLog: "deCripple does not support paid apps!")
+                    } else if idOnSource {
+                      ErrorMessage(errorLog: "This app is already on deCripple source!")
+                    } else {
                       TextField("Enter Your Email Address", text: $emailAddress)
                         .modifier(Shake(animatableData: CGFloat(emailAttempts)))
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
                       Divider()
-                      TextField("Promo Code?", text: $emailAddress)
+                      TextField("Promo Code?", text: $promoCode)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
-                    } else if idOnSource {
-                      HStack {
-                        Spacer()
-                        Text("This app is already on deCripple source!")
-                          .font(.subheadline)
-                          .foregroundColor(.red)
-                          .padding(.top)
-                        Spacer()
-                      }
-                    } else {
-                      HStack {
-                        Spacer()
-                        Text("deCripple does not support paid apps!")
-                          .font(.subheadline)
-                          .foregroundColor(.red)
-                          .padding(.top)
-                        Spacer()
-                      }
                     }
                     HStack {
                       Button {
                         withAnimation {
                           inputID = ""
                           searchSuccess = false
+                          lookedup = nil
                         }
-                        lookedup = nil
                       } label: {
                         Label("Edit AppStore ID", systemImage: "pencil")
                           .font(.caption2)
@@ -188,14 +144,13 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(!idIsValid || !idIsFree || idOnSource)
+                      .disabled(!idIsValid || idIsPaid || idOnSource)
                     }
                     .padding(.top)
                     Text("Download links will be emailed to your address, so make sure to enter a valid and available address!")
                       .font(.footnote)
                       .padding(.top)
-                  }
-                  if !searchSuccess || !idIsValid {
+                  } else {
                     Text("press return after")
                       .font(.subheadline.italic())
                   }
@@ -246,17 +201,11 @@ struct LookupView: View {
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1 ? true : false
       if idIsValid {
-        idIsFree = lookedup?.results[0].price == 0 ? true : false
-        if idIsValid && idIsFree {
-          doGetSource()
+        idIsPaid = lookedup?.results[0].price != 0 ? true : false
+        if idIsValid && !idIsPaid {
+          idOnSource = await getSourceData()?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
         }
       }
-    }
-  }
-  func doGetSource() {
-    Task {
-      deSource = await getSourceData()
-      idOnSource = deSource?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
     }
   }
 //  func doRequest(_ id: String, _ email: String, _ promo: String) {
