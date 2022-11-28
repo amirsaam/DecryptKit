@@ -9,7 +9,7 @@
   <h3 align="center">deCripple</h3>
 
   <p align="center">
-    deCripple is de facto a solution for decrypting Apple binaries that have been crippled with crippling encryption.
+    deCripple is de facto a solution for decrypting Apple binaries that have been crippled with Apple encryption.
   </p>
 </div>
 
