@@ -2,7 +2,7 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/amirsaam/deCripple">
+  <a href="https://www.decripple.tech">
     <img src="deCripple.png" alt="Logo" width="120">
   </a>
 
@@ -50,6 +50,7 @@ Back-end - [@Amachik2](https://twitter.com/Amachik2) - amachi@hiyori.cz
 Front-end - [@amirsaam](https://twitter.com/amirsaam) - amirsaam@me.com
 
 Project Link: [https://github.com/amirsaam/deCripple](https://github.com/amirsaam/deCripple)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
