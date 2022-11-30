@@ -40,6 +40,8 @@ struct LookupView: View {
 
   @State var promoCode: String = ""
 
+  let defaults = UserDefaults.standard
+  
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -76,6 +78,7 @@ struct LookupView: View {
                         }
                       } else {
                         doGetLookup(inputID)
+                        emailAddress = defaults.string(forKey: "Email") ?? ""
                         withAnimation {
                           searchSuccess = true
                         }
@@ -128,6 +131,7 @@ struct LookupView: View {
                             }
                           } else {
 //                            doRequest(lookedup?.results[0].bundleId ?? "", emailAddress, promoCode)
+                            defaults.set(emailAddress, forKey: "Email")
                             doRequest(lookedup?.results[0].bundleId ?? "", emailAddress)
                           }
                         }
