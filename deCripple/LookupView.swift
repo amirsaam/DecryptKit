@@ -8,20 +8,10 @@
 import SwiftUI
 import Neumorphic
 
-struct ErrorMessage: View {
-
-  @State var errorLog: String
-
-  var body: some View {
-      Text(errorLog)
-        .font(.subheadline)
-        .foregroundColor(.red)
-  }
-}
-
 struct LookupView: View {
 
   @Binding var showLookup: Bool
+  @Binding var sourceData: [deCrippleSource]?
 
   @State var lookedup: ITunesResponse?
   @State var deResult: deCrippleResult?
@@ -40,18 +30,11 @@ struct LookupView: View {
 
   @State var promoCode: String = ""
 
-  let defaults = UserDefaults.standard
-  
   var body: some View {
     GeometryReader { geo in
       ZStack {
         if showLookup {
-          Rectangle()
-            .fill(mainColor)
-            .transition(.move(edge: .trailing))
-            .zIndex(1)
-            .ignoresSafeArea(.all)
-            .softOuterShadow()
+          SidebarBackground()
             .overlay {
               VStack(alignment: .leading, spacing: 25.0) {
                 Text("We have an IPA Decryption service, thanks to dear Amachi!")
@@ -61,7 +44,7 @@ struct LookupView: View {
                     .font(.footnote.italic())
                 } else {
                   if lookedup != nil && idIsValid {
-                    AppDetails(lookedup: $lookedup)
+                    LookupAppDetails(lookedup: $lookedup)
                   } else {
                     ErrorMessage(errorLog: "AppStore Link or ID is not correct!")
                   }
@@ -175,20 +158,6 @@ struct LookupView: View {
               }
               .frame(width: geo.size.width * (8.25/10))
             }
-        } else {
-          ZStack {
-            mainColor
-            VStack(alignment: .leading) {
-              Text("deCripple Creators:")
-                .font(.subheadline)
-              Group {
-                Text("amirsaam#3579")
-                  .padding(.top, 1)
-                Text("Amachi -アマチ#1131")
-              }
-              .font(.subheadline.monospaced())
-            }
-          }
         }
       }
     }
@@ -207,7 +176,7 @@ struct LookupView: View {
       if idIsValid {
         idIsPaid = lookedup?.results[0].price != 0 ? true : false
         if idIsValid && !idIsPaid {
-          idOnSource = await getSourceData()?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
+          idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
         }
       }
     }

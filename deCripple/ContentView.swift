@@ -12,8 +12,10 @@ struct ContentView: View {
   
   @Environment(\.openURL) var openURL
   
+  @State var sourceData: [deCrippleSource]?
   @State var isRotating = 0.0
   @State var showSafari: Bool = false
+  @State var showRepo: Bool = false
   @State var showLookup: Bool = false
   
   var body: some View {
@@ -64,24 +66,38 @@ struct ContentView: View {
                     .fontWeight(.medium)
                 }
                 .font(.subheadline)
-                HStack(alignment: .center, spacing: 25.0) {
-                  Button {
-                    if let url = URL(string: "playcover:source?action=add&url=https://repo.decripple.tech/ZGVjcnlwdGVkLmpzb24=") {
-                      openURL(url)
+                HStack(alignment: .top, spacing: 25.0) {
+                  VStack(spacing: 15.0) {
+                    Button {
+                      if let url = URL(string: "playcover:source?action=add&url=https://repo.decripple.tech/ZGVjcnlwdGVkLmpzb24=") {
+                        openURL(url)
+                      }
+                    } label: {
+                      Label("Add to PlayCover", systemImage: "airplane.departure")
                     }
-                  } label: {
-                    Label("Add to PlayCover", systemImage: "airplane.departure")
+                    .softButtonStyle(
+                      RoundedRectangle(cornerRadius: 15),
+                      mainColor: .red,
+                      textColor: .white,
+                      darkShadowColor: .redNeuDS,
+                      lightShadowColor: .redNeuLS,
+                      pressedEffect: .flat
+                    )
+                    Button {
+                      withAnimation(.spring()) {
+                        showLookup = false
+                        showRepo.toggle()
+                      }
+                    } label: {
+                      Text("Click here to see what's on Repo")
+                        .font(.caption2)
+                        .foregroundColor(.red)
+                    }
+                    //                    .disabled(showRepo == true ? true : false)
                   }
-                  .softButtonStyle(
-                    RoundedRectangle(cornerRadius: 15),
-                    mainColor: .red,
-                    textColor: .white,
-                    darkShadowColor: .redNeuDS,
-                    lightShadowColor: .redNeuLS,
-                    pressedEffect: .flat
-                  )
                   Button {
                     withAnimation(.spring()) {
+                      showRepo = false
                       showLookup.toggle()
                     }
                   } label: {
@@ -120,7 +136,15 @@ struct ContentView: View {
             }
             .foregroundColor(secondaryColor)
             .frame(width: geo.size.width * (4.25/10))
-            LookupView(showLookup: $showLookup)
+            if showLookup {
+              LookupView(showLookup: $showLookup,
+                         sourceData: $sourceData)
+            } else if showRepo {
+              RepoView(showRepo: $showRepo,
+                       sourceData: $sourceData)
+            } else {
+              Creators()
+            }
           }
         }
         .foregroundColor(secondaryColor)
@@ -128,6 +152,9 @@ struct ContentView: View {
       }
     }
     .accentColor(.red)
+    .task {
+      sourceData = await getSourceData()
+    }
   }
 }
 

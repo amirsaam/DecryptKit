@@ -1,5 +1,5 @@
 //
-//  AppDetails.swift
+//  LookupAppDetails.swift
 //  deCripple
 //
 //  Created by Amir Mohammadi on 9/6/1401 AP.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Neumorphic
 
-struct AppDetails: View {
+struct LookupAppDetails: View {
 
   @Binding var lookedup: ITunesResponse?
 

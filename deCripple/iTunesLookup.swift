@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct ITunesResponse: Decodable {
+struct ITunesResponse: Codable {
   var resultCount: Int
   var results: [ITunesResult]
 }
 
-struct ITunesResult: Decodable {
+struct ITunesResult: Codable {
   var isGameCenterEnabled: Bool
   var supportedDevices: [String]
   var features: [String]
@@ -64,7 +64,9 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
   urlComponents.scheme = "https"
   urlComponents.host = "itunes.apple.com"
   urlComponents.path = "/lookup"
-  urlComponents.queryItems = [URLQueryItem(name: "id", value: id)]
+  urlComponents.queryItems = id.isNumber
+    ? [URLQueryItem(name: "id", value: id)]
+    : [URLQueryItem(name: "bundleId", value: id)]
   guard let url = urlComponents.url else { return nil }
   print("\(url)")
 
