@@ -27,7 +27,7 @@
 
 /* Begin PBXFileReference section */
 		68100187293A925A00418B40 /* 3rdPartyApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3rdPartyApps.swift; sourceTree = "<group>"; };
-		6843C616292FB586008FDA73 /* deCripple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = deCripple.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6843C616292FB586008FDA73 /* DecryptKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DecryptKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6843C619292FB586008FDA73 /* deCrippleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = deCrippleApp.swift; sourceTree = "<group>"; };
 		6843C61B292FB586008FDA73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6843C61D292FB587008FDA73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -59,7 +59,7 @@
 		6843C60D292FB586008FDA73 = {
 			isa = PBXGroup;
 			children = (
-				6843C618292FB586008FDA73 /* deCripple */,
+				6843C618292FB586008FDA73 /* DecryptKit */,
 				6843C617292FB586008FDA73 /* Products */,
 			);
 			indentWidth = 2;
@@ -69,12 +69,12 @@
 		6843C617292FB586008FDA73 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6843C616292FB586008FDA73 /* deCripple.app */,
+				6843C616292FB586008FDA73 /* DecryptKit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6843C618292FB586008FDA73 /* deCripple */ = {
+		6843C618292FB586008FDA73 /* DecryptKit */ = {
 			isa = PBXGroup;
 			children = (
 				6843C62E292FB6DD008FDA73 /* Launch Screen.storyboard */,
@@ -92,7 +92,7 @@
 				6843C61D292FB587008FDA73 /* Assets.xcassets */,
 				6843C61F292FB587008FDA73 /* Preview Content */,
 			);
-			path = deCripple;
+			path = DecryptKit;
 			sourceTree = "<group>";
 		};
 		6843C61F292FB587008FDA73 /* Preview Content */ = {
@@ -106,9 +106,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6843C615292FB586008FDA73 /* deCripple */ = {
+		6843C615292FB586008FDA73 /* DecryptKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6843C624292FB587008FDA73 /* Build configuration list for PBXNativeTarget "deCripple" */;
+			buildConfigurationList = 6843C624292FB587008FDA73 /* Build configuration list for PBXNativeTarget "DecryptKit" */;
 			buildPhases = (
 				6843C612292FB586008FDA73 /* Sources */,
 				6843C613292FB586008FDA73 /* Frameworks */,
@@ -118,13 +118,13 @@
 			);
 			dependencies = (
 			);
-			name = deCripple;
+			name = DecryptKit;
 			packageProductDependencies = (
 				6843C628292FB636008FDA73 /* Neumorphic */,
 				6810018A293A982B00418B40 /* CachedAsyncImage */,
 			);
 			productName = deCripple;
-			productReference = 6843C616292FB586008FDA73 /* deCripple.app */;
+			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -142,7 +142,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6843C611292FB586008FDA73 /* Build configuration list for PBXProject "deCripple" */;
+			buildConfigurationList = 6843C611292FB586008FDA73 /* Build configuration list for PBXProject "DecryptKit" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -159,7 +159,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6843C615292FB586008FDA73 /* deCripple */,
+				6843C615292FB586008FDA73 /* DecryptKit */,
 			);
 		};
 /* End PBXProject section */
@@ -320,7 +320,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"deCripple/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DecryptKit/Preview Content\"";
 				DEVELOPMENT_TEAM = 44JD6UQ5FG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -356,7 +356,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"deCripple/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DecryptKit/Preview Content\"";
 				DEVELOPMENT_TEAM = 44JD6UQ5FG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -388,7 +388,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6843C611292FB586008FDA73 /* Build configuration list for PBXProject "deCripple" */ = {
+		6843C611292FB586008FDA73 /* Build configuration list for PBXProject "DecryptKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6843C622292FB587008FDA73 /* Debug */,
@@ -397,7 +397,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6843C624292FB587008FDA73 /* Build configuration list for PBXNativeTarget "deCripple" */ = {
+		6843C624292FB587008FDA73 /* Build configuration list for PBXNativeTarget "DecryptKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6843C625292FB587008FDA73 /* Debug */,
