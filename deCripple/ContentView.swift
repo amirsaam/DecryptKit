@@ -44,7 +44,7 @@ struct ContentView: View {
                 Text("DecryptKit")
                   .font(.largeTitle.monospaced())
                   .fontWeight(.bold)
-                Text("repo.decryptkit.tech")
+                Text("repo.DecryptKit.tech")
                   .font(.title3.lowercaseSmallCaps())
                   .fontWeight(.medium)
               }
@@ -66,42 +66,42 @@ struct ContentView: View {
                     .fontWeight(.medium)
                 }
                 .font(.subheadline)
-                HStack(alignment: .top, spacing: 25.0) {
-                  VStack(spacing: 15.0) {
-                    Button {
-                      if let url = URL(string: "playcover:source?action=add&url=https://repo.decryptkit.tech/ZGVjcnlwdGVkLmpzb24=") {
-                        openURL(url)
-                      }
-                    } label: {
-                      Label("Add to PlayCover", systemImage: "airplane.departure")
+                HStack(alignment: .center, spacing: 25.0) {
+                  Button {
+                    if let url = URL(string: "playcover:source?action=add&url=https://repo.decryptkit.tech/ZGVjcnlwdGVkLmpzb24=") {
+                      openURL(url)
                     }
-                    .softButtonStyle(
-                      RoundedRectangle(cornerRadius: 15),
-                      mainColor: .red,
-                      textColor: .white,
-                      darkShadowColor: .redNeuDS,
-                      lightShadowColor: .redNeuLS,
-                      pressedEffect: .flat
-                    )
-                    Button {
-                      withAnimation(.spring()) {
-                        showLookup = false
-                        showRepo.toggle()
-                      }
-                    } label: {
-                      Text("Click here to see what's on Repo")
-                        .font(.caption2)
-                        .foregroundColor(.red)
-                    }
-//                  .disabled(showRepo == true ? true : false)
+                  } label: {
+                    Label("Add Source to PlayCover", systemImage: "airplane.departure")
                   }
+                  .softButtonStyle(
+                    RoundedRectangle(cornerRadius: 15),
+                    mainColor: .red,
+                    textColor: .white,
+                    darkShadowColor: .redNeuDS,
+                    lightShadowColor: .redNeuLS,
+                    pressedEffect: .flat
+                  )
+                  Button {
+                    withAnimation(.spring()) {
+                      showLookup = false
+                      showRepo.toggle()
+                    }
+                  } label: {
+                    Image(systemName: "app.badge")
+                  }
+                  .softButtonStyle(
+                    RoundedRectangle(cornerRadius: 15),
+                    pressedEffect: .flat
+                  )
+                  .disabled(showRepo == true ? true : false)
                   Button {
                     withAnimation(.spring()) {
                       showRepo = false
                       showLookup.toggle()
                     }
                   } label: {
-                    Label("Request Decryption", systemImage: "plus.app.fill")
+                    Label("Request Decryption", systemImage: "plus.app")
                   }
                   .softButtonStyle(
                     RoundedRectangle(cornerRadius: 15),

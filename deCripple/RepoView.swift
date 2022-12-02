@@ -13,8 +13,6 @@ struct RepoView: View {
   @Binding var showRepo: Bool
   @Binding var sourceData: [deCrippleSource]?
   
-  @State var sourceLookedup: ITunesResponse?
-  
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -35,10 +33,11 @@ struct RepoView: View {
                     pressedEffect: .flat
                   )
                   .padding(.leading)
-                  Text("DecryptKit's IPA Repository")
-                    .font(.callout)
+                  Text("DecryptKit IPA Repository")
+                    .font(.callout.monospaced())
                     .fontWeight(.semibold)
                     .padding(.leading)
+                    .softOuterShadow()
                 }
                 List {
                   ForEach(sourceData ?? [], id: \.bundleID) { app in
@@ -47,6 +46,9 @@ struct RepoView: View {
                   .listRowBackground(mainColor)
                 }
                 .listStyle(.plain)
+                .refreshable {
+                  sourceData = await getSourceData()
+                }
               }
             }
         }
