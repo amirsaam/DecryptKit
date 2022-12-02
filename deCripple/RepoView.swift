@@ -28,7 +28,7 @@ struct RepoView: View {
                   .padding(.leading)
                 List {
                   ForEach(sourceData ?? [], id: \.bundleID) { app in
-                    RepoAppDetails(appBundleID: app.bundleID, appName: app.name, appVersion: app.version)
+                    RepoAppDetails(sourceData: $sourceData, appBundleID: app.bundleID, appName: app.name, appVersion: app.version)
                   }
                   .listRowBackground(mainColor)
                 }
