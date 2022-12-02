@@ -22,13 +22,27 @@ struct RepoView: View {
           SidebarBackground()
             .overlay {
               VStack(alignment: .leading) {
-                Text("deCripple's IPA repository content:")
-                  .font(.callout)
-                  .fontWeight(.semibold)
+                HStack {
+                  Button {
+                    withAnimation(.spring()) {
+                      showRepo = false
+                    }
+                  } label: {
+                    Image(systemName: "chevron.compact.right")
+                  }
+                  .softButtonStyle(
+                    Circle(),
+                    pressedEffect: .flat
+                  )
                   .padding(.leading)
+                  Text("DecryptKit's IPA Repository")
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .padding(.leading)
+                }
                 List {
                   ForEach(sourceData ?? [], id: \.bundleID) { app in
-                    RepoAppDetails(sourceData: $sourceData, appBundleID: app.bundleID, appName: app.name, appVersion: app.version)
+                    RepoAppDetails(appBundleID: app.bundleID, appName: app.name, appVersion: app.version)
                   }
                   .listRowBackground(mainColor)
                 }

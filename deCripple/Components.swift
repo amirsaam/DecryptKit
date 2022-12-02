@@ -33,7 +33,7 @@ struct Creators: View {
     ZStack {
       mainColor
       VStack(alignment: .leading) {
-        Text("deCripple Creators:")
+        Text("DecryptKit Creators:")
           .font(.subheadline)
         Group {
           Text("amirsaam#3579")

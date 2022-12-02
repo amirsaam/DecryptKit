@@ -70,9 +70,9 @@ struct LookupView: View {
                   if searchSuccess && idIsValid {
                     Divider()
                     if idIsPaid {
-                      ErrorMessage(errorLog: "deCripple does not support paid apps!")
+                      ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
                     } else if idOnSource {
-                      ErrorMessage(errorLog: "This app is already on deCripple source!")
+                      ErrorMessage(errorLog: "This app is already on DecryptKit source!")
                     } else {
                       TextField("Enter Your Email Address", text: $emailAddress)
                         .modifier(Shake(animatableData: CGFloat(emailAttempts)))

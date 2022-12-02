@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Neumorphic
+import CachedAsyncImage
 
 struct LookupAppDetails: View {
 
@@ -16,7 +17,7 @@ struct LookupAppDetails: View {
     VStack(alignment: .leading, spacing: 15) {
       HStack(spacing: 10) {
         if let url = URL(string: lookedup?.results[0].artworkUrl60 ?? "") {
-          AsyncImage(url: url) { image in
+          CachedAsyncImage(url: url) { image in
             image
               .resizable()
               .aspectRatio(contentMode: .fit)

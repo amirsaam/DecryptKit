@@ -7,46 +7,11 @@
 
 import SwiftUI
 import Neumorphic
+import CachedAsyncImage
 
 var outAppStoreBundleID: Array = ["ir.amrsm.deCripple", "com.rileytestut.Delta", "io.rosiecord"]
 
-enum NotAPApp: String, CaseIterable {
-  case deCripple = "ir.amrsm.deCripple"
-  case delta = "com.rileytestut.Delta"
-  case rosiecord = "io.rosiecord"
-  
-  var appIcon: String {
-    switch self {
-    case .deCripple: return ""
-    case .delta: return "https://user-images.githubusercontent.com/705880/63391976-4d311700-c37a-11e9-91a8-4fb0c454413d.png"
-    case .rosiecord: return ""
-    }
-  }
-  var appDeveloper: String {
-    switch self {
-    case .deCripple: return ""
-    case .delta: return "Riley Testut"
-    case .rosiecord: return ""
-    }
-  }
-  var appSize: String {
-    switch self {
-    case .deCripple: return ""
-    case .delta: return "19713229"
-    case .rosiecord: return ""
-    }
-  }
-  var appGenre: String {
-    switch self {
-    case .deCripple: return ""
-    case .delta: return "Utilities"
-    case .rosiecord: return ""
-    }
-  }
-}
-
 struct RepoAppDetails: View {
-  @Binding var sourceData: [deCrippleSource]?
   
   @State var appBundleID: String
   @State var appName: String
@@ -72,7 +37,7 @@ struct InAppStore: View {
     VStack(alignment: .leading, spacing: 15) {
       HStack(spacing: 10) {
         if let url = URL(string: lookedup?.results[0].artworkUrl60 ?? "") {
-          AsyncImage(url: url) { image in
+          CachedAsyncImage(url: url) { image in
             image
               .resizable()
               .aspectRatio(contentMode: .fit)
@@ -99,7 +64,7 @@ struct InAppStore: View {
           .frame(height: 10)
         Text(appVersion == lookedup?.results[0].version
              ? "Up to Date"
-             : "\(appVersion) > \(lookedup?.results[0].version ?? "")"
+             : "\(appVersion) < \(lookedup?.results[0].version ?? "")"
         )
       }
       .font(.caption)
@@ -117,11 +82,11 @@ struct OutAppStore: View {
   @State var appVersion: String
   
   var body: some View {
-    var app = NotAPApp(rawValue: appBundleID)
+    let app = NotAPApp(rawValue: appBundleID)
     VStack(alignment: .leading, spacing: 15) {
       HStack(spacing: 10) {
-        if let url = URL(string: app?.appIcon ?? "") {
-          AsyncImage(url: url) { image in
+        if let url = URL(string: app?.appIcon ?? "ProgressBarForever") {
+          CachedAsyncImage(url: url) { image in
             image
               .resizable()
               .aspectRatio(contentMode: .fit)
