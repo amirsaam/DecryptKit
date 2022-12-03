@@ -39,6 +39,7 @@ struct RepoView: View {
                     .padding(.leading)
                     .softOuterShadow()
                 }
+                .padding(.top)
                 List {
                   ForEach(sourceData ?? [], id: \.bundleID) { app in
                     RepoAppDetails(appBundleID: app.bundleID, appName: app.name, appVersion: app.version)
