@@ -1,5 +1,5 @@
 //
-//  DecryptionRequest.swift
+//  DecryptReq.swift
 //  deCripple
 //
 //  Created by Amir Mohammadi on 9/3/1401 AP.
@@ -16,6 +16,7 @@ struct deCrippleResult: Codable {
 func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
 
   var urlComponents = URLComponents()
+
   urlComponents.scheme = "https"
   urlComponents.host = "run.decripple.tech"
   urlComponents.path = "/decrypt"
@@ -25,6 +26,7 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
         URLQueryItem(name: "email", value: email)
     //    URLQueryItem(name: "promo", value: promo)
       ]
+
   guard let url = urlComponents.url else { return nil }
   print("\(url)")
 
@@ -32,30 +34,6 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
     let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
     let decoder = JSONDecoder()
     let jsonResult: deCrippleResult = try decoder.decode(deCrippleResult.self, from: data)
-    return jsonResult
-  } catch {
-    print("Error getting Result data from URL: \(url): \(error)")
-  }
-
-  return nil
-}
-
-struct deCrippleSource: Codable {
-  var bundleID: String
-  var name: String
-  var version: String
-  var itunesLookup: String
-  var link: String
-}
-
-func getSourceData() async -> [deCrippleSource]? {
-  
-  guard let url = URL(string: "https://repo.amrsm.ir/ZGVjcnlwdGVkLmpzb24=") else { return nil }
-
-  do {
-    let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
-    let decoder = JSONDecoder()
-    let jsonResult: [deCrippleSource] = try decoder.decode([deCrippleSource].self, from: data)
     return jsonResult
   } catch {
     print("Error getting Result data from URL: \(url): \(error)")

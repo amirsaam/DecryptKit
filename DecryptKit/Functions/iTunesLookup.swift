@@ -61,12 +61,14 @@ struct ITunesResult: Codable {
 func getITunesData(_ id: String) async -> ITunesResponse? {
 
   var urlComponents = URLComponents()
+
   urlComponents.scheme = "https"
   urlComponents.host = "itunes.apple.com"
   urlComponents.path = "/lookup"
   urlComponents.queryItems = id.isNumber
     ? [URLQueryItem(name: "id", value: id)]
     : [URLQueryItem(name: "bundleId", value: id)]
+
   guard let url = urlComponents.url else { return nil }
   print("\(url)")
 
