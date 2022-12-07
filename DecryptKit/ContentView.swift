@@ -13,7 +13,7 @@ struct ContentView: View {
   
   @Environment(\.openURL) var openURL
   
-  @ObservedObject var app: RealmSwift.App
+//  @ObservedObject var app: RealmSwift.App
   
   @State var sourceData: [deCrippleSource]?
   @State var isRotating = 0.0
@@ -163,6 +163,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView(app: realmApp)
+    ContentView()
   }
 }
