@@ -9,7 +9,7 @@
   <h3 align="center">deCripple</h3>
 
   <p align="center">
-    "Unlock the full potential of your iOS apps with our expert decryption service."
+    "Unlock the full potential of your iOS apps with our decryption service."
   </p>
 </div>
 
