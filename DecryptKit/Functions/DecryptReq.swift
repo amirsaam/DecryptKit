@@ -18,7 +18,7 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
   var urlComponents = URLComponents()
 
   urlComponents.scheme = "https"
-  urlComponents.host = "run.decripple.tech"
+  urlComponents.host = "run.decryptkit.xyz"
   urlComponents.path = "/decrypt"
   urlComponents.queryItems = [
     //    URLQueryItem(name: "service", value: "decripple"),
