@@ -79,7 +79,7 @@ struct LookupView: View {
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
                       Divider()
-                      TextField("Promo Code?", text: $promoCode)
+                      TextField("Promo Code (Optional)", text: $promoCode)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
                     }
@@ -138,7 +138,7 @@ struct LookupView: View {
                       .font(.footnote)
                       .padding(.top)
                   } else {
-                    Text("press return after")
+                    Text("press return to submit")
                       .font(.subheadline.italic())
                   }
                 }
