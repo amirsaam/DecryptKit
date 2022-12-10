@@ -54,19 +54,9 @@ struct LookupView: View {
                     .modifier(Shake(animatableData: CGFloat(appAttempts)))
                     .disabled(idIsValid && searchSuccess && !inputID.isEmpty)
                     .onSubmit {
-                      if inputID.isEmpty {
-                        withAnimation(.default) {
-                          self.appAttempts += 1
-                          searchSuccess = false
-                        }
-                      } else {
-                        doGetLookup(inputID)
-                        emailAddress = defaults.string(forKey: "Email") ?? ""
-                        withAnimation {
-                          searchSuccess = true
-                        }
-                      }
+                      submitApp()
                     }
+                  
                   if searchSuccess && idIsValid {
                     Divider()
                     if idIsPaid {
@@ -140,6 +130,27 @@ struct LookupView: View {
                   } else {
                     Text("press return to submit")
                       .font(.subheadline.italic())
+                    
+                    HStack {
+                      Spacer()
+                      
+                      Button {
+                        submitApp()
+                      } label: {
+                        Text("Submit")
+                          .font(.caption2)
+                      }
+                      .softButtonStyle(
+                        RoundedRectangle(cornerRadius: 7.5),
+                        padding: 10,
+                        mainColor: .red,
+                        textColor: .white,
+                        darkShadowColor: .redNeuDS,
+                        lightShadowColor: .redNeuLS,
+                        pressedEffect: .flat
+                      )
+                      .disabled(inputID.isEmpty)
+                    }
                   }
                 }
                 HStack {
@@ -162,6 +173,22 @@ struct LookupView: View {
       }
     }
   }
+  
+  func submitApp() {
+    if inputID.isEmpty {
+      withAnimation(.default) {
+        self.appAttempts += 1
+        searchSuccess = false
+      }
+    } else {
+      doGetLookup(inputID)
+      emailAddress = defaults.string(forKey: "Email") ?? ""
+      withAnimation {
+        searchSuccess = true
+      }
+    }
+  }
+  
   func doGetLookup(_ input: String) {
     Task {
       var id: String
