@@ -43,8 +43,14 @@ struct LookupView: View {
                   Text("you need to use app store links or the number in the end of it, e.g 1517783697")
                     .font(.footnote.italic())
                 } else {
-                  if lookedup != nil && idIsValid {
+                  if (lookedup != nil && idIsValid) || idOnSource {
                     LookupAppDetails(lookedup: $lookedup)
+                    
+                    if idIsPaid {
+                      ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
+                    } else if idOnSource {
+                      ErrorMessage(errorLog: "This app is already on DecryptKit source!")
+                    }
                   } else {
                     ErrorMessage(errorLog: "AppStore Link or ID is not correct!")
                   }
@@ -59,11 +65,7 @@ struct LookupView: View {
                   
                   if searchSuccess && idIsValid {
                     Divider()
-                    if idIsPaid {
-                      ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
-                    } else if idOnSource {
-                      ErrorMessage(errorLog: "This app is already on DecryptKit source!")
-                    } else {
+                    if !idIsPaid && !idOnSource {
                       TextField("Enter Your Email Address", text: $emailAddress)
                         .modifier(Shake(animatableData: CGFloat(emailAttempts)))
                         .textInputAutocapitalization(.never)
@@ -192,18 +194,27 @@ struct LookupView: View {
   func doGetLookup(_ input: String) {
     Task {
       var id: String
+      
+      idOnSource = false
+
       if input.hasPrefix("https") {
         let components = input.components(separatedBy: "/")
         id = String(components.last?.replacingOccurrences(of: "id", with: "") ?? "")
       } else {
         id = input
       }
+      
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1 ? true : false
+      
       if idIsValid {
         idIsPaid = lookedup?.results[0].price != 0 ? true : false
         if idIsValid && !idIsPaid {
           idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
+          
+          if idOnSource {
+            idIsValid = false
+          }
         }
       }
     }
