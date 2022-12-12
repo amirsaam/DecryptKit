@@ -202,11 +202,11 @@ struct LookupView: View {
       }
       
       lookedup = await getITunesData(id)
-      idIsValid = lookedup?.resultCount == 1 ? true : false
+      idIsValid = lookedup?.resultCount == 1
       
       if idIsValid {
-        idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
-        idIsPaid = lookedup?.results[0].price != 0 ? true : false
+        idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId
+        idIsPaid = lookedup?.results[0].price != 0
         
         if idOnSource || idIsPaid {
           idIsValid = false
