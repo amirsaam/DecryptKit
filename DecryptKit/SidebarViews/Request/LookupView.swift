@@ -43,8 +43,14 @@ struct LookupView: View {
                   Text("you need to use app store links or the number in the end of it, e.g 1517783697")
                     .font(.footnote.italic())
                 } else {
-                  if lookedup != nil && idIsValid {
+                  if (lookedup != nil && idIsValid) || idOnSource || idIsPaid {
                     LookupAppDetails(lookedup: $lookedup)
+                    
+                    if idIsPaid {
+                      ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
+                    } else if idOnSource {
+                      ErrorMessage(errorLog: "This app is already on DecryptKit source!")
+                    }
                   } else {
                     ErrorMessage(errorLog: "AppStore Link or ID is not correct!")
                   }
@@ -54,32 +60,18 @@ struct LookupView: View {
                     .modifier(Shake(animatableData: CGFloat(appAttempts)))
                     .disabled(idIsValid && searchSuccess && !inputID.isEmpty)
                     .onSubmit {
-                      if inputID.isEmpty {
-                        withAnimation(.default) {
-                          self.appAttempts += 1
-                          searchSuccess = false
-                        }
-                      } else {
-                        doGetLookup(inputID)
-                        emailAddress = defaults.string(forKey: "Email") ?? ""
-                        withAnimation {
-                          searchSuccess = true
-                        }
-                      }
+                      submitApp()
                     }
+                  
                   if searchSuccess && idIsValid {
                     Divider()
-                    if idIsPaid {
-                      ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
-                    } else if idOnSource {
-                      ErrorMessage(errorLog: "This app is already on DecryptKit source!")
-                    } else {
+                    if !idIsPaid && !idOnSource {
                       TextField("Enter Your Email Address", text: $emailAddress)
                         .modifier(Shake(animatableData: CGFloat(emailAttempts)))
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
                       Divider()
-                      TextField("Promo Code?", text: $promoCode)
+                      TextField("Promo Code (Optional)", text: $promoCode)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled(true)
                     }
@@ -138,8 +130,25 @@ struct LookupView: View {
                       .font(.footnote)
                       .padding(.top)
                   } else {
-                    Text("press return after")
-                      .font(.subheadline.italic())
+                    HStack {
+                      Spacer()
+                      
+                      Button {
+                        submitApp()
+                      } label: {
+                        Text("Submit")
+                          .font(.caption2)
+                      }
+                      .softButtonStyle(
+                        RoundedRectangle(cornerRadius: 7.5),
+                        padding: 10,
+                        mainColor: .red,
+                        textColor: .white,
+                        darkShadowColor: .redNeuDS,
+                        lightShadowColor: .redNeuLS,
+                        pressedEffect: .flat
+                      )
+                    }
                   }
                 }
                 HStack {
@@ -162,21 +171,45 @@ struct LookupView: View {
       }
     }
   }
+  
+  func submitApp() {
+    if inputID.isEmpty {
+      withAnimation(.default) {
+        self.appAttempts += 1
+        searchSuccess = false
+      }
+    } else {
+      doGetLookup(inputID)
+      emailAddress = defaults.string(forKey: "Email") ?? ""
+      withAnimation {
+        searchSuccess = true
+      }
+    }
+  }
+  
   func doGetLookup(_ input: String) {
     Task {
       var id: String
+      
+      idOnSource = false
+      idIsPaid = false
+
       if input.hasPrefix("https") {
         let components = input.components(separatedBy: "/")
         id = String(components.last?.replacingOccurrences(of: "id", with: "") ?? "")
       } else {
         id = input
       }
+      
       lookedup = await getITunesData(id)
-      idIsValid = lookedup?.resultCount == 1 ? true : false
+      idIsValid = lookedup?.resultCount == 1
+      
       if idIsValid {
-        idIsPaid = lookedup?.results[0].price != 0 ? true : false
-        if idIsValid && !idIsPaid {
-          idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
+        idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId
+        idIsPaid = lookedup?.results[0].price != 0
+        
+        if idOnSource || idIsPaid {
+          idIsValid = false
         }
       }
     }
