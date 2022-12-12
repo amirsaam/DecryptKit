@@ -148,7 +148,6 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(inputID.isEmpty)
                     }
                   }
                 }
