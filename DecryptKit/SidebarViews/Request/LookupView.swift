@@ -43,7 +43,7 @@ struct LookupView: View {
                   Text("you need to use app store links or the number in the end of it, e.g 1517783697")
                     .font(.footnote.italic())
                 } else {
-                  if (lookedup != nil && idIsValid) || idOnSource {
+                  if (lookedup != nil && idIsValid) || idOnSource || idIsPaid {
                     LookupAppDetails(lookedup: $lookedup)
                     
                     if idIsPaid {
@@ -196,6 +196,7 @@ struct LookupView: View {
       var id: String
       
       idOnSource = false
+      idIsPaid = false
 
       if input.hasPrefix("https") {
         let components = input.components(separatedBy: "/")
@@ -208,13 +209,11 @@ struct LookupView: View {
       idIsValid = lookedup?.resultCount == 1 ? true : false
       
       if idIsValid {
+        idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
         idIsPaid = lookedup?.results[0].price != 0 ? true : false
-        if idIsValid && !idIsPaid {
-          idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId ? true : false
-          
-          if idOnSource {
-            idIsValid = false
-          }
+        
+        if idOnSource || idIsPaid {
+          idIsValid = false
         }
       }
     }
