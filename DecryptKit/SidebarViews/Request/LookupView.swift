@@ -130,9 +130,6 @@ struct LookupView: View {
                       .font(.footnote)
                       .padding(.top)
                   } else {
-                    Text("press return to submit")
-                      .font(.subheadline.italic())
-                    
                     HStack {
                       Spacer()
                       
