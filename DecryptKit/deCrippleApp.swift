@@ -13,24 +13,27 @@ let mainColor = Color.Neumorphic.main
 let secondaryColor = Color.Neumorphic.secondary
 let defaults = UserDefaults.standard
 
-//let theAppConfig = loadAppConfig()
-//let realmApp = App (
-//  id: theAppConfig.appId,
-//  configuration: AppConfiguration(
-//    baseURL: theAppConfig.baseUrl,
-//    transport: nil,
-//    localAppName: nil,
-//    localAppVersion: nil
-//  )
-//)
+let theAppConfig = loadAppConfig()
+let realmApp = App (
+  id: theAppConfig.appId,
+  configuration: AppConfiguration(
+    baseURL: theAppConfig.baseUrl,
+    transport: nil,
+    localAppName: nil,
+    localAppVersion: nil
+  )
+)
 
 @main
 struct deCrippleApp: SwiftUI.App {
   var body: some Scene {
     WindowGroup {
-      //ContentView(app: realmApp)
-      ContentView()
-        .frame(width: 1400)
+      ContentView(realmApp: realmApp)
+        .accentColor(.red)
+        .onAppear {
+          let path = Realm.Configuration.defaultConfiguration.fileURL?.absoluteString
+          print(path ?? "no path found")
+        }
         .onDisappear {
           exit(0)
         }

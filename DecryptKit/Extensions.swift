@@ -70,3 +70,8 @@ extension String {
             options: .regularExpression) != nil
     }
 }
+
+/// Defining decryption request types
+enum deReqType {
+  case new, queue, done
+}

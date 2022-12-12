@@ -13,7 +13,6 @@ struct AppConfig {
     var baseUrl: String
 }
 
-
 func loadAppConfig() -> AppConfig {
     guard let path = Bundle.main.path(forResource: "Realm", ofType: "plist") else {
         fatalError("Could not load Realm.plist file!")

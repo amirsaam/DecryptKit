@@ -8,15 +8,21 @@
 import Foundation
 import RealmSwift
 
-class Users: Object, ObjectKeyIdentifiable {
+class deReq: Object, ObjectKeyIdentifiable {
   @Persisted(primaryKey: true) var _id: ObjectId
-  @Persisted var useremails: List<String>
-  @Persisted var userCount: Int
+  @Persisted var requestedId: String
+  @Persisted var requestersEmail: List<String>
 }
 
-class LookedupStats: Object, ObjectKeyIdentifiable {
+class deStat: Object, ObjectKeyIdentifiable {
   @Persisted(primaryKey: true) var _id: ObjectId
-  @Persisted var bundleID: String
-  @Persisted var emails: List<String>
+  @Persisted var lookedId: String
+  @Persisted var lookersEmail: List<String>
   @Persisted var lookStats: Int
+}
+
+class deUser: Object, ObjectKeyIdentifiable {
+  @Persisted(primaryKey: true) var _id: ObjectId
+  @Persisted var userId: String
+  @Persisted var userEmail: String
 }

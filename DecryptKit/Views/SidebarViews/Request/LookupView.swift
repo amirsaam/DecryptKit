@@ -126,9 +126,6 @@ struct LookupView: View {
                       .disabled(!idIsValid || idIsPaid || idOnSource)
                     }
                     .padding(.top)
-                    Text("Download links will be emailed to your address, so make sure to enter a valid and available address!")
-                      .font(.footnote)
-                      .padding(.top)
                   } else {
                     HStack {
                       Spacer()
