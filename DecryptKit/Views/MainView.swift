@@ -142,8 +142,9 @@ struct MainView: View {
     }
     .onAppear {
       if user.customData.isEmpty {
+        userEmailAddress = defaults.string(forKey: "Email") ?? ""
         newUser.userId = user.id
-        newUser.userEmail = defaults.string(forKey: "Email") ?? ""
+        newUser.userEmail = userEmailAddress
         $users.append(newUser)
       } else {
         user.refreshCustomData { (result) in
