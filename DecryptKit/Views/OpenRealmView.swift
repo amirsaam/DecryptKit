@@ -11,10 +11,14 @@ import RealmSwift
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
 
-  @AsyncOpen(appId: theAppConfig.appId, timeout: 2000) var asyncOpen
+  @AsyncOpen(appId: realmAppConfig.appId, timeout: 2000) var asyncOpen
+
+  // Configuration used to open the realm.
+  @Environment(\.realmConfiguration) private var config
 
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
+  @State var sourceData: [deCrippleSource]?
   
   var body: some View {
     switch asyncOpen {
@@ -23,27 +27,36 @@ struct OpenRealmView: View {
         mainColor
           .ignoresSafeArea(.all)
         ProgressView()
+          .padding()
       }
     case .waitingForUser:
       ZStack {
         mainColor
           .ignoresSafeArea(.all)
         ProgressView("Waiting for user to log in...")
+          .padding()
       }
     case .open(let realm):
-      MainView(user: user)
-        .environment(\.realm, realm)
+      MainView(sourceData: $sourceData,
+               user: user)
+      .environment(\.realm, realm)
+      .task {
+        sourceData?.removeAll()
+        sourceData = await getSourceData()
+      }
     case .progress(let progress):
       ZStack {
         mainColor
           .ignoresSafeArea(.all)
         ProgressView(progress)
+          .padding()
       }
     case .error(let error):
       ZStack {
         mainColor
           .ignoresSafeArea(.all)
         RealmError(error: error)
+          .padding()
       }
     }
   }

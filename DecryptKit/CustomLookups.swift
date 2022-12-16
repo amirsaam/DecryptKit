@@ -10,7 +10,7 @@ import Foundation
 enum NotAPApp: String, CaseIterable {
   case deCripple = "ir.amrsm.deCripple"
   case delta = "com.rileytestut.Delta"
-  case rosiecord = "io.rosiecord"
+  case rosiecord = "com.hammerandchisel.discord"
   
   var appIcon: String {
     switch self {

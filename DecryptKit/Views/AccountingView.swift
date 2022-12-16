@@ -11,9 +11,8 @@ import RealmSwift
 
 /// Log in or register users using email/password authentication
 struct AccountingView: View {
-  
-  @ObservedResults(deUser.self) var user
-  @State var newUser = deUser()
+
+  @EnvironmentObject var errorHandler: ErrorHandler
 
   @State var email = ""
   @State var emailIsValid: Bool = false
@@ -51,9 +50,6 @@ struct AccountingView: View {
                 SecureField("Password", text: $password)
               }
               HStack {
-                if let error = error {
-                  ErrorMessage(errorLog: error.localizedDescription)
-                }
                 Spacer()
                 if showProgress {
                   ProgressView()
@@ -118,15 +114,13 @@ struct AccountingView: View {
   }
   /// Logs in with an existing user.
   func login(email: String, password: String) async {
+    defaults.set(email, forKey: "Email")
     do {
       let user = try await realmApp.login(credentials: Credentials.emailPassword(email: email, password: password))
       print("Successfully logged in user: \(user)")
-      newUser.userId = user.id
-      newUser.userEmail = email
-      $user.append(newUser)
     } catch {
       print("Failed to log in user: \(error.localizedDescription)")
-      self.error = error
+      errorHandler.error = error
     }
   }
   /// Registers a new user with the email/password authentication provider.
@@ -137,7 +131,7 @@ struct AccountingView: View {
       await login(email: email, password: password)
     } catch {
       print("Failed to register user: \(error.localizedDescription)")
-      self.error = error
+      errorHandler.error = error
     }
   }
 }
@@ -150,6 +144,7 @@ struct RealmLogoutError: Identifiable {
 }
 
 struct LogoutButton: View {
+
   @State var isLoggingOut = false
   @State var error: Error?
   @State var errorMessage: RealmLogoutError? = nil

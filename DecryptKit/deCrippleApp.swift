@@ -13,11 +13,12 @@ let mainColor = Color.Neumorphic.main
 let secondaryColor = Color.Neumorphic.secondary
 let defaults = UserDefaults.standard
 
-let theAppConfig = loadAppConfig()
-let realmApp = App (
-  id: theAppConfig.appId,
+/// Load app config details from a Realm.plist we generated
+let realmAppConfig = loadRealmAppConfig()
+let realmApp = App(
+  id: realmAppConfig.appId,
   configuration: AppConfiguration(
-    baseURL: theAppConfig.baseUrl,
+    baseURL: realmAppConfig.baseUrl,
     transport: nil,
     localAppName: nil,
     localAppVersion: nil
@@ -26,10 +27,19 @@ let realmApp = App (
 
 @main
 struct deCrippleApp: SwiftUI.App {
+  
+  @StateObject var errorHandler = ErrorHandler(app: realmApp)
+  
   var body: some Scene {
     WindowGroup {
-      ContentView(realmApp: realmApp)
+      ContentView(app: realmApp)
         .accentColor(.red)
+        .environmentObject(errorHandler)
+        .alert(Text("Error"), isPresented: .constant(errorHandler.error != nil)) {
+          Button("OK", role: .cancel) { errorHandler.error = nil }
+        } message: {
+          Text(errorHandler.error?.localizedDescription ?? "")
+        }
         .onAppear {
           let path = Realm.Configuration.defaultConfiguration.fileURL?.absoluteString
           print(path ?? "no path found")
@@ -37,6 +47,16 @@ struct deCrippleApp: SwiftUI.App {
         .onDisappear {
           exit(0)
         }
+    }
+  }
+}
+
+final class ErrorHandler: ObservableObject {
+  @Published var error: Swift.Error?
+  init(app: RealmSwift.App) {
+    // Sync Manager listens for sync errors.
+    app.syncManager.errorHandler = { syncError, syncSession in
+      self.error = syncError
     }
   }
 }

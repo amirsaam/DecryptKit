@@ -9,27 +9,27 @@ import SwiftUI
 import Neumorphic
 
 struct LookupView: View {
-
+  
   @Binding var showLookup: Bool
   @Binding var sourceData: [deCrippleSource]?
-
+  
   @State var lookedup: ITunesResponse?
   @State var deResult: deCrippleResult?
-
+  
   @State var searchSuccess: Bool = false
-
+  
   @State var inputID: String = ""
   @State var idIsValid: Bool = false
   @State var idIsPaid: Bool = false
   @State var idOnSource: Bool = false
   @State var appAttempts: Int = 0
-
-  @State var emailAddress: String = ""
+  
+  @Binding var userEmailAddress: String
   @State var emailIsValid: Bool = false
   @State var emailAttempts: Int = 0
-
+  
   @State var promoCode: String = ""
-
+  
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -45,7 +45,6 @@ struct LookupView: View {
                 } else {
                   if (lookedup != nil && idIsValid) || idOnSource || idIsPaid {
                     LookupAppDetails(lookedup: $lookedup)
-                    
                     if idIsPaid {
                       ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
                     } else if idOnSource {
@@ -62,14 +61,11 @@ struct LookupView: View {
                     .onSubmit {
                       submitApp()
                     }
-                  
                   if searchSuccess && idIsValid {
                     Divider()
                     if !idIsPaid && !idOnSource {
-                      TextField("Enter Your Email Address", text: $emailAddress)
-                        .modifier(Shake(animatableData: CGFloat(emailAttempts)))
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled(true)
+                      TextField("Enter Your Email Address", text: $userEmailAddress)
+                        .disabled(true)
                       Divider()
                       TextField("Promo Code (Optional)", text: $promoCode)
                         .textInputAutocapitalization(.never)
@@ -99,16 +95,8 @@ struct LookupView: View {
                             searchSuccess = false
                           }
                         } else {
-                          emailIsValid = isValidEmailAddress(emailAddressString: emailAddress)
-                          if emailAddress.isEmpty || !emailIsValid {
-                            withAnimation(.default) {
-                              self.emailAttempts += 1
-                            }
-                          } else {
-//                            doRequest(lookedup?.results[0].bundleId ?? "", emailAddress, promoCode)
-                            defaults.set(emailAddress, forKey: "Email")
-                            doRequest(lookedup?.results[0].bundleId ?? "", emailAddress)
-                          }
+                          // doRequest(lookedup?.results[0].bundleId ?? "", emailAddress, promoCode)
+                          doRequest(lookedup?.results[0].bundleId ?? "", userEmailAddress)
                         }
                       } label: {
                         Label("Send Request", systemImage: "paperplane.fill")
@@ -123,17 +111,16 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(!idIsValid || idIsPaid || idOnSource)
+                      .disabled(!idIsValid)
                     }
                     .padding(.top)
                   } else {
                     HStack {
                       Spacer()
-                      
                       Button {
                         submitApp()
                       } label: {
-                        Text("Submit")
+                        Label("Search", systemImage: "magnifyingglass")
                           .font(.caption2)
                       }
                       .softButtonStyle(
@@ -145,6 +132,7 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
+                      .padding(.top)
                     }
                   }
                 }
@@ -177,7 +165,6 @@ struct LookupView: View {
       }
     } else {
       doGetLookup(inputID)
-      emailAddress = defaults.string(forKey: "Email") ?? ""
       withAnimation {
         searchSuccess = true
       }
@@ -190,7 +177,7 @@ struct LookupView: View {
       
       idOnSource = false
       idIsPaid = false
-
+      
       if input.hasPrefix("https") {
         let components = input.components(separatedBy: "/")
         id = String(components.last?.replacingOccurrences(of: "id", with: "") ?? "")
@@ -202,7 +189,9 @@ struct LookupView: View {
       idIsValid = lookedup?.resultCount == 1
       
       if idIsValid {
-        idOnSource = sourceData?.first?.bundleID == lookedup?.results[0].bundleId
+        idOnSource = sourceData?.contains { app in
+          app.bundleID == lookedup?.results[0].bundleId ?? ""
+        } ?? false
         idIsPaid = lookedup?.results[0].price != 0
         
         if idOnSource || idIsPaid {
@@ -211,10 +200,10 @@ struct LookupView: View {
       }
     }
   }
-//  func doRequest(_ id: String, _ email: String, _ promo: String) {
+  // func doRequest(_ id: String, _ email: String, _ promo: String) {
   func doRequest(_ id: String, _ email: String) {
     Task {
-//      deCripple = await reqDecrypt(id, email, promo)
+      // deCripple = await reqDecrypt(id, email, promo)
       deResult = await reqDecrypt(id, email)
     }
   }

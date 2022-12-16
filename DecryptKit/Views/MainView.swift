@@ -13,9 +13,14 @@ struct MainView: View {
   
   @Environment(\.openURL) var openURL
   
+  @ObservedResults(deUser.self) var users
+  @State var newUser = deUser()
+
+  @Binding var sourceData: [deCrippleSource]?
+
   @State var user: User
-  @State var sourceData: [deCrippleSource]?
-  
+  @State var userEmailAddress: String = ""
+
   @State var showSafari: Bool = false
   @State var showRepo: Bool = false
   @State var showLookup: Bool = false
@@ -49,7 +54,7 @@ struct MainView: View {
                 .font(.subheadline)
                 HStack(alignment: .center, spacing: 25.0) {
                   Button {
-                    if let url = URL(string: "playcover:source?action=add&url=https://repo.decryptkit.tech/ZGVjcnlwdGVkLmpzb24=") {
+                    if let url = URL(string: "playcover:source?action=add&url=https://repo.decryptkit.xyz/ZGVjcnlwdGVkLmpzb24=") {
                       openURL(url)
                     }
                   } label: {
@@ -119,7 +124,8 @@ struct MainView: View {
             .frame(width: geo.size.width * (4.25/10))
             if showLookup {
               LookupView(showLookup: $showLookup,
-                         sourceData: $sourceData)
+                         sourceData: $sourceData,
+                         userEmailAddress: $userEmailAddress)
             } else if showRepo {
               RepoView(showRepo: $showRepo,
                        sourceData: $sourceData)
@@ -134,9 +140,21 @@ struct MainView: View {
         .padding(.leading, geo.size.width * (0.5/10))
       }
     }
-    .task {
-      sourceData = await getSourceData()
-      print(user.customData)
+    .onAppear {
+      if user.customData.isEmpty {
+        newUser.userId = user.id
+        newUser.userEmail = defaults.string(forKey: "Email") ?? ""
+        $users.append(newUser)
+      } else {
+        user.refreshCustomData { (result) in
+          switch result {
+          case .failure(let error):
+            print("Failed to refresh custom data: \(error.localizedDescription)")
+          case .success(let customData):
+            userEmailAddress = customData["userEmail"] as! String
+          }
+        }
+      }
     }
   }
 }

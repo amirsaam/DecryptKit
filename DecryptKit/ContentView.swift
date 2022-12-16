@@ -11,11 +11,25 @@ import RealmSwift
 
 struct ContentView: View {
   
-  @ObservedObject var realmApp: RealmSwift.App
+  @ObservedObject var app: RealmSwift.App
+  @EnvironmentObject var errorHandler: ErrorHandler
   
   var body: some View {
-    if let user = realmApp.currentUser {
+    if let user = app.currentUser {
+      let config = user.flexibleSyncConfiguration(initialSubscriptions: { subs in
+        let reqsSubscriptionExists = subs.first(named: "requestedId")
+        let looksSubscriptionExists = subs.first(named: "lookedId")
+        let usersSubscriptionExists = subs.first(named: "userId")
+        if (reqsSubscriptionExists != nil) && (looksSubscriptionExists != nil) && (usersSubscriptionExists != nil) {
+          return
+        } else {
+          subs.append(QuerySubscription<deReq>(name: "requestedId"))
+          subs.append(QuerySubscription<deStat>(name: "lookedId"))
+          subs.append(QuerySubscription<deUser>(name: "userId"))
+        }
+      })
       OpenRealmView(user: user)
+        .environment(\.realmConfiguration, config)
     } else {
       AccountingView()
     }
@@ -24,6 +38,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView(realmApp: realmApp)
+    ContentView(app: realmApp)
   }
 }

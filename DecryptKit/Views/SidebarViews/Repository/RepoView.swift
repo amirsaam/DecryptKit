@@ -20,7 +20,7 @@ struct RepoView: View {
           SidebarBackground()
             .overlay {
               VStack(alignment: .leading) {
-                HStack {
+                HStack(alignment: .center) {
                   Button {
                     withAnimation(.spring()) {
                       showRepo = false
@@ -30,11 +30,25 @@ struct RepoView: View {
                   }
                   .softButtonStyle(
                     Circle(),
+                    padding: 13,
                     pressedEffect: .flat
                   )
                   .padding(.leading)
+                  Button {
+                    sourceData?.removeAll()
+                    Task {
+                      sourceData = await getSourceData()
+                    }
+                  } label: {
+                    Image(systemName: "arrow.clockwise")
+                  }
+                  .softButtonStyle(
+                    Circle(),
+                    padding: 8,
+                    pressedEffect: .flat
+                  )
                   Text("DecryptKit IPA Repository")
-                    .font(.callout.monospaced())
+                    .font(.footnote.monospaced())
                     .fontWeight(.semibold)
                     .padding(.leading)
                     .softOuterShadow()
@@ -47,9 +61,6 @@ struct RepoView: View {
                   .listRowBackground(mainColor)
                 }
                 .listStyle(.plain)
-                .refreshable {
-                  sourceData = await getSourceData()
-                }
               }
             }
         }

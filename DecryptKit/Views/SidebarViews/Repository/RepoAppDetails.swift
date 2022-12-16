@@ -9,7 +9,7 @@ import SwiftUI
 import Neumorphic
 import CachedAsyncImage
 
-var outAppStoreBundleID: Array = ["ir.amrsm.deCripple", "com.rileytestut.Delta", "io.rosiecord"]
+var outAppStoreBundleID: Array = ["ir.amrsm.deCripple", "com.rileytestut.Delta", "com.hammerandchisel.discord"]
 
 struct RepoAppDetails: View {
   
