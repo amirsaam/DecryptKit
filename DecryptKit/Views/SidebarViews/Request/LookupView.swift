@@ -43,7 +43,7 @@ struct LookupView: View {
                   Text("you need to use app store links or the number in the end of it, e.g 1517783697")
                     .font(.footnote.italic())
                 } else {
-                  if (lookedup != nil && idIsValid) || idOnSource || idIsPaid {
+                  if lookedup != nil && (idIsValid || idOnSource || idIsPaid) {
                     LookupAppDetails(lookedup: $lookedup)
                     if idIsPaid {
                       ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
@@ -89,15 +89,8 @@ struct LookupView: View {
                       )
                       Spacer()
                       Button {
-                        if inputID.isEmpty {
-                          withAnimation {
-                            self.appAttempts += 1
-                            searchSuccess = false
-                          }
-                        } else {
-                          // doRequest(lookedup?.results[0].bundleId ?? "", emailAddress, promoCode)
-                          doRequest(lookedup?.results[0].bundleId ?? "", userEmailAddress)
-                        }
+                        // doRequest(lookedup?.results[0].bundleId ?? "", emailAddress, promoCode)
+                        doRequest(lookedup?.results[0].bundleId ?? "", userEmailAddress)
                       } label: {
                         Label("Send Request", systemImage: "paperplane.fill")
                           .font(.caption2)
@@ -111,7 +104,6 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(!idIsValid)
                     }
                     .padding(.top)
                   } else {
