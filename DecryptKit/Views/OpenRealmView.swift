@@ -10,15 +10,14 @@ import RealmSwift
 
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
-
+  
   @AsyncOpen(appId: realmAppConfig.appId, timeout: 2000) var asyncOpen
-
+  
   // Configuration used to open the realm.
   @Environment(\.realmConfiguration) private var config
-
+  
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
-  @State var sourceData: [deCrippleSource]?
   
   var body: some View {
     switch asyncOpen {
@@ -37,12 +36,10 @@ struct OpenRealmView: View {
           .padding()
       }
     case .open(let realm):
-      MainView(sourceData: $sourceData,
-               user: user)
+      MainView(user: user)
       .environment(\.realm, realm)
-      .task {
-        sourceData?.removeAll()
-        sourceData = await getSourceData()
+      .task(priority: .background) {
+        await resolveSourceData()
       }
     case .progress(let progress):
       ZStack {

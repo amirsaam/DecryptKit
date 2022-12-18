@@ -7,12 +7,15 @@
 
 import SwiftUI
 import Neumorphic
+import DataCache
 
 struct RepoView: View {
-  
+
   @Binding var showRepo: Bool
-  @Binding var sourceData: [deCrippleSource]?
-  
+
+  @State var sourceData: [deCrippleSource]?
+  @State var doRefresh = false
+
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -35,9 +38,13 @@ struct RepoView: View {
                   )
                   .padding(.leading)
                   Button {
-                    sourceData?.removeAll()
-                    Task {
-                      sourceData = await getSourceData()
+                    sourceData = nil
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                      Task {
+                        await resolveSourceData()
+                        sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
+                        doRefresh = true
+                      }
                     }
                   } label: {
                     Image(systemName: "arrow.clockwise")
@@ -55,8 +62,20 @@ struct RepoView: View {
                 }
                 .padding(.top)
                 List {
+                  if sourceData == nil {
+                    HStack {
+                      Spacer()
+                      ProgressView("Loading...")
+                        .progressViewStyle(.linear)
+                      Spacer()
+                    }
+                    .listRowBackground(mainColor)
+                  }
                   ForEach(sourceData ?? [], id: \.bundleID) { app in
-                    RepoAppDetails(appBundleID: app.bundleID, appName: app.name, appVersion: app.version)
+                    RepoAppDetails(doRefresh: $doRefresh,
+                                   appBundleID: app.bundleID,
+                                   appName: app.name,
+                                   appVersion: app.version)
                   }
                   .listRowBackground(mainColor)
                 }
@@ -64,6 +83,13 @@ struct RepoView: View {
               }
             }
         }
+      }
+    }
+    .onAppear {
+      do {
+        sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
+      } catch {
+        print("Read error \(error.localizedDescription)")
       }
     }
   }

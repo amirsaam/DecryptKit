@@ -16,8 +16,6 @@ struct MainView: View {
   @ObservedResults(deUser.self) var users
   @State var newUser = deUser()
 
-  @Binding var sourceData: [deCrippleSource]?
-
   @State var user: User
   @State var userEmailAddress: String = ""
 
@@ -124,11 +122,9 @@ struct MainView: View {
             .frame(width: geo.size.width * (4.25/10))
             if showLookup {
               LookupView(showLookup: $showLookup,
-                         sourceData: $sourceData,
                          userEmailAddress: $userEmailAddress)
             } else if showRepo {
-              RepoView(showRepo: $showRepo,
-                       sourceData: $sourceData)
+              RepoView(showRepo: $showRepo)
             } else {
               VStack {
                 Creators()

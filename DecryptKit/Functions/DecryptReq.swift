@@ -9,7 +9,7 @@ import Foundation
 
 struct deCrippleResult: Codable {
   var result: Int
-  var proximity: String
+  var proximity: Int
 }
 
 //func reqDecrypt(_ id: String, _ email: String, _ promo: String) async -> deCrippleResult? {
@@ -28,7 +28,7 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
       ]
 
   guard let url = urlComponents.url else { return nil }
-  print("\(url)")
+  debugPrint("\(url)")
 
   do {
     let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
@@ -38,6 +38,5 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
   } catch {
     print("Error getting Result data from URL: \(url): \(error)")
   }
-
   return nil
 }

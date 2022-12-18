@@ -11,6 +11,7 @@
 		6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6810018A293A982B00418B40 /* CachedAsyncImage */; };
 		6823E625293FDFC3007E5438 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 6823E624293FDFC3007E5438 /* Realm */; };
 		6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6823E626293FDFC3007E5438 /* RealmSwift */; };
+		683E3674294E80A900B1DAA7 /* DataCache in Frameworks */ = {isa = PBXBuildFile; productRef = 683E3673294E80A900B1DAA7 /* DataCache */; };
 		6843C61A292FB586008FDA73 /* deCrippleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C619292FB586008FDA73 /* deCrippleApp.swift */; };
 		6843C61E292FB587008FDA73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6843C61D292FB587008FDA73 /* Assets.xcassets */; };
 		6843C621292FB587008FDA73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6843C620292FB587008FDA73 /* Preview Assets.xcassets */; };
@@ -65,6 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */,
+				683E3674294E80A900B1DAA7 /* DataCache in Frameworks */,
 				6823E625293FDFC3007E5438 /* Realm in Frameworks */,
 				6843C629292FB636008FDA73 /* Neumorphic in Frameworks */,
 				6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */,
@@ -197,6 +199,7 @@
 				6810018A293A982B00418B40 /* CachedAsyncImage */,
 				6823E624293FDFC3007E5438 /* Realm */,
 				6823E626293FDFC3007E5438 /* RealmSwift */,
+				683E3673294E80A900B1DAA7 /* DataCache */,
 			);
 			productName = deCripple;
 			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
@@ -230,6 +233,7 @@
 				6843C627292FB636008FDA73 /* XCRemoteSwiftPackageReference "neumorphic" */,
 				68100189293A982B00418B40 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */,
 			);
 			productRefGroup = 6843C617292FB586008FDA73 /* Products */;
 			projectDirPath = "";
@@ -422,7 +426,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.decryptkit.deCripple;
+				PRODUCT_BUNDLE_IDENTIFIER = ir.amrsm.deCripple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -460,7 +464,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.decryptkit.deCripple;
+				PRODUCT_BUNDLE_IDENTIFIER = ir.amrsm.deCripple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -512,6 +516,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huynguyencong/DataCache";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		6843C627292FB636008FDA73 /* XCRemoteSwiftPackageReference "neumorphic" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/costachung/neumorphic";
@@ -537,6 +549,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		683E3673294E80A900B1DAA7 /* DataCache */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */;
+			productName = DataCache;
 		};
 		6843C628292FB636008FDA73 /* Neumorphic */ = {
 			isa = XCSwiftPackageProductDependency;

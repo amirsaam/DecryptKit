@@ -8,25 +8,34 @@
 import SwiftUI
 import Neumorphic
 import CachedAsyncImage
+import DataCache
 
 var outAppStoreBundleID: Array = ["ir.amrsm.deCripple", "com.rileytestut.Delta", "com.hammerandchisel.discord"]
 
 struct RepoAppDetails: View {
-  
+
+  @Binding var doRefresh: Bool
+
   @State var appBundleID: String
   @State var appName: String
   @State var appVersion: String
   
   var body: some View {
     if outAppStoreBundleID.contains(appBundleID) {
-      OutAppStore(appBundleID: appBundleID, appName: appName, appVersion: appVersion)
+      OutAppStore(appBundleID: appBundleID,
+                  appName: appName,
+                  appVersion: appVersion)
     } else {
-      InAppStore(appBundleID: appBundleID, appVersion: appVersion)
+      InAppStore(doRefresh: $doRefresh,
+                 appBundleID: appBundleID,
+                 appVersion: appVersion)
     }
   }
 }
 
 struct InAppStore: View {
+
+  @Binding var doRefresh: Bool
 
   @State var appBundleID: String
   @State var appVersion: String
@@ -56,7 +65,12 @@ struct InAppStore: View {
         }
       }
       HStack(spacing: 5) {
-        Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0, countStyle: .file)) or less")
+        let dataSize = ByteCountFormatter
+          .string(
+            fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0,
+            countStyle: .file
+          )
+        Text("\(dataSize) or less")
         Divider()
           .frame(height: 10)
         Text(lookedup?.results[0].primaryGenreName ?? "")
@@ -70,7 +84,15 @@ struct InAppStore: View {
       .font(.caption)
     }
     .task {
-      lookedup = await getITunesData(appBundleID)
+      do {
+        if doRefresh {
+          await resolveLookupData(appBundleID)
+          doRefresh = false
+        }
+        lookedup = try DataCache.instance.readCodable(forKey: appBundleID)
+      } catch {
+        print("Read error \(error.localizedDescription)")
+      }
     }
   }
 }
@@ -105,7 +127,12 @@ struct OutAppStore: View {
         }
       }
       HStack(spacing: 5) {
-        Text("\(ByteCountFormatter.string(fromByteCount: Int64(app?.appSize ?? "") ?? 0, countStyle: .file)) or less")
+        let dataSize = ByteCountFormatter
+          .string(
+            fromByteCount: Int64(app?.appSize ?? "") ?? 0,
+            countStyle: .file
+          )
+        Text("\(dataSize) or less")
         Divider()
           .frame(height: 10)
         Text(app?.appGenre ?? "")

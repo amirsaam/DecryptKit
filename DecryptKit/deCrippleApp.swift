@@ -42,7 +42,7 @@ struct deCrippleApp: SwiftUI.App {
         }
         .onAppear {
           let path = Realm.Configuration.defaultConfiguration.fileURL?.absoluteString
-          print(path ?? "no path found")
+          debugPrint(path ?? "no path found")
         }
         .onDisappear {
           exit(0)

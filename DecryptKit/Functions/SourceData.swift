@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataCache
 
 struct deCrippleSource: Codable {
   var bundleID: String
@@ -23,10 +24,23 @@ func getSourceData() async -> [deCrippleSource]? {
     let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
     let decoder = JSONDecoder()
     let jsonResult: [deCrippleSource] = try decoder.decode([deCrippleSource].self, from: data)
+    debugPrint("SourceData Fetched")
     return jsonResult
   } catch {
     print("Error getting Result data from URL: \(url): \(error)")
   }
 
   return nil
+}
+
+func resolveSourceData() async {
+  if let refreshedSourceData: [deCrippleSource] = await getSourceData() {
+    do {
+      DataCache.instance.clean(byKey: "cachedSourceData")
+      try DataCache.instance.write(codable: refreshedSourceData, forKey: "cachedSourceData")
+      debugPrint("SourceData Refreshed")
+    } catch {
+      print("Write error \(error.localizedDescription)")
+    }
+  }
 }

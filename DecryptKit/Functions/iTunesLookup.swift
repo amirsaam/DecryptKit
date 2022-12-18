@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataCache
 
 struct ITunesResponse: Codable {
   var resultCount: Int
@@ -70,7 +71,7 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
     : [URLQueryItem(name: "bundleId", value: id)]
 
   guard let url = urlComponents.url else { return nil }
-  print("\(url)")
+  debugPrint("\(url)")
 
   do {
     let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
@@ -86,4 +87,16 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
   }
   
   return nil
+}
+
+func resolveLookupData(_ id: String) async {
+  if let refreshedLookupData: ITunesResponse = await getITunesData(id) {
+    do {
+      DataCache.instance.clean(byKey: id)
+      try DataCache.instance.write(codable: refreshedLookupData, forKey: id)
+      debugPrint("\(id) Lookup Refreshed")
+    } catch {
+      print("Write error \(error.localizedDescription)")
+    }
+  }
 }

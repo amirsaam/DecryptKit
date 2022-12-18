@@ -7,14 +7,15 @@
 
 import SwiftUI
 import Neumorphic
+import DataCache
 
 struct LookupView: View {
   
   @Binding var showLookup: Bool
-  @Binding var sourceData: [deCrippleSource]?
   
   @State var lookedup: ITunesResponse?
   @State var deResult: deCrippleResult?
+  @State var sourceData: [deCrippleSource]?
   
   @State var searchSuccess: Bool = false
   
@@ -147,8 +148,14 @@ struct LookupView: View {
         }
       }
     }
+    .task {
+      do {
+        sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
+      } catch {
+        print("Read error \(error.localizedDescription)")
+      }
+    }
   }
-  
   func submitApp() {
     if inputID.isEmpty {
       withAnimation(.default) {
@@ -162,21 +169,17 @@ struct LookupView: View {
       }
     }
   }
-  
   func doGetLookup(_ input: String) {
     Task {
       var id: String
-      
       idOnSource = false
       idIsPaid = false
-      
       if input.hasPrefix("https") {
         let components = input.components(separatedBy: "/")
         id = String(components.last?.replacingOccurrences(of: "id", with: "") ?? "")
       } else {
         id = input
       }
-      
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1
       

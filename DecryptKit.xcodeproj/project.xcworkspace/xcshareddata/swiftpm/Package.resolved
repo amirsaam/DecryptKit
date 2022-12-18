@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "datacache",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/huynguyencong/DataCache",
+      "state" : {
+        "revision" : "715d6b96a45d3889efef54a2a0afef9d4188dde0",
+        "version" : "1.6.1"
+      }
+    },
+    {
       "identity" : "neumorphic",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/costachung/neumorphic",
