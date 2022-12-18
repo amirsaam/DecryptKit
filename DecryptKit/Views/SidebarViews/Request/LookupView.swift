@@ -12,20 +12,21 @@ import DataCache
 struct LookupView: View {
   
   @Binding var showLookup: Bool
-  
+  @Binding var userEmailAddress: String
+
+  @State var sourceData: [deCrippleSource]?
   @State var lookedup: ITunesResponse?
   @State var deResult: deCrippleResult?
-  @State var sourceData: [deCrippleSource]?
   
   @State var searchSuccess: Bool = false
   
   @State var inputID: String = ""
+  @State var appAttempts: Int = 0
+
   @State var idIsValid: Bool = false
   @State var idIsPaid: Bool = false
   @State var idOnSource: Bool = false
-  @State var appAttempts: Int = 0
   
-  @Binding var userEmailAddress: String
   @State var emailIsValid: Bool = false
   @State var emailAttempts: Int = 0
   
@@ -80,7 +81,7 @@ struct LookupView: View {
                           lookedup = nil
                         }
                       } label: {
-                        Label("Edit AppStore ID", systemImage: "pencil")
+                        Label("Clear", systemImage: "xmark")
                           .font(.caption2)
                       }
                       .softButtonStyle(
@@ -108,25 +109,18 @@ struct LookupView: View {
                     }
                     .padding(.top)
                   } else {
-                    HStack {
-                      Spacer()
-                      Button {
-                        submitApp()
-                      } label: {
-                        Label("Search", systemImage: "magnifyingglass")
-                          .font(.caption2)
-                      }
-                      .softButtonStyle(
-                        RoundedRectangle(cornerRadius: 7.5),
-                        padding: 10,
-                        mainColor: .red,
-                        textColor: .white,
-                        darkShadowColor: .redNeuDS,
-                        lightShadowColor: .redNeuLS,
-                        pressedEffect: .flat
-                      )
-                      .padding(.top)
+                    Button {
+                      submitApp()
+                    } label: {
+                      Label("Search", systemImage: "magnifyingglass")
+                        .font(.caption2)
                     }
+                    .softButtonStyle(
+                      RoundedRectangle(cornerRadius: 7.5),
+                      padding: 10,
+                      pressedEffect: .flat
+                    )
+                    .padding(.top, 10)
                   }
                 }
                 HStack {
@@ -182,13 +176,11 @@ struct LookupView: View {
       }
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1
-      
       if idIsValid {
         idOnSource = sourceData?.contains { app in
           app.bundleID == lookedup?.results[0].bundleId ?? ""
         } ?? false
         idIsPaid = lookedup?.results[0].price != 0
-        
         if idOnSource || idIsPaid {
           idIsValid = false
         }

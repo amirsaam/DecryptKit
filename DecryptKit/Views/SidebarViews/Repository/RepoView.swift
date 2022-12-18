@@ -37,6 +37,12 @@ struct RepoView: View {
                     pressedEffect: .flat
                   )
                   .padding(.leading)
+                  Spacer()
+                  Text("DecryptKit IPA Repository")
+                    .font(.footnote.monospaced())
+                    .fontWeight(.semibold)
+                    .softOuterShadow()
+                  Spacer()
                   Button {
                     sourceData = nil
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -54,11 +60,7 @@ struct RepoView: View {
                     padding: 8,
                     pressedEffect: .flat
                   )
-                  Text("DecryptKit IPA Repository")
-                    .font(.footnote.monospaced())
-                    .fontWeight(.semibold)
-                    .padding(.leading)
-                    .softOuterShadow()
+                  Spacer()
                 }
                 .padding(.top)
                 List {

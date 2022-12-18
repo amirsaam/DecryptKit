@@ -33,11 +33,12 @@ struct AccountingView: View {
           HStack(alignment: .center, spacing: geo.size.width * (0.25/10)) {
             Spacer()
             BrandInfo(logoSize: geo.size.width * (2/10))
-            VStack(spacing: geo.size.width * (0.25/10)) {
+            VStack(alignment: .leading, spacing: geo.size.width * (0.25/10)) {
               VStack(alignment: .leading) {
                 Text("Thank you for choosing DecryptKit")
                   .font(.title.monospaced())
-                Text("Our IPA decryption service sends download links of your requsts only via email so make sure to enter a valid and available address when you are creating an account!")
+                  .padding(.bottom)
+                Text("Our IPA decryption service sends download links for your requsts only via email, so make sure to enter a valid and available address when you are creating an account!")
                   .font(.subheadline.italic())
                   .padding(.top)
               }
@@ -49,6 +50,7 @@ struct AccountingView: View {
                 Divider()
                 SecureField("Password", text: $password)
               }
+              .padding(.top, 50)
               HStack {
                 Spacer()
                 if showProgress {
@@ -88,11 +90,13 @@ struct AccountingView: View {
                     }
                   }
                 } label: {
-                  Label(hasAccount == true ? "Sign in" : "Sign up", systemImage: hasAccount == true ? "key.fill" : "plus")
+                  Label(hasAccount == true ? "Sign in" : "Sign up",
+                        systemImage: hasAccount == true ? "key.fill" : "plus")
                     .frame(width: 100)
                 }
                 .softButtonStyle(
                   RoundedRectangle(cornerRadius: 15),
+                  padding: 10,
                   mainColor: .red,
                   textColor: .white,
                   darkShadowColor: .redNeuDS,
@@ -101,6 +105,7 @@ struct AccountingView: View {
                 )
                 .disabled(showProgress)
               }
+              .padding(.top)
             }
             Creators()
               .frame(width: geo.size.width * (2/10))
