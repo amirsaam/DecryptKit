@@ -36,7 +36,6 @@ struct RepoAppDetails: View {
 struct InAppStore: View {
 
   @State var doRefresh: Bool
-
   @State var appBundleID: String
   @State var appVersion: String
 
@@ -85,7 +84,7 @@ struct InAppStore: View {
     }
     .task {
       do {
-        if doRefresh {
+        if doRefresh || lookedup == nil {
           await resolveLookupData(appBundleID)
           doRefresh = false
         }
