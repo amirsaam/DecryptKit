@@ -41,8 +41,9 @@ struct deCrippleApp: SwiftUI.App {
           Text(errorHandler.error?.localizedDescription ?? "")
         }
         .onAppear {
-          let path = Realm.Configuration.defaultConfiguration.fileURL?.absoluteString
-          debugPrint(path ?? "no path found")
+          if let path = Realm.Configuration.defaultConfiguration.fileURL?.absoluteString {
+            debugPrint(path)
+          }
         }
         .onDisappear {
           exit(0)
