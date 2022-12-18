@@ -26,7 +26,7 @@ struct RepoAppDetails: View {
                   appName: appName,
                   appVersion: appVersion)
     } else {
-      InAppStore(doRefresh: $doRefresh,
+      InAppStore(doRefresh: doRefresh,
                  appBundleID: appBundleID,
                  appVersion: appVersion)
     }
@@ -35,7 +35,7 @@ struct RepoAppDetails: View {
 
 struct InAppStore: View {
 
-  @Binding var doRefresh: Bool
+  @State var doRefresh: Bool
 
   @State var appBundleID: String
   @State var appVersion: String
