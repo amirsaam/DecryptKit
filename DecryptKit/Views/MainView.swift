@@ -99,7 +99,7 @@ struct MainView: View {
                 HStack {
                   Text("If you wish help this repo on maintain costs")
                     .font(.footnote)
-                  Label("Donate", systemImage: "gift.fill")
+                  Label("Patreon", systemImage: "giftcard.fill")
                     .font(.caption)
                     .foregroundColor(.red)
                     .onTapGesture {
@@ -114,7 +114,7 @@ struct MainView: View {
                   Text("is the only option")
                     .font(.footnote)
                 }
-                Text("Don't forget to enter your Email Address to get our future surprises!")
+                Text("Be aware that our Patrons will gain access to our premium membership services!")
                   .font(.caption)
               }
             }

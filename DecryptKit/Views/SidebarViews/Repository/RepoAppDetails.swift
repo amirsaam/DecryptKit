@@ -82,12 +82,12 @@ struct InAppStore: View {
       }
       .font(.caption)
     }
-    .task {
+    .task(priority: .high) {
+      if doRefresh || !DataCache.instance.hasData(forKey: appBundleID) {
+        await resolveLookupData(appBundleID)
+        doRefresh = false
+      }
       do {
-        if doRefresh || lookedup == nil {
-          await resolveLookupData(appBundleID)
-          doRefresh = false
-        }
         lookedup = try DataCache.instance.readCodable(forKey: appBundleID)
       } catch {
         print("Read error \(error.localizedDescription)")
