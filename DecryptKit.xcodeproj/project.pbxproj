@@ -37,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		68100187293A925A00418B40 /* CustomLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLookups.swift; sourceTree = "<group>"; };
+		683E367A294F512800B1DAA7 /* DecryptKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DecryptKit.entitlements; sourceTree = "<group>"; };
 		6843C616292FB586008FDA73 /* DecryptKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DecryptKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6843C619292FB586008FDA73 /* deCrippleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = deCrippleApp.swift; sourceTree = "<group>"; };
 		6843C61B292FB586008FDA73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 		6843C618292FB586008FDA73 /* DecryptKit */ = {
 			isa = PBXGroup;
 			children = (
+				683E367A294F512800B1DAA7 /* DecryptKit.entitlements */,
 				6843C61D292FB587008FDA73 /* Assets.xcassets */,
 				6843C61F292FB587008FDA73 /* Preview Content */,
 				68A33AF02940FD100024DFFE /* Database */,
@@ -405,6 +407,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DecryptKit/DecryptKit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -443,6 +446,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DecryptKit/DecryptKit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
