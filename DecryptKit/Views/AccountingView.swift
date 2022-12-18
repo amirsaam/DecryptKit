@@ -30,7 +30,7 @@ struct AccountingView: View {
       GeometryReader { geo in
         VStack {
           Spacer()
-          HStack(alignment: .top, spacing: geo.size.width * (0.25/10)) {
+          HStack(alignment: .center, spacing: geo.size.width * (0.25/10)) {
             Spacer()
             BrandInfo(logoSize: geo.size.width * (2/10))
             VStack(spacing: geo.size.width * (0.25/10)) {
