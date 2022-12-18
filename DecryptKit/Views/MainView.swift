@@ -108,7 +108,7 @@ struct MainView: View {
                     .fullScreenCover(
                       isPresented: $showSafari,
                       content: {
-                        SFSafariViewWrapper(url: URL(string: "https://patreon.com/user?u=84453845&utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=creatorshare_creator&utm_content=join_link")!)
+                        SFSafariViewWrapper(url: URL(string: "https://link.decryptkit.xyz/gEhhxc")!)
                       }
                     )
                   Text("is the only option")
