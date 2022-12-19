@@ -82,7 +82,7 @@ struct InAppStore: View {
       }
       .font(.caption)
     }
-    .task(priority: .high) {
+    .task {
       if doRefresh || !DataCache.instance.hasData(forKey: appBundleID) {
         await resolveLookupData(appBundleID)
         doRefresh = false

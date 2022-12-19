@@ -137,12 +137,8 @@ struct MainView: View {
       }
     }
     .onAppear {
-      if user.customData.isEmpty {
-        userEmailAddress = defaults.string(forKey: "Email") ?? ""
-        newUser.userId = user.id
-        newUser.userEmail = userEmailAddress
-        $users.append(newUser)
-      } else {
+      if user.customData["userEmail"] != nil {
+        debugPrint(user.customData["userEmail"]!!)
         user.refreshCustomData { (result) in
           switch result {
           case .failure(let error):
@@ -151,6 +147,12 @@ struct MainView: View {
             userEmailAddress = customData["userEmail"] as! String
           }
         }
+      } else {
+        debugPrint("Appending user.customData to Realm")
+        userEmailAddress = defaults.string(forKey: "Email") ?? ""
+        newUser.userId = user.id
+        newUser.userEmail = userEmailAddress
+        $users.append(newUser)
       }
     }
   }

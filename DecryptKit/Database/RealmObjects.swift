@@ -18,6 +18,7 @@ class deStat: Object, ObjectKeyIdentifiable {
   @Persisted(primaryKey: true) var _id: ObjectId
   @Persisted var lookedId: String
   @Persisted var lookersEmail: List<String>
+  @Persisted var lookersStat: Int
   @Persisted var lookStats: Int
 }
 

@@ -7,12 +7,16 @@
 
 import SwiftUI
 import Neumorphic
+import RealmSwift
 import DataCache
 
 struct LookupView: View {
   
   @Binding var showLookup: Bool
   @Binding var userEmailAddress: String
+  
+  @ObservedResults(deStat.self) var stats
+  @State var newStat = deStat()
 
   @State var sourceData: [deCrippleSource]?
   @State var lookedup: ITunesResponse?
@@ -26,9 +30,6 @@ struct LookupView: View {
   @State var idIsValid: Bool = false
   @State var idIsPaid: Bool = false
   @State var idOnSource: Bool = false
-  
-  @State var emailIsValid: Bool = false
-  @State var emailAttempts: Int = 0
   
   @State var promoCode: String = ""
   
@@ -47,6 +48,11 @@ struct LookupView: View {
                 } else {
                   if lookedup != nil && (idIsValid || idOnSource || idIsPaid) {
                     LookupAppDetails(lookedup: $lookedup)
+                      .onAppear {
+                        if lookedup != nil {
+                          doAddStat((lookedup?.results[0].bundleId)!)
+                        }
+                      }
                     if idIsPaid {
                       ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
                     } else if idOnSource {
@@ -186,6 +192,41 @@ struct LookupView: View {
         }
       }
     }
+  }
+  func doAddStat(_ id: String) {
+    let realm = try! Realm()
+    let allObjects = realm.objects(deStat.self)
+    let object = allObjects.contains {
+      $0.lookedId == id
+    }
+    print(id)
+    print(allObjects.isEmpty)
+    print(object)
+//    if !object.isEmpty {
+//      let newEmail = userEmailAddress
+//      if !object.lookersEmail.contains(newEmail) {
+//        debugPrint(newEmail)
+//        try! realm.write {
+//          object.lookersEmail.append(newEmail)
+//          object.lookersStat += 1
+//          object.lookStats += 1
+//          realm.add(object, update: .modified)
+//        }
+//      } else {
+//        debugPrint("no new email for stats")
+//        try! realm.write {
+//          object.lookStats += 1
+//          realm.add(object, update: .modified)
+//        }
+//      }
+//    } else {
+//      debugPrint("appending new data to realm")
+//      newStat.lookedId = lookedup?.results[0].bundleId ?? ""
+//      newStat.lookersEmail.append(userEmailAddress)
+//      newStat.lookersStat = 1
+//      newStat.lookStats = 1
+//      $stats.append(newStat)
+//    }
   }
   // func doRequest(_ id: String, _ email: String, _ promo: String) {
   func doRequest(_ id: String, _ email: String) {
