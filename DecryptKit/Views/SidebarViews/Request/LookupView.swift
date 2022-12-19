@@ -194,19 +194,25 @@ struct LookupView: View {
     }
   }
   func doAddStat(_ id: String) {
-    let stat = stats.where {
+    let realm = stats.realm!.thaw()
+    let thawedStats = stats.thaw()!
+    let stat = thawedStats.where {
       $0.lookedId.contains(id)
     }
     if !stat.isEmpty {
       let statToUpdate = stat[0]
       if statToUpdate.lookersEmail.contains(userEmailAddress) {
         debugPrint("\(userEmailAddress) is already in stat for \(id)")
-//        statToUpdate.lookStats += 1
+        try! realm.write {
+          statToUpdate.lookStats += 1
+        }
       } else {
         debugPrint("Appending \(userEmailAddress) to stat for \(id)")
-//        statToUpdate.lookersEmail.append(newEmail)
-//        statToUpdate.lookersStat += 1
-//        statToUpdate.lookStats += 1
+        try! realm.write {
+          statToUpdate.lookersEmail.append(userEmailAddress)
+          statToUpdate.lookersStat += 1
+          statToUpdate.lookStats += 1
+        }
       }
     } else {
       debugPrint("Appending stat for \(id) to deStat")
