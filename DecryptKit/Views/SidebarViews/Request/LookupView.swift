@@ -194,39 +194,28 @@ struct LookupView: View {
     }
   }
   func doAddStat(_ id: String) {
-    let realm = try! Realm()
-    let allObjects = realm.objects(deStat.self)
-    let object = allObjects.contains {
-      $0.lookedId == id
+    let stat = stats.where {
+      $0.lookedId.contains(id)
     }
-    print(id)
-    print(allObjects.isEmpty)
-    print(object)
-//    if !object.isEmpty {
-//      let newEmail = userEmailAddress
-//      if !object.lookersEmail.contains(newEmail) {
-//        debugPrint(newEmail)
-//        try! realm.write {
-//          object.lookersEmail.append(newEmail)
-//          object.lookersStat += 1
-//          object.lookStats += 1
-//          realm.add(object, update: .modified)
-//        }
-//      } else {
-//        debugPrint("no new email for stats")
-//        try! realm.write {
-//          object.lookStats += 1
-//          realm.add(object, update: .modified)
-//        }
-//      }
-//    } else {
-//      debugPrint("appending new data to realm")
-//      newStat.lookedId = lookedup?.results[0].bundleId ?? ""
-//      newStat.lookersEmail.append(userEmailAddress)
-//      newStat.lookersStat = 1
-//      newStat.lookStats = 1
-//      $stats.append(newStat)
-//    }
+    if !stat.isEmpty {
+      let statToUpdate = stat[0]
+      if statToUpdate.lookersEmail.contains(userEmailAddress) {
+        debugPrint("\(userEmailAddress) is already in stat for \(id)")
+//        statToUpdate.lookStats += 1
+      } else {
+        debugPrint("Appending \(userEmailAddress) to stat for \(id)")
+//        statToUpdate.lookersEmail.append(newEmail)
+//        statToUpdate.lookersStat += 1
+//        statToUpdate.lookStats += 1
+      }
+    } else {
+      debugPrint("Appending stat for \(id) to deStat")
+      newStat.lookedId = lookedup?.results[0].bundleId ?? ""
+      newStat.lookersEmail.append(userEmailAddress)
+      newStat.lookersStat = 1
+      newStat.lookStats = 1
+      $stats.append(newStat)
+    }
   }
   // func doRequest(_ id: String, _ email: String, _ promo: String) {
   func doRequest(_ id: String, _ email: String) {
