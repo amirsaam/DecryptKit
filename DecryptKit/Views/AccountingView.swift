@@ -62,7 +62,7 @@ struct AccountingView: View {
                     hasAccount.toggle()
                   }
                 } label: {
-                  Text(hasAccount == true ? "Don't have an Account?" : "Already have an account?")
+                  Text(hasAccount ? "Don't have an Account?" : "Already have an account?")
                     .font(.footnote)
                     .foregroundColor(secondaryColor)
                 }
@@ -90,8 +90,8 @@ struct AccountingView: View {
                     }
                   }
                 } label: {
-                  Label(hasAccount == true ? "Sign in" : "Sign up",
-                        systemImage: hasAccount == true ? "key.fill" : "plus")
+                  Label(hasAccount ? "Sign in" : "Sign up",
+                        systemImage: hasAccount ? "key.fill" : "plus")
                     .frame(width: 100)
                 }
                 .softButtonStyle(

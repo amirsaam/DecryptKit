@@ -76,7 +76,7 @@ struct MainView: View {
                     RoundedRectangle(cornerRadius: 15),
                     pressedEffect: .flat
                   )
-                  .disabled(showRepo == true ? true : false)
+                  .disabled(showRepo ? true : false)
                   Button {
                     withAnimation(.spring()) {
                       showRepo = false
@@ -89,7 +89,7 @@ struct MainView: View {
                     RoundedRectangle(cornerRadius: 15),
                     pressedEffect: .flat
                   )
-                  .disabled(showLookup == true ? true : false)
+                  .disabled(showLookup ? true : false)
                 }
                 .padding(.top)
               }
