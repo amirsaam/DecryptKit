@@ -10,7 +10,11 @@ import Neumorphic
 import CachedAsyncImage
 import DataCache
 
-var outAppStoreBundleID: Array = ["ir.amrsm.deCripple", "com.rileytestut.Delta", "com.hammerandchisel.discord"]
+var outAppStoreBundleID: Array = [
+  "ir.amrsm.deCripple",
+  "com.rileytestut.Delta",
+  "com.hammerandchisel.discord"
+]
 
 struct RepoAppDetails: View {
 
