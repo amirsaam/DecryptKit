@@ -199,7 +199,14 @@ struct LookupView: View {
     let stat = thawedStats.where {
       $0.lookedId.contains(id)
     }
-    if !stat.isEmpty {
+    if stat.isEmpty {
+      debugPrint("Appending stat for \(id) to deStat")
+      newStat.lookedId = lookedup?.results[0].bundleId ?? ""
+      newStat.lookersEmail.append(userEmailAddress)
+      newStat.lookersStat = 1
+      newStat.lookStats = 1
+      $stats.append(newStat)
+    } else {
       let statToUpdate = stat[0]
       if statToUpdate.lookersEmail.contains(userEmailAddress) {
         debugPrint("\(userEmailAddress) is already in stat for \(id)")
@@ -214,13 +221,6 @@ struct LookupView: View {
           statToUpdate.lookStats += 1
         }
       }
-    } else {
-      debugPrint("Appending stat for \(id) to deStat")
-      newStat.lookedId = lookedup?.results[0].bundleId ?? ""
-      newStat.lookersEmail.append(userEmailAddress)
-      newStat.lookersStat = 1
-      newStat.lookStats = 1
-      $stats.append(newStat)
     }
   }
   // func doRequest(_ id: String, _ email: String, _ promo: String) {
