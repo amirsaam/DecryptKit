@@ -12,12 +12,10 @@ import RealmSwift
 struct MainView: View {
   
   @Environment(\.openURL) var openURL
-  
-  @ObservedResults(deUser.self) var users
-  @State var newUser = deUser()
 
   @State var user: User
-  @State var userEmailAddress: String = ""
+  @Binding var userEmailAddress: String
+  @Binding var sourceData: [deCrippleSource]?
 
   @State var showSafari: Bool = false
   @State var showRepo: Bool = false
@@ -122,9 +120,11 @@ struct MainView: View {
             .frame(width: geo.size.width * (4.25/10))
             if showLookup {
               LookupView(showLookup: $showLookup,
-                         userEmailAddress: $userEmailAddress)
+                         userEmailAddress: $userEmailAddress,
+                         sourceData: $sourceData)
             } else if showRepo {
-              RepoView(showRepo: $showRepo)
+              RepoView(showRepo: $showRepo,
+                       sourceData: $sourceData)
             } else {
               VStack {
                 Creators()
@@ -134,25 +134,6 @@ struct MainView: View {
         }
         .foregroundColor(secondaryColor)
         .padding(.leading, geo.size.width * (0.5/10))
-      }
-    }
-    .onAppear {
-      if user.customData["userEmail"] != nil {
-        debugPrint(user.customData["userEmail"]!!)
-        user.refreshCustomData { (result) in
-          switch result {
-          case .failure(let error):
-            print("Failed to refresh custom data: \(error.localizedDescription)")
-          case .success(let customData):
-            userEmailAddress = customData["userEmail"] as! String
-          }
-        }
-      } else {
-        debugPrint("Appending user.customData to Realm")
-        userEmailAddress = defaults.string(forKey: "Email") ?? ""
-        newUser.userId = user.id
-        newUser.userEmail = userEmailAddress
-        $users.append(newUser)
       }
     }
   }

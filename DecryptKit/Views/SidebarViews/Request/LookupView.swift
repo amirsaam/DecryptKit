@@ -14,11 +14,11 @@ struct LookupView: View {
   
   @Binding var showLookup: Bool
   @Binding var userEmailAddress: String
+  @Binding var sourceData: [deCrippleSource]?
   
   @ObservedResults(deStat.self) var stats
   @State var newStat = deStat()
 
-  @State var sourceData: [deCrippleSource]?
   @State var lookedup: ITunesResponse?
   @State var deResult: deCrippleResult?
   
@@ -67,7 +67,7 @@ struct LookupView: View {
                     .modifier(Shake(animatableData: CGFloat(appAttempts)))
                     .disabled(idIsValid && searchSuccess && !inputID.isEmpty)
                     .onSubmit {
-                      submitApp()
+                      searchApp()
                     }
                   if searchSuccess && idIsValid {
                     Divider()
@@ -116,7 +116,7 @@ struct LookupView: View {
                     .padding(.top)
                   } else {
                     Button {
-                      submitApp()
+                      searchApp()
                     } label: {
                       Label("Search", systemImage: "magnifyingglass")
                         .font(.caption2)
@@ -156,7 +156,7 @@ struct LookupView: View {
       }
     }
   }
-  func submitApp() {
+  func searchApp() {
     if inputID.isEmpty {
       withAnimation(.default) {
         self.appAttempts += 1

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealmSwift
+import DataCache
 
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
@@ -18,7 +19,13 @@ struct OpenRealmView: View {
   
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
+  @State var userEmailAddress: String = ""
+
+  @ObservedResults(deUser.self) var users
+  @State var newUser = deUser()
   
+  @State var sourceData: [deCrippleSource]?
+
   var body: some View {
     switch asyncOpen {
     case .connecting:
@@ -36,10 +43,34 @@ struct OpenRealmView: View {
           .padding()
       }
     case .open(let realm):
-      MainView(user: user)
+      MainView(user: user,
+               userEmailAddress: $userEmailAddress,
+               sourceData: $sourceData)
       .environment(\.realm, realm)
-      .task(priority: .background) {
+      .task(priority: .high) {
+        if user.customData["userEmail"] != nil {
+          debugPrint(user.customData["userEmail"]!!)
+          user.refreshCustomData { (result) in
+            switch result {
+            case .failure(let error):
+              print("Failed to refresh custom data: \(error.localizedDescription)")
+            case .success(let customData):
+              userEmailAddress = customData["userEmail"] as! String
+            }
+          }
+        } else {
+          debugPrint("Appending user.customData to Realm")
+          userEmailAddress = defaults.string(forKey: "Email") ?? ""
+          newUser.userId = user.id
+          newUser.userEmail = userEmailAddress
+          $users.append(newUser)
+        }
         await resolveSourceData()
+        do {
+          sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
+        } catch {
+          print("Read error \(error.localizedDescription)")
+        }
       }
     case .progress(let progress):
       ZStack {

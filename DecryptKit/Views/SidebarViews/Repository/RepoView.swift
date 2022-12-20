@@ -12,8 +12,8 @@ import DataCache
 struct RepoView: View {
 
   @Binding var showRepo: Bool
+  @Binding var sourceData: [deCrippleSource]?
 
-  @State var sourceData: [deCrippleSource]?
   @State var doRefresh = false
 
   var body: some View {
@@ -85,13 +85,6 @@ struct RepoView: View {
               }
             }
         }
-      }
-    }
-    .onAppear {
-      do {
-        sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
-      } catch {
-        print("Read error \(error.localizedDescription)")
       }
     }
   }
