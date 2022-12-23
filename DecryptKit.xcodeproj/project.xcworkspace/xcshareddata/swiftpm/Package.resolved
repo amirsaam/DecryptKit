@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/huynguyencong/DataCache",
       "state" : {
-        "revision" : "715d6b96a45d3889efef54a2a0afef9d4188dde0",
-        "version" : "1.6.1"
+        "revision" : "cdef39b1f7f539ff722e7954746b2876ef12178c",
+        "version" : "1.7.0"
       }
     },
     {
