@@ -93,6 +93,7 @@ func resolveLookupData(_ id: String) {
   Task {
     if let refreshedLookupData: ITunesResponse = await getITunesData(id) {
       do {
+        DataCache.instance.clean(byKey: id)
         try DataCache.instance.write(codable: refreshedLookupData, forKey: id)
         debugPrint("\(id) Lookup Refreshed")
       } catch {
