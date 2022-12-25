@@ -420,6 +420,7 @@
 				INFOPLIST_FILE = DecryptKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DecryptKit;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2023 DecryptKit Team, Some Rights Reserved.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
@@ -459,6 +460,7 @@
 				INFOPLIST_FILE = DecryptKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DecryptKit;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2023 DecryptKit Team, Some Rights Reserved.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
