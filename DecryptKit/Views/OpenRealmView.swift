@@ -19,12 +19,12 @@ struct OpenRealmView: View {
   
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
-  @State var userEmailAddress: String = ""
+  @State private var userEmailAddress: String = ""
 
-  @ObservedResults(deUser.self) var users
-  @State var newUser = deUser()
+  @ObservedResults(deUser.self) private var users
+  @State private var newUser = deUser()
   
-  @State var sourceData: [deCrippleSource]?
+  @State private var sourceData: [deCrippleSource]?
 
   var body: some View {
     switch asyncOpen {

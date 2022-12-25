@@ -89,14 +89,15 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
   return nil
 }
 
-func resolveLookupData(_ id: String) async {
-  if let refreshedLookupData: ITunesResponse = await getITunesData(id) {
-    do {
-      DataCache.instance.clean(byKey: id)
-      try DataCache.instance.write(codable: refreshedLookupData, forKey: id)
-      debugPrint("\(id) Lookup Refreshed")
-    } catch {
-      print("Write error \(error.localizedDescription)")
+func resolveLookupData(_ id: String) {
+  Task {
+    if let refreshedLookupData: ITunesResponse = await getITunesData(id) {
+      do {
+        try DataCache.instance.write(codable: refreshedLookupData, forKey: id)
+        debugPrint("\(id) Lookup Refreshed")
+      } catch {
+        print("Write error \(error.localizedDescription)")
+      }
     }
   }
 }

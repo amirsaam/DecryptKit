@@ -14,14 +14,14 @@ struct AccountingView: View {
 
   @EnvironmentObject var errorHandler: ErrorHandler
 
-  @State var email = ""
-  @State var emailIsValid: Bool = false
-  @State var emailAttempts: Int = 0  
-  @State var password = ""
+  @State private var email = ""
+  @State private var emailIsValid: Bool = false
+  @State private var emailAttempts: Int = 0
+  @State private var password = ""
 
-  @State var hasAccount = true
-  @State var showProgress = false
-  @State var error: Error?
+  @State private var hasAccount = true
+  @State private var showProgress = false
+  @State private var error: Error?
 
   var body: some View {
     ZStack {
@@ -156,7 +156,7 @@ struct LogoutButton: View {
   
   var body: some View {
     HStack {
-      Button("Sign out") {
+      Button {
         guard let user = realmApp.currentUser else {
           return
         }
@@ -165,6 +165,10 @@ struct LogoutButton: View {
           await logout(user: user)
           isLoggingOut = false
         }
+      } label: {
+        Text("Sign out")
+          .font(.footnote)
+          .textCase(.uppercase)
       }
       .disabled(realmApp.currentUser == nil || isLoggingOut)
       .alert(item: $errorMessage) { errorMessage in

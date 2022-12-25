@@ -16,22 +16,22 @@ struct LookupView: View {
   @Binding var userEmailAddress: String
   @Binding var sourceData: [deCrippleSource]?
   
-  @ObservedResults(deStat.self) var stats
-  @State var newStat = deStat()
+  @ObservedResults(deStat.self) private var stats
+  @State private var newStat = deStat()
 
-  @State var lookedup: ITunesResponse?
-  @State var deResult: deCrippleResult?
+  @State private var lookedup: ITunesResponse?
+  @State private var deResult: deCrippleResult?
   
-  @State var searchSuccess: Bool = false
+  @State private var searchSuccess: Bool = false
   
-  @State var inputID: String = ""
-  @State var appAttempts: Int = 0
+  @State private var inputID: String = ""
+  @State private var appAttempts: Int = 0
 
-  @State var idIsValid: Bool = false
-  @State var idIsPaid: Bool = false
-  @State var idOnSource: Bool = false
+  @State private var idIsValid: Bool = false
+  @State private var idIsPaid: Bool = false
+  @State private var idOnSource: Bool = false
   
-  @State var promoCode: String = ""
+  @State private var promoCode: String = ""
   
   var body: some View {
     GeometryReader { geo in
@@ -118,11 +118,11 @@ struct LookupView: View {
                     Button {
                       searchApp()
                     } label: {
-                      Label("Search", systemImage: "magnifyingglass")
+                      Label("Search...", systemImage: "magnifyingglass")
                         .font(.caption2)
                     }
                     .softButtonStyle(
-                      RoundedRectangle(cornerRadius: 7.5),
+                      RoundedRectangle(cornerRadius: 10),
                       padding: 10,
                       pressedEffect: .flat
                     )

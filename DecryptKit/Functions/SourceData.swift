@@ -18,7 +18,7 @@ struct deCrippleSource: Codable {
 
 func getSourceData() async -> [deCrippleSource]? {
   
-  guard let url = URL(string: "https://repo.amrsm.ir/ZGVjcnlwdGVkLmpzb24=") else { return nil }
+  guard let url = URL(string: "https://amrsm.ir/decrypted.json") else { return nil }
 
   do {
     let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
@@ -39,6 +39,11 @@ func resolveSourceData() async {
       DataCache.instance.clean(byKey: "cachedSourceData")
       try DataCache.instance.write(codable: refreshedSourceData, forKey: "cachedSourceData")
       debugPrint("SourceData Refreshed")
+      refreshedSourceData.forEach { app in
+        if !outAppStoreBundleID.contains(app.bundleID) {
+          resolveLookupData(app.bundleID)
+        }
+      }
     } catch {
       print("Write error \(error.localizedDescription)")
     }

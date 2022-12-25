@@ -14,8 +14,6 @@ struct RepoView: View {
   @Binding var showRepo: Bool
   @Binding var sourceData: [deCrippleSource]?
 
-  @State var doRefresh = false
-
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -49,7 +47,6 @@ struct RepoView: View {
                       Task {
                         await resolveSourceData()
                         sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
-                        doRefresh = true
                       }
                     }
                   } label: {
@@ -74,8 +71,7 @@ struct RepoView: View {
                     .listRowBackground(mainColor)
                   }
                   ForEach(sourceData ?? [], id: \.bundleID) { app in
-                    RepoAppDetails(doRefresh: $doRefresh,
-                                   appBundleID: app.bundleID,
+                    RepoAppDetails(appBundleID: app.bundleID,
                                    appName: app.name,
                                    appVersion: app.version)
                   }

@@ -17,9 +17,9 @@ struct MainView: View {
   @Binding var userEmailAddress: String
   @Binding var sourceData: [deCrippleSource]?
 
-  @State var showSafari: Bool = false
-  @State var showRepo: Bool = false
-  @State var showLookup: Bool = false
+  @State private var showSafari: Bool = false
+  @State private var showRepo: Bool = false
+  @State private var showLookup: Bool = false
   
   var body: some View {
     ZStack {
@@ -31,7 +31,7 @@ struct MainView: View {
             VStack {
               BrandInfo(logoSize: geo.size.width * (2/10))
               LogoutButton()
-                .padding(.top)
+                .padding(.top, 1)
             }
             VStack(alignment: .leading, spacing: geo.size.width * (0.35/10)) {
               Text("The Decrypted IPAs, made easy!")

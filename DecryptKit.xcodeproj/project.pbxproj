@@ -59,6 +59,7 @@
 		68DE97F02938CE0200A565B8 /* RepoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoView.swift; sourceTree = "<group>"; };
 		68DE97F22938CF4B00A565B8 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		68DE97F4293987B400A565B8 /* RepoAppDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoAppDetails.swift; sourceTree = "<group>"; };
+		68FFD2BF2958561C00AC073C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +99,7 @@
 		6843C618292FB586008FDA73 /* DecryptKit */ = {
 			isa = PBXGroup;
 			children = (
+				68FFD2BF2958561C00AC073C /* Info.plist */,
 				683E367A294F512800B1DAA7 /* DecryptKit.entitlements */,
 				6843C61D292FB587008FDA73 /* Assets.xcassets */,
 				6843C61F292FB587008FDA73 /* Preview Content */,
@@ -415,9 +417,9 @@
 				DEVELOPMENT_TEAM = HNQUTH2TPW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DecryptKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DecryptKit;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
@@ -454,9 +456,9 @@
 				DEVELOPMENT_TEAM = HNQUTH2TPW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DecryptKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = DecryptKit;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";

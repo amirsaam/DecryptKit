@@ -10,15 +10,7 @@ import Neumorphic
 import CachedAsyncImage
 import DataCache
 
-var outAppStoreBundleID: Array = [
-  "ir.amrsm.deCripple",
-  "com.rileytestut.Delta",
-  "com.hammerandchisel.discord"
-]
-
 struct RepoAppDetails: View {
-
-  @Binding var doRefresh: Bool
 
   @State var appBundleID: String
   @State var appName: String
@@ -30,8 +22,7 @@ struct RepoAppDetails: View {
                   appName: appName,
                   appVersion: appVersion)
     } else {
-      InAppStore(doRefresh: doRefresh,
-                 appBundleID: appBundleID,
+      InAppStore(appBundleID: appBundleID,
                  appVersion: appVersion)
     }
   }
@@ -39,11 +30,10 @@ struct RepoAppDetails: View {
 
 struct InAppStore: View {
 
-  @State var doRefresh: Bool
   @State var appBundleID: String
   @State var appVersion: String
 
-  @State var lookedup: ITunesResponse?
+  @State private var lookedup: ITunesResponse?
 
   var body: some View {
     VStack(alignment: .leading, spacing: 15) {
@@ -87,9 +77,8 @@ struct InAppStore: View {
       .font(.caption)
     }
     .task {
-      if doRefresh || !DataCache.instance.hasData(forKey: appBundleID) {
-        await resolveLookupData(appBundleID)
-        doRefresh = false
+      if !DataCache.instance.hasData(forKey: appBundleID) {
+        resolveLookupData(appBundleID)
       }
       do {
         lookedup = try DataCache.instance.readCodable(forKey: appBundleID)

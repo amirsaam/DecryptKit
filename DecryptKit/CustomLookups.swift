@@ -7,6 +7,12 @@
 
 import Foundation
 
+let outAppStoreBundleID: Array = [
+  "ir.amrsm.deCripple",
+  "com.rileytestut.Delta",
+  "com.hammerandchisel.discord"
+]
+
 enum NotAPApp: String, CaseIterable {
   case deCripple = "ir.amrsm.deCripple"
   case delta = "com.rileytestut.Delta"

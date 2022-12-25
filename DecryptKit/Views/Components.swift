@@ -11,7 +11,7 @@ import RealmSwift
 
 struct BrandInfo: View {
   @State var logoSize: CGFloat
-  @State var isRotating = 0.0
+  @State private var isRotating = 0.0
   var body: some View {
     VStack {
       VStack(alignment: .center) {
@@ -20,6 +20,7 @@ struct BrandInfo: View {
           .aspectRatio(contentMode: .fit)
           .frame(width: logoSize, height: logoSize)
           .rotationEffect(.degrees(isRotating))
+          .softOuterShadow()
           .onAppear {
             withAnimation(
               .linear(duration: 1)

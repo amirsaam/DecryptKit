@@ -45,9 +45,6 @@ struct deCrippleApp: SwiftUI.App {
             debugPrint(path)
           }
         }
-        .onDisappear {
-          exit(0)
-        }
     }
   }
 }
