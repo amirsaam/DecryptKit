@@ -45,17 +45,16 @@ struct RepoView: View {
                     .softOuterShadow()
                   Spacer()
                   Button {
-                    progressAmount = 0
-                    sourceData = nil
-                    DataCache.instance.clean(byKey: "cachedSourceData")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                      Task {
-                        await resolveSourceData()
-                        do {
-                          sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
-                        } catch {
-                          print("Read error \(error.localizedDescription)")
-                        }
+                    Task {
+                      progressAmount = 0
+                      sourceData = nil
+                      DataCache.instance.clean(byKey: "cachedSourceData")
+                      try? await Task.sleep(nanoseconds: 5000000000)
+                      await resolveSourceData()
+                      do {
+                        sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
+                      } catch {
+                        print("Read error \(error.localizedDescription)")
                       }
                     }
                   } label: {
