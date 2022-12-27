@@ -48,23 +48,7 @@ struct OpenRealmView: View {
                sourceData: $sourceData)
       .environment(\.realm, realm)
       .task(priority: .high) {
-        if user.customData["userEmail"] != nil {
-          debugPrint(user.customData["userEmail"]!!)
-          user.refreshCustomData { (result) in
-            switch result {
-            case .failure(let error):
-              print("Failed to refresh custom data: \(error.localizedDescription)")
-            case .success(let customData):
-              userEmailAddress = customData["userEmail"] as! String
-            }
-          }
-        } else {
-          debugPrint("Appending user.customData to Realm")
-          userEmailAddress = defaults.string(forKey: "Email") ?? ""
-          newUser.userId = user.id
-          newUser.userEmail = userEmailAddress
-          $users.append(newUser)
-        }
+        await doAddUser()
         await resolveSourceData()
         do {
           sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
@@ -86,6 +70,25 @@ struct OpenRealmView: View {
         RealmError(error: error)
           .padding()
       }
+    }
+  }
+  func doAddUser() async {
+    if user.customData["userEmail"] != nil {
+      user.refreshCustomData { (result) in
+        switch result {
+        case .failure(let error):
+          print("Failed to refresh custom data: \(error.localizedDescription)")
+        case .success(let customData):
+          debugPrint(user.customData["userEmail"]!!)
+          userEmailAddress = customData["userEmail"] as! String
+        }
+      }
+    } else {
+      debugPrint("Appending user.customData to Realm")
+      userEmailAddress = defaults.string(forKey: "Email") ?? ""
+      newUser.userId = user.id
+      newUser.userEmail = userEmailAddress
+      $users.append(newUser)
     }
   }
 }

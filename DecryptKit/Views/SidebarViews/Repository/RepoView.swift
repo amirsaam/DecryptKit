@@ -14,6 +14,9 @@ struct RepoView: View {
   @Binding var showRepo: Bool
   @Binding var sourceData: [deCrippleSource]?
 
+  @State private var progressAmount = 0.0
+  let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -42,11 +45,17 @@ struct RepoView: View {
                     .softOuterShadow()
                   Spacer()
                   Button {
+                    progressAmount = 0
                     sourceData = nil
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    DataCache.instance.clean(byKey: "cachedSourceData")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                       Task {
                         await resolveSourceData()
-                        sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
+                        do {
+                          sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
+                        } catch {
+                          print("Read error \(error.localizedDescription)")
+                        }
                       }
                     }
                   } label: {
@@ -64,8 +73,13 @@ struct RepoView: View {
                   if sourceData == nil {
                     HStack {
                       Spacer()
-                      ProgressView("Loading...")
+                      ProgressView("Loading...", value: progressAmount, total: 100)
                         .progressViewStyle(.linear)
+                        .onReceive(timer) { _ in
+                          if progressAmount < 100 {
+                            progressAmount += 2
+                          }
+                        }
                       Spacer()
                     }
                     .listRowBackground(mainColor)

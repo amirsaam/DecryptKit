@@ -34,18 +34,18 @@ func getSourceData() async -> [deCrippleSource]? {
 }
 
 func resolveSourceData() async {
-  if let refreshedSourceData: [deCrippleSource] = await getSourceData() {
-    do {
-      DataCache.instance.clean(byKey: "cachedSourceData")
-      try DataCache.instance.write(codable: refreshedSourceData, forKey: "cachedSourceData")
-      debugPrint("SourceData Refreshed")
-      refreshedSourceData.forEach { app in
+  let refreshedSourceData: [deCrippleSource]? = await getSourceData()
+  do {
+    try DataCache.instance.write(codable: refreshedSourceData, forKey: "cachedSourceData")
+    debugPrint("SourceData Refreshed")
+    if let data = refreshedSourceData {
+      data.forEach { app in
         if !outAppStoreBundleID.contains(app.bundleID) {
           resolveLookupData(app.bundleID)
         }
       }
-    } catch {
-      print("Write error \(error.localizedDescription)")
     }
+  } catch {
+    print("Write error \(error.localizedDescription)")
   }
 }
