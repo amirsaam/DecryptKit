@@ -18,7 +18,6 @@
 		6843C629292FB636008FDA73 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = 6843C628292FB636008FDA73 /* Neumorphic */; };
 		6843C62B292FB6A0008FDA73 /* iTunesLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C62A292FB69F008FDA73 /* iTunesLookup.swift */; };
 		6843C62D292FB6C8008FDA73 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C62C292FB6C8008FDA73 /* Extensions.swift */; };
-		6843C62F292FB6DE008FDA73 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6843C62E292FB6DD008FDA73 /* Launch Screen.storyboard */; };
 		6843C631292FB6F5008FDA73 /* LookupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C630292FB6F5008FDA73 /* LookupView.swift */; };
 		6843C633292FDA93008FDA73 /* DecryptReq.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C632292FDA93008FDA73 /* DecryptReq.swift */; };
 		6845694E2942A5D700BD53D8 /* OpenRealmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6845694D2942A5D700BD53D8 /* OpenRealmView.swift */; };
@@ -45,7 +44,6 @@
 		6843C620292FB587008FDA73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6843C62A292FB69F008FDA73 /* iTunesLookup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iTunesLookup.swift; sourceTree = "<group>"; };
 		6843C62C292FB6C8008FDA73 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		6843C62E292FB6DD008FDA73 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		6843C630292FB6F5008FDA73 /* LookupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LookupView.swift; sourceTree = "<group>"; };
 		6843C632292FDA93008FDA73 /* DecryptReq.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptReq.swift; sourceTree = "<group>"; };
 		6845694D2942A5D700BD53D8 /* OpenRealmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRealmView.swift; sourceTree = "<group>"; };
@@ -104,7 +102,6 @@
 				6843C61D292FB587008FDA73 /* Assets.xcassets */,
 				6843C61F292FB587008FDA73 /* Preview Content */,
 				68A33AF02940FD100024DFFE /* Database */,
-				6843C62E292FB6DD008FDA73 /* Launch Screen.storyboard */,
 				6843C619292FB586008FDA73 /* deCrippleApp.swift */,
 				6843C62C292FB6C8008FDA73 /* Extensions.swift */,
 				68100187293A925A00418B40 /* CustomLookups.swift */,
@@ -253,7 +250,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6843C62F292FB6DE008FDA73 /* Launch Screen.storyboard in Resources */,
 				6843C621292FB587008FDA73 /* Preview Assets.xcassets in Resources */,
 				68A33AEC2940F4E30024DFFE /* Realm.plist in Resources */,
 				6843C61E292FB587008FDA73 /* Assets.xcassets in Resources */,
@@ -423,7 +419,6 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2023 DecryptKit Team, Some Rights Reserved.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -463,7 +458,6 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2023 DecryptKit Team, Some Rights Reserved.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
