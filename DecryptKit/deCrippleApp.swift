@@ -27,9 +27,9 @@ let realmApp = App(
 
 @main
 struct deCrippleApp: SwiftUI.App {
-  
+
   @StateObject var errorHandler = ErrorHandler(app: realmApp)
-  
+
   var body: some Scene {
     WindowGroup {
       ContentView(app: realmApp)
@@ -39,11 +39,6 @@ struct deCrippleApp: SwiftUI.App {
           Button("OK", role: .cancel) { errorHandler.error = nil }
         } message: {
           Text(errorHandler.error?.localizedDescription ?? "")
-        }
-        .onAppear {
-          if let path = Realm.Configuration.defaultConfiguration.fileURL?.absoluteString {
-            debugPrint(path)
-          }
         }
     }
   }

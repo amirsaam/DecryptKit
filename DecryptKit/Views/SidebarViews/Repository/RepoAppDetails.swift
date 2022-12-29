@@ -80,11 +80,7 @@ struct InAppStore: View {
       if !DataCache.instance.hasData(forKey: appBundleID) {
         resolveLookupData(appBundleID)
       }
-      do {
-        lookedup = try DataCache.instance.readCodable(forKey: appBundleID)
-      } catch {
-        print("Read error \(error.localizedDescription)")
-      }
+      lookedup = try? DataCache.instance.readCodable(forKey: appBundleID)
     }
   }
 }

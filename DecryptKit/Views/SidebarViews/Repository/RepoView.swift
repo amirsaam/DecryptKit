@@ -51,11 +51,7 @@ struct RepoView: View {
                       DataCache.instance.clean(byKey: "cachedSourceData")
                       try? await Task.sleep(nanoseconds: 5000000000)
                       await resolveSourceData()
-                      do {
-                        sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
-                      } catch {
-                        print("Read error \(error.localizedDescription)")
-                      }
+                      sourceData = try? DataCache.instance.readCodable(forKey: "cachedSourceData")
                     }
                   } label: {
                     Image(systemName: "arrow.clockwise")

@@ -50,11 +50,7 @@ struct OpenRealmView: View {
       .task(priority: .high) {
         await doAddUser()
         await resolveSourceData()
-        do {
-          sourceData = try DataCache.instance.readCodable(forKey: "cachedSourceData")
-        } catch {
-          print("Read error \(error.localizedDescription)")
-        }
+        sourceData = try? DataCache.instance.readCodable(forKey: "cachedSourceData")
       }
     case .progress(let progress):
       ZStack {

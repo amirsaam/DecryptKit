@@ -25,6 +25,7 @@
 		685B3EE3293292130010E24D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C61B292FB586008FDA73 /* ContentView.swift */; };
 		685D098B2942121D00AFD730 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098A2942121D00AFD730 /* MainView.swift */; };
 		685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098D29422D0A00AFD730 /* AccountingView.swift */; };
+		688774E8295DBF0100E9D8A2 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 688774E7295DBF0100E9D8A2 /* Sparkle */; };
 		68A33AEC2940F4E30024DFFE /* Realm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68A33AEB2940F4E30024DFFE /* Realm.plist */; };
 		68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF12940FDA50024DFFE /* SourceData.swift */; };
 		68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF42941045B0024DFFE /* RealmConfig.swift */; };
@@ -68,6 +69,7 @@
 				6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */,
 				683E3674294E80A900B1DAA7 /* DataCache in Frameworks */,
 				6823E625293FDFC3007E5438 /* Realm in Frameworks */,
+				688774E8295DBF0100E9D8A2 /* Sparkle in Frameworks */,
 				6843C629292FB636008FDA73 /* Neumorphic in Frameworks */,
 				6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */,
 			);
@@ -201,6 +203,7 @@
 				6823E624293FDFC3007E5438 /* Realm */,
 				6823E626293FDFC3007E5438 /* RealmSwift */,
 				683E3673294E80A900B1DAA7 /* DataCache */,
+				688774E7295DBF0100E9D8A2 /* Sparkle */,
 			);
 			productName = deCripple;
 			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
@@ -235,6 +238,7 @@
 				68100189293A982B00418B40 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */,
+				688774E6295DBF0100E9D8A2 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = 6843C617292FB586008FDA73 /* Products */;
 			projectDirPath = "";
@@ -534,6 +538,14 @@
 				minimumVersion = 2.0.5;
 			};
 		};
+		688774E6295DBF0100E9D8A2 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -561,6 +573,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6843C627292FB636008FDA73 /* XCRemoteSwiftPackageReference "neumorphic" */;
 			productName = Neumorphic;
+		};
+		688774E7295DBF0100E9D8A2 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 688774E6295DBF0100E9D8A2 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
