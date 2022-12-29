@@ -6,7 +6,7 @@
     <img src="DecryptKit.png" alt="Logo" width="120">
   </a>
 
-  <h3 align="center">deCripple</h3>
+  <h3 align="center">DecryptKit</h3>
 
   <p align="center">
     "Unlock the full potential of your iOS apps with our decryption service."
