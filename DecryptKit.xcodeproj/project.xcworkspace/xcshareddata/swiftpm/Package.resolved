@@ -37,15 +37,6 @@
       }
     },
     {
-      "identity" : "sparkle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sparkle-project/Sparkle",
-      "state" : {
-        "revision" : "9d85a02fe7916caa7531847452c4933d331503a5",
-        "version" : "2.3.1"
-      }
-    },
-    {
       "identity" : "swiftui-cached-async-image",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lorenzofiamingo/swiftui-cached-async-image",

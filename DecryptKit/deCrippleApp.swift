@@ -15,15 +15,15 @@ let defaults = UserDefaults.standard
 
 /// Load app config details from a Realm.plist we generated
 let realmAppConfig = loadRealmAppConfig()
-let realmApp = App(
-  id: realmAppConfig.appId,
-  configuration: AppConfiguration(
-    baseURL: realmAppConfig.baseUrl,
-    transport: nil,
-    localAppName: nil,
-    localAppVersion: nil
-  )
+let appConfiguration = AppConfiguration(
+  baseURL: realmAppConfig.baseUrl,
+  transport: nil,
+  localAppName: nil,
+  localAppVersion: nil,
+  defaultRequestTimeoutMS: 30000
 )
+@MainActor
+let realmApp = App(id: realmAppConfig.appId, configuration: appConfiguration)
 
 @main
 struct deCrippleApp: SwiftUI.App {
