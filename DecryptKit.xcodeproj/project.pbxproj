@@ -109,7 +109,6 @@
 				68100187293A925A00418B40 /* CustomLookups.swift */,
 				6843C61B292FB586008FDA73 /* ContentView.swift */,
 				685D098C29422B4A00AFD730 /* Views */,
-				687EEC672961DBCC00A340B4 /* Patreon */,
 				68A33AF32940FE3E0024DFFE /* Functions */,
 			);
 			path = DecryptKit;
@@ -133,14 +132,6 @@
 				68A33AEF2940FBFA0024DFFE /* SidebarViews */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		687EEC672961DBCC00A340B4 /* Patreon */ = {
-			isa = PBXGroup;
-			children = (
-				687EEC652961D4F700A340B4 /* PatreonAPI.swift */,
-			);
-			path = Patreon;
 			sourceTree = "<group>";
 		};
 		68A33AED2940FBCB0024DFFE /* Repository */ = {
@@ -183,6 +174,7 @@
 		68A33AF32940FE3E0024DFFE /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				687EEC652961D4F700A340B4 /* PatreonAPI.swift */,
 				68A33AF12940FDA50024DFFE /* SourceData.swift */,
 				6843C62A292FB69F008FDA73 /* iTunesLookup.swift */,
 				6843C632292FDA93008FDA73 /* DecryptReq.swift */,
