@@ -25,5 +25,6 @@ func loadRealmAppConfig() -> RealmAppConfig {
   let realmPropertyList = try! PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
   let appId = realmPropertyList["appId"]! as! String
   let baseUrl = realmPropertyList["baseUrl"]! as! String
+  setenv("REALM_DISABLE_METADATA_ENCRYPTION", "1", 1)
   return RealmAppConfig(appId: appId, baseUrl: baseUrl)
 }

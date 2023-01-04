@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct PatreonData {
+  let clientID = ""
+  let clientSecret = ""
+  let accessToken = ""
+  let refreshToken = ""
+  let campaignID = ""
+}
