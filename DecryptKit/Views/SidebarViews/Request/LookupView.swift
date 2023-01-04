@@ -18,21 +18,21 @@ struct LookupView: View {
   
   @ObservedResults(deStat.self) private var stats
   @State private var newStat = deStat()
+  @ObservedResults(deReq.self) private var requests
+  @State private var newReq = deReq()
+  @State private var requestProgress = false
+  @State private var requestSubmitted = false
+  @State private var deResult: String?
 
-  @State private var lookedup: ITunesResponse?
-  @State private var deResult: deCrippleResult?
-  
   @State private var searchSuccess: Bool = false
-  
   @State private var inputID: String = ""
   @State private var appAttempts: Int = 0
 
+  @State private var lookedup: ITunesResponse?
   @State private var idIsValid: Bool = false
   @State private var idIsPaid: Bool = false
   @State private var idOnSource: Bool = false
-  
-  @State private var promoCode: String = ""
-  
+
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -74,10 +74,10 @@ struct LookupView: View {
                     if !idIsPaid && !idOnSource {
                       TextField("Enter Your Email Address", text: $userEmailAddress)
                         .disabled(true)
-                      Divider()
-                      TextField("Promo Code (Optional)", text: $promoCode)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled(true)
+                      if requestSubmitted {
+                        Divider()
+                        Text(deResult ?? "")
+                      }
                     }
                     HStack {
                       Button {
@@ -85,6 +85,7 @@ struct LookupView: View {
                           inputID = ""
                           searchSuccess = false
                           lookedup = nil
+                          requestSubmitted = false
                         }
                       } label: {
                         Label("Clear", systemImage: "xmark")
@@ -97,11 +98,28 @@ struct LookupView: View {
                       )
                       Spacer()
                       Button {
-                        // doRequest(lookedup?.results[0].bundleId ?? "", emailAddress, promoCode)
-                        doRequest(lookedup?.results[0].bundleId ?? "", userEmailAddress)
+                        Task {
+                          withAnimation {
+                            requestProgress = true
+                          }
+                          try? await Task.sleep(nanoseconds: 3000000000)
+                          withAnimation {
+                            requestProgress = false
+                            doRequest((lookedup?.results[0].bundleId)!)
+                            requestSubmitted = true
+                          }
+                        }
                       } label: {
-                        Label("Send Request", systemImage: "paperplane.fill")
-                          .font(.caption2)
+                        if requestProgress {
+                          Label("Submitting", systemImage: "circle.dotted")
+                            .font(.caption2)
+                        } else if requestSubmitted {
+                          Label("Submited", systemImage: "checkmark")
+                            .font(.caption2)
+                        } else {
+                          Label("Request", systemImage: "paperplane.fill")
+                            .font(.caption2)
+                        }
                       }
                       .softButtonStyle(
                         RoundedRectangle(cornerRadius: 7.5),
@@ -112,6 +130,7 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
+                      .disabled(requestProgress || requestSubmitted)
                     }
                     .padding(.top)
                   } else {
@@ -219,11 +238,30 @@ struct LookupView: View {
       }
     }
   }
-  // func doRequest(_ id: String, _ email: String, _ promo: String) {
-  func doRequest(_ id: String, _ email: String) {
-    Task {
-      // deCripple = await reqDecrypt(id, email, promo)
-      deResult = await reqDecrypt(id, email)
+  func doRequest(_ id: String) {
+    let realm = requests.realm!.thaw()
+    let thawedReqs = requests.thaw()!
+    let request = thawedReqs.where {
+      $0.requestedId.contains(id)
+    }
+    if request.isEmpty {
+      debugPrint("Appending request for \(id) to deReq")
+      newReq.requestedId = lookedup?.results[0].bundleId ?? ""
+      newReq.requestersEmail.append(userEmailAddress)
+      $requests.append(newReq)
+      deResult = "Your request has been added to queue"
+    } else {
+      let reqToUpdate = request[0]
+      if reqToUpdate.requestersEmail.contains(userEmailAddress) {
+        debugPrint("\(userEmailAddress) already requested \(id)")
+        deResult = "Your request is already in queue"
+      } else {
+        debugPrint("Appending \(userEmailAddress) to requests for \(id)")
+        try! realm.write {
+          reqToUpdate.requestersEmail.append(userEmailAddress)
+        }
+        deResult = "Your request has been added to queue"
+      }
     }
   }
 }
