@@ -149,7 +149,7 @@ struct LookupView: View {
       }
     }
     .task {
-      sourceData = try? DataCache.instance.readCodable(forKey: "cachedSourceData")
+      sourceData = try? cache.readCodable(forKey: "cachedSourceData")
     }
   }
   func searchApp() {

@@ -50,7 +50,7 @@ struct OpenRealmView: View {
       .task(priority: .high) {
         await doAddUser()
         await resolveSourceData()
-        sourceData = try? DataCache.instance.readCodable(forKey: "cachedSourceData")
+        sourceData = try? cache.readCodable(forKey: "cachedSourceData")
       }
     case .progress(let progress):
       ZStack {

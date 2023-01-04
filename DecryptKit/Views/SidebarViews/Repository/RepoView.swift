@@ -48,10 +48,10 @@ struct RepoView: View {
                     Task {
                       progressAmount = 0
                       sourceData = nil
-                      DataCache.instance.clean(byKey: "cachedSourceData")
+                      cache.clean(byKey: "cachedSourceData")
                       try? await Task.sleep(nanoseconds: 5000000000)
                       await resolveSourceData()
-                      sourceData = try? DataCache.instance.readCodable(forKey: "cachedSourceData")
+                      sourceData = try? cache.readCodable(forKey: "cachedSourceData")
                     }
                   } label: {
                     Image(systemName: "arrow.clockwise")

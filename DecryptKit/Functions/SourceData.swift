@@ -35,7 +35,7 @@ func getSourceData() async -> [deCrippleSource]? {
 
 func resolveSourceData() async {
   let refreshedSourceData: [deCrippleSource]? = await getSourceData()
-  try? DataCache.instance.write(codable: refreshedSourceData, forKey: "cachedSourceData")
+  try? cache.write(codable: refreshedSourceData, forKey: "cachedSourceData")
   debugPrint("SourceData Refreshed")
   if let data = refreshedSourceData {
     data.forEach { app in

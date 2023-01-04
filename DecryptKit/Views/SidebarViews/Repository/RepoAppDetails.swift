@@ -77,10 +77,10 @@ struct InAppStore: View {
       .font(.caption)
     }
     .task {
-      if !DataCache.instance.hasData(forKey: appBundleID) {
+      if !cache.hasData(forKey: appBundleID) {
         resolveLookupData(appBundleID)
       }
-      lookedup = try? DataCache.instance.readCodable(forKey: appBundleID)
+      lookedup = try? cache.readCodable(forKey: appBundleID)
     }
   }
 }

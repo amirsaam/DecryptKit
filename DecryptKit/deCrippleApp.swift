@@ -8,10 +8,12 @@
 import SwiftUI
 import Neumorphic
 import RealmSwift
+import DataCache
 
 let mainColor = Color.Neumorphic.main
 let secondaryColor = Color.Neumorphic.secondary
 let defaults = UserDefaults.standard
+let cache = DataCache.instance
 
 /// Load app config details from a Realm.plist we generated
 let realmAppConfig = loadRealmAppConfig()
