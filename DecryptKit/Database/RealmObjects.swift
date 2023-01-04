@@ -26,4 +26,5 @@ class deUser: Object, ObjectKeyIdentifiable {
   @Persisted(primaryKey: true) var _id: ObjectId
   @Persisted var userId: String
   @Persisted var userEmail: String
+  @Persisted var userTier: Int
 }

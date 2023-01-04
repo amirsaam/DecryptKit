@@ -15,6 +15,7 @@ struct MainView: View {
 
   @State var user: User
   @Binding var userEmailAddress: String
+  @Binding var userTier: Int
   @Binding var sourceData: [deCrippleSource]?
 
   @State private var showSafari: Bool = false

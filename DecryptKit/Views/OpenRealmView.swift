@@ -20,6 +20,7 @@ struct OpenRealmView: View {
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
   @State private var userEmailAddress: String = ""
+  @State private var userTier: Int = 0
 
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
@@ -45,6 +46,7 @@ struct OpenRealmView: View {
     case .open(let realm):
       MainView(user: user,
                userEmailAddress: $userEmailAddress,
+               userTier: $userTier,
                sourceData: $sourceData)
       .environment(\.realm, realm)
       .task(priority: .high) {
@@ -76,7 +78,9 @@ struct OpenRealmView: View {
           print("Failed to refresh custom data: \(error.localizedDescription)")
         case .success(let customData):
           debugPrint(user.customData["userEmail"]!!)
+          debugPrint(user.customData["userTier"]!!)
           userEmailAddress = customData["userEmail"] as! String
+          userTier = customData["userTier"] as! Int
         }
       }
     } else {
@@ -84,6 +88,7 @@ struct OpenRealmView: View {
       userEmailAddress = defaults.string(forKey: "Email") ?? ""
       newUser.userId = user.id
       newUser.userEmail = userEmailAddress
+      newUser.userTier = 0
       $users.append(newUser)
     }
   }
