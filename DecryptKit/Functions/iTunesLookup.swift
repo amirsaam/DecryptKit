@@ -74,7 +74,9 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
   debugPrint("\(url)")
 
   do {
-    let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
+    let (data, _) = try await URLSession.shared.data(
+      for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
+    )
     let decoder = JSONDecoder()
     let jsonResult: ITunesResponse = try decoder.decode(ITunesResponse.self, from: data)
     if jsonResult.resultCount > 0 {

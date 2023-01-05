@@ -48,6 +48,7 @@ struct RepoView: View {
                     Task {
                       progressAmount = 0
                       sourceData = nil
+                      URLCache.shared.removeAllCachedResponses()
                       cache.clean(byKey: "cachedSourceData")
                       try? await Task.sleep(nanoseconds: 5000000000)
                       await resolveSourceData()

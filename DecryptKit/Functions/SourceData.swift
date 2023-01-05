@@ -21,7 +21,9 @@ func getSourceData() async -> [deCrippleSource]? {
   guard let url = URL(string: "https://amrsm.ir/decrypted.json") else { return nil }
 
   do {
-    let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
+    let (data, _) = try await URLSession.shared.data(
+      for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
+    )
     let decoder = JSONDecoder()
     let jsonResult: [deCrippleSource] = try decoder.decode([deCrippleSource].self, from: data)
     debugPrint("SourceData Fetched")
