@@ -11,7 +11,7 @@ import RealmSwift
 
 struct MainView: View {
   
-  @Environment(\.openURL) var openURL
+  @Environment(\.openURL) private var openURL
 
   @State var user: User
   @Binding var userEmailAddress: String

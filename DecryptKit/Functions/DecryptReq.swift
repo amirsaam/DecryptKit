@@ -28,7 +28,7 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
       ]
 
   guard let url = urlComponents.url else { return nil }
-  debugPrint("\(url)")
+  debugPrint(url)
 
   do {
     let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
