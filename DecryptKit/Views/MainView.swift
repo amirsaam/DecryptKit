@@ -18,7 +18,6 @@ struct MainView: View {
   @Binding var userTier: Int
   @Binding var sourceData: [deCrippleSource]?
 
-  @State private var showSafari: Bool = false
   @State private var showRepo: Bool = false
   @State private var showLookup: Bool = false
   
@@ -102,14 +101,10 @@ struct MainView: View {
                     .font(.caption)
                     .foregroundColor(.red)
                     .onTapGesture {
-                      showSafari.toggle()
-                    }
-                    .fullScreenCover(
-                      isPresented: $showSafari,
-                      content: {
-                        SFSafariViewWrapper(url: URL(string: "https://link.decryptkit.xyz/gEhhxc")!)
+                      if let url = URL(string: "https://link.decryptkit.xyz/gEhhxc") {
+                        openURL(url)
                       }
-                    )
+                    }
                   Text("is the only option")
                     .font(.footnote)
                 }
