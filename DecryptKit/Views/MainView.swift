@@ -134,14 +134,15 @@ struct MainView: View {
     }
     // Hnadling URL Schema callback
     .onOpenURL { url in
-      var dict = [String:String]()
-      let components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-      if let queryItems = components.queryItems {
-          for item in queryItems {
-              dict[item.name] = item.value!
-          }
+      let callback = url.params()
+      if callback.isEmpty {
+        print(url)
+      } else {
+        let code = callback["code"]
+        let state = callback["state"]
+        print(url)
+        print(code ?? "no code", state ?? "no state")
       }
-      print(dict)
     }
   }
 }

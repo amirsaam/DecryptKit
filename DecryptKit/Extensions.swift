@@ -16,14 +16,20 @@ extension Color {
   static let redNeuLS = Color("redNeuLS")
 }
 
-/// In-app Broswer
-struct SFSafariViewWrapper: UIViewControllerRepresentable {
-  let url: URL
-  func makeUIViewController(context: UIViewControllerRepresentableContext<Self>) -> SFSafariViewController {
-    return SFSafariViewController(url: url)
-  }
-  func updateUIViewController(_ uiViewController: SFSafariViewController, context: UIViewControllerRepresentableContext<SFSafariViewWrapper>) {
-    return
+extension URL {
+  func params() -> [String:Any] {
+    var dict = [String:Any]()
+
+    if let components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
+      if let queryItems = components.queryItems {
+        for item in queryItems {
+          dict[item.name] = item.value!
+        }
+      }
+      return dict
+    } else {
+      return [:]
+    }
   }
 }
 
