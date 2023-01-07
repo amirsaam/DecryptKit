@@ -16,10 +16,10 @@ extension Color {
   static let redNeuLS = Color("redNeuLS")
 }
 
+/// Parse any URL for its Query Items
 extension URL {
-  func params() -> [String:Any] {
-    var dict = [String:Any]()
-
+  func params() -> [String : Any] {
+    var dict = [String : Any]()
     if let components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
       if let queryItems = components.queryItems {
         for item in queryItems {
