@@ -20,7 +20,7 @@ struct MainView: View {
 
   @State private var showRepo: Bool = false
   @State private var showLookup: Bool = false
-  
+  let client=PatreonClient()
   var body: some View {
     ZStack {
       mainColor
@@ -101,7 +101,7 @@ struct MainView: View {
                     .font(.caption)
                     .foregroundColor(.red)
                     .onTapGesture {
-                      if let url = URL(string: "https://link.decryptkit.xyz/gEhhxc") {
+                      if let url = URL(string: "https://www.patreon.com/oauth2/authorize?response_type=code&client_id=\(client.clientID)&redirect_uri=\(client.redirectURI)") {
                         openURL(url)
                       }
                     }
