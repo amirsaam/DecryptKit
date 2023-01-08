@@ -18,9 +18,15 @@ struct MainView: View {
   @Binding var userTier: Int
   @Binding var sourceData: [deCrippleSource]?
 
-  @State private var showRepo: Bool = false
-  @State private var showLookup: Bool = false
-  let client=PatreonClient()
+  @State private var noPlayCover = false
+  @State private var showRepo = false
+  @State private var showLookup = false
+  @State private var showPatreon = false
+  @State private var isDeeplink = false
+
+  @State private var patreonCallbackCode: String = ""
+  @State private var patreonCallbackState: String = ""
+
   var body: some View {
     ZStack {
       mainColor
@@ -50,8 +56,12 @@ struct MainView: View {
                 .font(.subheadline)
                 HStack(alignment: .center, spacing: 25.0) {
                   Button {
-                    if let url = URL(string: "playcover:source?action=add&url=https://repo.decryptkit.xyz/ZGVjcnlwdGVkLmpzb24=") {
-                      openURL(url)
+                    if let url = playcoverURL {
+                      if UIApplication.shared.canOpenURL(url) {
+                        openURL(url)
+                      } else {
+                        noPlayCover = true
+                      }
                     }
                   } label: {
                     Label("Add Source to PlayCover", systemImage: "airplane.departure")
@@ -64,9 +74,19 @@ struct MainView: View {
                     lightShadowColor: .redNeuLS,
                     pressedEffect: .flat
                   )
+                  .alert("PlayCover is not Installed!", isPresented: $noPlayCover) {
+                    Button("Install PlayCover", role: .destructive) {
+                      if let url = URL(string: "https://github.com/PlayCover/PlayCover/releases") {
+                        openURL(url)
+                      }
+                    }
+                    Button("Cancel", role: .cancel) { return }
+                  } message: {
+                    Text("You need to have PlayCover installed in order to use DecryptKit IPA Source.")
+                  }
                   Button {
                     withAnimation(.spring()) {
-                      showLookup = false
+                      (showLookup, showPatreon) = (false, false)
                       showRepo.toggle()
                     }
                   } label: {
@@ -76,10 +96,10 @@ struct MainView: View {
                     RoundedRectangle(cornerRadius: 15),
                     pressedEffect: .flat
                   )
-                  .disabled(showRepo ? true : false)
+                  .disabled(showRepo)
                   Button {
                     withAnimation(.spring()) {
-                      showRepo = false
+                      (showRepo, showPatreon) = (false, false)
                       showLookup.toggle()
                     }
                   } label: {
@@ -89,7 +109,7 @@ struct MainView: View {
                     RoundedRectangle(cornerRadius: 15),
                     pressedEffect: .flat
                   )
-                  .disabled(showLookup ? true : false)
+                  .disabled(showLookup)
                 }
                 .padding(.top)
               }
@@ -97,14 +117,17 @@ struct MainView: View {
                 HStack {
                   Text("If you wish help this repo on maintain costs")
                     .font(.footnote)
-                  Label("Patreon", systemImage: "giftcard.fill")
-                    .font(.caption)
-                    .foregroundColor(.red)
-                    .onTapGesture {
-                      if let url = URL(string: "https://www.patreon.com/oauth2/authorize?response_type=code&client_id=\(client.clientID)&redirect_uri=\(client.redirectURI)") {
-                        openURL(url)
-                      }
+                  Button {
+                    withAnimation(.spring()) {
+                      (showRepo, showLookup) = (false, false)
+                      showPatreon.toggle()
                     }
+                  } label: {
+                    Label("Patreon", systemImage: "giftcard.fill")
+                      .font(.caption)
+                      .foregroundColor(.red)
+                  }
+                  .disabled(showPatreon)
                   Text("is the only option")
                     .font(.footnote)
                 }
@@ -121,6 +144,11 @@ struct MainView: View {
             } else if showRepo {
               RepoView(showRepo: $showRepo,
                        sourceData: $sourceData)
+            } else if showPatreon {
+              PatreonView(isDeeplink: $isDeeplink,
+                          showPatreon: $showPatreon,
+                          callbackCode: $patreonCallbackCode,
+                          callbackState: $patreonCallbackState)
             } else {
               VStack {
                 Creators()
@@ -134,14 +162,16 @@ struct MainView: View {
     }
     // Hnadling URL Schema callback
     .onOpenURL { url in
+      isDeeplink = false
       let callback = url.params()
       if callback.isEmpty {
         print(url)
       } else {
-        let code = callback["code"]
-        let state = callback["state"]
         print(url)
-        print(code ?? "no code", state ?? "no state")
+        (showRepo, showLookup) = (false, false)
+        patreonCallbackCode = callback["code"] as! String
+        patreonCallbackState = callback["state"] as! String
+        (isDeeplink, showPatreon) = (true, true)
       }
     }
   }

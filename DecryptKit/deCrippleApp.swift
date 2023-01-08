@@ -14,6 +14,7 @@ let mainColor = Color.Neumorphic.main
 let secondaryColor = Color.Neumorphic.secondary
 let defaults = UserDefaults.standard
 let cache = DataCache.instance
+let playcoverURL = URL(string: "playcover:source?action=add&url=https://amrsm.ir/decrypted.json")
 
 /// Load app config details from a Realm.plist we generated
 let realmAppConfig = loadRealmAppConfig()

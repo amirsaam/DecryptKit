@@ -12,7 +12,6 @@ struct deCrippleResult: Codable {
   var proximity: Int
 }
 
-//func reqDecrypt(_ id: String, _ email: String, _ promo: String) async -> deCrippleResult? {
 func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
 
   var urlComponents = URLComponents()
@@ -21,10 +20,8 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
   urlComponents.host = "run.decryptkit.xyz"
   urlComponents.path = "/decrypt"
   urlComponents.queryItems = [
-    //    URLQueryItem(name: "service", value: "decripple"),
         URLQueryItem(name: "bundleID", value: id),
         URLQueryItem(name: "email", value: email)
-    //    URLQueryItem(name: "promo", value: promo)
       ]
 
   guard let url = urlComponents.url else { return nil }
