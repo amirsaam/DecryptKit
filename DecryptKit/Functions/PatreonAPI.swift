@@ -13,7 +13,7 @@ struct PatreonClient {
   let creatorAccessToken = "3YVSAbYWvmtWCEmVItQaXjZGyHqYgGy8_w4mVV_47h4"
   let creatorRefreshToken = "NjmDj3mZ1b5ae7zcNKZD6cmZRtfsEdddCnRvaywliL4"
   let campaignID = "9760149"
-  let redirectURL = "deCripple://patreon?"
+  let redirectURL = "deCripple://patreon"
   let redirectURI = "https://decryptkit.xyz/patreon/"
 }
 
