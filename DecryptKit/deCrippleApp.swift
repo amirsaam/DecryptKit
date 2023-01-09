@@ -38,8 +38,10 @@ struct deCrippleApp: SwiftUI.App {
       ContentView(app: realmApp)
         .accentColor(.red)
         .environmentObject(errorHandler)
-        .alert(Text("Error"), isPresented: .constant(errorHandler.error != nil)) {
-          Button("OK", role: .cancel) { errorHandler.error = nil }
+        .alert("A Wild Error Appeared!", isPresented: .constant(errorHandler.error != nil)) {
+          Button("OK", role: .cancel) {
+            errorHandler.error = nil
+          }
         } message: {
           Text(errorHandler.error?.localizedDescription ?? "")
         }
@@ -49,6 +51,7 @@ struct deCrippleApp: SwiftUI.App {
 
 final class ErrorHandler: ObservableObject {
   @Published var error: Swift.Error?
+
   init(app: RealmSwift.App) {
     // Sync Manager listens for sync errors.
     app.syncManager.errorHandler = { syncError, syncSession in

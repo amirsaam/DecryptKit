@@ -79,7 +79,8 @@ struct LookupView: View {
                         Divider()
                         Text(deResult ?? "")
                         if !serviceIsOn {
-                          Label("Decryption may take longer due to heavy load!", systemImage: "exclamationmark.triangle.fill")
+                          Label("Decryption may take longer due to heavy load!",
+                                systemImage: "exclamationmark.triangle.fill")
                             .font(.caption)
                             .foregroundColor(.red)
                             .padding(.top, 1)

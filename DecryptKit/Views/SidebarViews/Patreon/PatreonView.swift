@@ -7,13 +7,18 @@
 
 import SwiftUI
 import Neumorphic
+import RealmSwift
 
 struct PatreonView: View {
 
+  @State var user: User
   @Binding var isDeeplink: Bool
   @Binding var showPatreon: Bool
   @Binding var callbackCode: String
   @Binding var callbackState: String
+
+  @ObservedResults(deUser.self) private var users
+  @State private var newUser = deUser()
 
   @State private var patreon = Patreon()
 
@@ -54,7 +59,15 @@ struct PatreonView: View {
     }
   }
   func handleCallback(_ text: String) {
-    print(text, callbackCode, callbackState)
+    let realm = users.realm!.thaw()
+    let thawedUsers = users.thaw()!
+    let currentUser = thawedUsers.where {
+      $0.userId == user.id
+    }
+    let userToUpdate = currentUser[0]
+    try! realm.write {
+      userToUpdate.userPatreonToken = callbackCode
+    }
     isDeeplink = false
   }
 }

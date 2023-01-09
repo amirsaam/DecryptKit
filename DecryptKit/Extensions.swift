@@ -70,11 +70,11 @@ func isValidEmailAddress(emailAddressString: String) -> Bool {
 
 /// Check if an String contains only Number
 extension String {
-    var isNumber: Bool {
-        return self.range(
-            of: "^[0-9]*$",
-            options: .regularExpression) != nil
-    }
+  var isNumber: Bool {
+    return self.range(
+      of: "^[0-9]*$",
+      options: .regularExpression) != nil
+  }
 }
 
 /// Defining decryption request types

@@ -32,6 +32,7 @@ struct ContentView: View {
         })
       OpenRealmView(user: user)
         .environment(\.realmConfiguration, config)
+        .environmentObject(errorHandler)
     } else {
       AccountingView()
     }

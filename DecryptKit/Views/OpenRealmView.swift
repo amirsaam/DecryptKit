@@ -5,6 +5,7 @@
 //  Created by Amir Mohammadi on 9/18/1401 AP.
 //
 
+import Foundation
 import SwiftUI
 import RealmSwift
 import DataCache
@@ -16,11 +17,15 @@ struct OpenRealmView: View {
   
   // Configuration used to open the realm.
   @Environment(\.realmConfiguration) private var config
+  @EnvironmentObject var errorHandler: ErrorHandler
   
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
-  @State private var userEmailAddress: String = ""
-  @State private var userTier: Int = 0
+  @State private var userUUID = ""
+  @State private var userIsBanned = false
+  @State private var userEmailAddress = ""
+  @State private var userTier = 0
+  @State private var userPatreonToken = ""
 
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
@@ -45,10 +50,13 @@ struct OpenRealmView: View {
       }
     case .open(let realm):
       MainView(user: user,
+               userUUID: $userUUID,
+               userIsBanned: $userIsBanned,
                userEmailAddress: $userEmailAddress,
                userTier: $userTier,
                sourceData: $sourceData)
       .environment(\.realm, realm)
+      .environmentObject(errorHandler)
       .task(priority: .high) {
         await doAddUser()
         await resolveSourceData()
@@ -71,24 +79,29 @@ struct OpenRealmView: View {
     }
   }
   func doAddUser() async {
-    if user.customData["userEmail"] != nil {
+    if user.customData["userUUID"] != nil {
       user.refreshCustomData { (result) in
         switch result {
         case .failure(let error):
           print("Failed to refresh custom data: \(error.localizedDescription)")
         case .success(let customData):
-          debugPrint(user.customData["userEmail"]!!)
-          debugPrint(user.customData["userTier"]!!)
+          print("Succesfully refreshed custom data")
+          userUUID = customData["userUUID"] as! String
+          userIsBanned = customData["userIsBanned"] as! Bool
           userEmailAddress = customData["userEmail"] as! String
           userTier = customData["userTier"] as! Int
+          userPatreonToken = customData["userPatreonToken"] as! String
         }
       }
     } else {
-      debugPrint("Appending user.customData to Realm")
       userEmailAddress = defaults.string(forKey: "Email") ?? ""
+      debugPrint("Appending user.customData to Realm")
       newUser.userId = user.id
+      newUser.userUUID = UIDevice.current.identifierForVendor?.uuidString ?? "Not Found"
+      newUser.userIsBanned = false
       newUser.userEmail = userEmailAddress
       newUser.userTier = 0
+      newUser.userPatreonToken = "Not Logged In to Patreon Yet"
       $users.append(newUser)
     }
   }
