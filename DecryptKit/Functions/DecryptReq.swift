@@ -12,6 +12,14 @@ struct deCrippleResult: Codable {
   var proximity: Int
 }
 
+func isServiceRunning() async -> Bool {
+  guard let url = URL(string: "https://run.decryptkit.xyz") else {
+    fatalError("Status check URL is invalid!")
+  }
+  let (_, response) = try! await URLSession.shared.data(from: url)
+  return (response as? HTTPURLResponse)?.statusCode == 200
+}
+
 func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
 
   var urlComponents = URLComponents()

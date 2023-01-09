@@ -22,6 +22,7 @@ struct LookupView: View {
   @State private var newReq = deReq()
   @State private var requestProgress = false
   @State private var requestSubmitted = false
+  @State private var serviceIsOn = false
   @State private var deResult: String?
 
   @State private var searchSuccess: Bool = false
@@ -77,6 +78,12 @@ struct LookupView: View {
                       if requestSubmitted {
                         Divider()
                         Text(deResult ?? "")
+                        if !serviceIsOn {
+                          Label("Decryption may take longer due to heavy load!", systemImage: "exclamationmark.triangle.fill")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .padding(.top, 1)
+                        }
                       }
                     }
                     HStack {
@@ -239,6 +246,9 @@ struct LookupView: View {
     }
   }
   func doRequest(_ id: String) {
+    Task {
+      serviceIsOn = await isServiceRunning()
+    }
     let realm = requests.realm!.thaw()
     let thawedReqs = requests.thaw()!
     let request = thawedReqs.where {
