@@ -9,6 +9,7 @@ import SwiftUI
 import Neumorphic
 import RealmSwift
 
+// MARK: - DecryptKit Branding
 struct BrandInfo: View {
   @State var logoSize: CGFloat
   @State private var isRotating = 0.0
@@ -45,6 +46,7 @@ struct BrandInfo: View {
   }
 }
 
+// MARK: - DecryptKit People
 struct Creators: View {
   var body: some View {
     ZStack {
@@ -72,6 +74,7 @@ struct Creators: View {
   }
 }
 
+// MARK: - Sidebar Views Background
 struct SidebarBackground: View {
   var body: some View {
     Rectangle()
@@ -83,6 +86,7 @@ struct SidebarBackground: View {
   }
 }
 
+// MARK: - DecryptKit Errors
 struct ErrorMessage: View {
   @State var errorLog: String
   var body: some View {
@@ -92,6 +96,7 @@ struct ErrorMessage: View {
   }
 }
 
+// MARK: - Realm Errors
 struct RealmError: View {
     @State var error: Error
     var body: some View {

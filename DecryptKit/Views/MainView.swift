@@ -9,6 +9,7 @@ import SwiftUI
 import Neumorphic
 import RealmSwift
 
+// MARK: - View Struct
 struct MainView: View {
   
   @Environment(\.openURL) private var openURL
@@ -33,6 +34,7 @@ struct MainView: View {
   @State private var patreonCallbackCode: String = ""
   @State private var patreonCallbackState: String = ""
 
+// MARK: - View Body
   var body: some View {
     ZStack {
       mainColor
@@ -60,7 +62,7 @@ struct MainView: View {
             HStack(alignment: .center, spacing: geo.size.width * (0.25/10)) {
               VStack {
                 BrandInfo(logoSize: geo.size.width * (2/10))
-                LogoutButton()
+                SignOutButton()
                   .padding(.top, 1)
               }
               VStack(alignment: .leading, spacing: geo.size.width * (0.35/10)) {
@@ -186,7 +188,7 @@ struct MainView: View {
         }
       }
     }
-    // Hnadling URL Schema callback
+// MARK: - Hnadling URL Schema
     .onOpenURL { url in
       isDeeplink = false
       let callback = url.params()

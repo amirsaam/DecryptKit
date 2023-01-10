@@ -9,6 +9,7 @@ import SwiftUI
 import Neumorphic
 import RealmSwift
 
+// MARK: - Sign In/Up View Struct
 /// Log in or register users using email/password authentication
 struct AccountingView: View {
 
@@ -23,6 +24,7 @@ struct AccountingView: View {
   @State private var showProgress = false
   @State private var error: Error?
 
+// MARK: - Sign In/Up View Body
   var body: some View {
     ZStack {
       mainColor
@@ -117,7 +119,7 @@ struct AccountingView: View {
       }
     }
   }
-  /// Logs in with an existing user.
+// MARK: Sign In Function
   func login(email: String, password: String) async {
     defaults.set(email, forKey: "Email")
     do {
@@ -128,7 +130,7 @@ struct AccountingView: View {
       errorHandler.error = error
     }
   }
-  /// Registers a new user with the email/password authentication provider.
+// MARK: Sign Up Function
   func signUp(email: String, password: String) async {
     do {
       try await realmApp.emailPasswordAuth.registerUser(email: email, password: password)
@@ -141,18 +143,13 @@ struct AccountingView: View {
   }
 }
 
-
+// MARK: Sign Out View Struct
 /// Logout from the synchronized realm. Returns the user to the login/sign up screen.
-struct RealmLogoutError: Identifiable {
-  let id = UUID()
-  let errorText: String
-}
+struct SignOutButton: View {
 
-struct LogoutButton: View {
-
-  @State var isLoggingOut = false
+  @State var isSigningOut = false
   @State var error: Error?
-  @State var errorMessage: RealmLogoutError? = nil
+  @State var errorMessage: RealmSignOutError? = nil
   
   var body: some View {
     HStack {
@@ -160,17 +157,17 @@ struct LogoutButton: View {
         guard let user = realmApp.currentUser else {
           return
         }
-        isLoggingOut = true
+        isSigningOut = true
         Task {
           await logout(user: user)
-          isLoggingOut = false
+          isSigningOut = false
         }
       } label: {
         Text("Sign out")
           .font(.footnote)
           .textCase(.uppercase)
       }
-      .disabled(realmApp.currentUser == nil || isLoggingOut)
+      .disabled(realmApp.currentUser == nil || isSigningOut)
       .alert(item: $errorMessage) { errorMessage in
         Alert(
           title: Text("Failed to log out"),
@@ -178,20 +175,26 @@ struct LogoutButton: View {
           dismissButton: .cancel()
         )
       }
-      if isLoggingOut {
+      if isSigningOut {
         ProgressView()
           .padding(.leading)
       }
     }
   }
-  /// Asynchronously log the user out, or display an alert with an error if logout fails.
+// MARK: - Sign Out Function
   func logout(user: User) async {
     do {
       try await user.logOut()
       print("Successfully logged user out")
     } catch {
       print("Failed to log user out: \(error.localizedDescription)")
-      self.errorMessage = RealmLogoutError(errorText: error.localizedDescription)
+      self.errorMessage = RealmSignOutError(errorText: error.localizedDescription)
     }
   }
+}
+
+// MARK: - Sign Out Errors
+struct RealmSignOutError: Identifiable {
+  let id = UUID()
+  let errorText: String
 }

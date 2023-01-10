@@ -10,6 +10,7 @@ import Neumorphic
 import RealmSwift
 import DataCache
 
+// MARK: - View Struct
 struct LookupView: View {
   
   @Binding var showLookup: Bool
@@ -34,6 +35,7 @@ struct LookupView: View {
   @State private var idIsPaid: Bool = false
   @State private var idOnSource: Bool = false
 
+// MARK: - View Body
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -192,6 +194,7 @@ struct LookupView: View {
       }
     }
   }
+// MARK: - Get Lookup Function
   func doGetLookup(_ input: String) {
     Task {
       var id: String
@@ -216,6 +219,7 @@ struct LookupView: View {
       }
     }
   }
+// MARK: - Add Stat Function
   func doAddStat(_ id: String) {
     let realm = stats.realm!.thaw()
     let thawedStats = stats.thaw()!
@@ -246,6 +250,7 @@ struct LookupView: View {
       }
     }
   }
+// MARK: - Send Request Function
   func doRequest(_ id: String) {
     Task {
       serviceIsOn = await isServiceRunning()

@@ -8,7 +8,7 @@
 import SwiftUI
 import SafariServices
 
-/// Making custom colors availble as .color
+// MARK: - Custom Colours
 extension Color {
   static let invertNeuPC = Color("invertNeuPC")
   static let invertNeuSC = Color("invertNeuSC")
@@ -16,7 +16,7 @@ extension Color {
   static let redNeuLS = Color("redNeuLS")
 }
 
-/// Parse any URL for its Query Items
+// MARK: - Parse URL for Query Items
 extension URL {
   func params() -> [String : Any] {
     var dict = [String : Any]()
@@ -33,7 +33,7 @@ extension URL {
   }
 }
 
-/// Shaking animation
+// MARK: - Shaking animation
 struct Shake: GeometryEffect {
   var amount: CGFloat = 10
   var shakesPerUnit = 3
@@ -47,7 +47,7 @@ struct Shake: GeometryEffect {
   }
 }
 
-/// Email address validation function
+// MARK: - Validatie Email Address
 func isValidEmailAddress(emailAddressString: String) -> Bool {
   var returnValue = true
   let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
@@ -65,14 +65,9 @@ func isValidEmailAddress(emailAddressString: String) -> Bool {
   return returnValue
 }
 
-/// Check if an String contains only Number
+// MARK: - Check if String is Number
 extension String {
   var isNumber: Bool {
     return self.range(of: "^[0-9]*$", options: .regularExpression) != nil
   }
-}
-
-/// Defining decryption request types
-enum deReqType {
-  case new, queue, done
 }

@@ -8,6 +8,7 @@
 import Foundation
 import DataCache
 
+// MARK: - iTunes Lookup Structure
 struct ITunesResponse: Codable {
   var resultCount: Int
   var results: [ITunesResult]
@@ -59,20 +60,17 @@ struct ITunesResult: Codable {
   var userRatingCount: Int
 }
 
+// MARK: - Get Live iTunes Lookup
 func getITunesData(_ id: String) async -> ITunesResponse? {
-
   var urlComponents = URLComponents()
-
   urlComponents.scheme = "https"
   urlComponents.host = "itunes.apple.com"
   urlComponents.path = "/lookup"
   urlComponents.queryItems = id.isNumber
     ? [URLQueryItem(name: "id", value: id)]
     : [URLQueryItem(name: "bundleId", value: id)]
-
   guard let url = urlComponents.url else { return nil }
   debugPrint(url)
-
   do {
     let (data, _) = try await URLSession.shared.data(
       for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
@@ -87,10 +85,10 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
   } catch {
     print("Error getting iTunes data from URL: \(url): \(error)")
   }
-  
   return nil
 }
 
+// MARK: - Get & Cache iTunes Lookup
 func resolveLookupData(_ id: String) {
   Task {
     if let refreshedLookupData: ITunesResponse = await getITunesData(id) {

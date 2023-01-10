@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Alamofire
 
+// MARK: - Patreon Client Details
 struct PatreonClient {
   let clientID = "MKzRZxagIOea-ceFt_54sjf9yyA2TzTHln9LiUoybU8ZRg7ljS4KE9HrBPa9i6aA"
   let clientSecret = "4kTPw037oTE6D9zGHDwBgxqljtd70UkLBXAA25lIk83ZRbrlQjNr3sN8-TFa8dI6"
@@ -18,6 +19,7 @@ struct PatreonClient {
   let campaignID = "9760149"
 }
 
+// MARK: - Patron's OAuth Detail
 struct PatronOAuth: Codable {
   let access_token: String
   let refresh_token: String
@@ -26,10 +28,12 @@ struct PatronOAuth: Codable {
   let token_type: String
 }
 
+// MARK: - Patreon Class
 class Patreon {
-  let client = PatreonClient()
-  let almonfire = AF
+  private let client = PatreonClient()
+  private let almonfire = AF
   
+// MARK: - 1st OAuth Call
   func doOAuth() {
     var urlComponents = URLComponents()
     urlComponents.scheme = "https"
@@ -43,7 +47,8 @@ class Patreon {
     guard let url = urlComponents.url else { return }
     UIApplication.shared.open(url)
   }
-  
+
+// MARK: - Get User Tokens
   func getOAuthTokens(_ code: String) async -> PatronOAuth? {
     let params: [String: String] = ["code": code,
                                     "grant_type": "authorization_code",
@@ -52,7 +57,8 @@ class Patreon {
                                     "redirect_uri": client.redirectURI]
     return fetchOAuthResponse(params)
   }
-  
+
+// MARK: - Refresh User Tokens
   func refreshOAuthTokens(_ refreshToken: String) async -> PatronOAuth? {
     let params: [String: String] = ["grant_type": "refresh_token",
                                     "refresh_token": refreshToken,
@@ -60,7 +66,8 @@ class Patreon {
                                     "client_secret": client.clientSecret]
     return fetchOAuthResponse(params)
   }
-  
+
+// MARK: - Fetch Tokens Fucntion
   private func fetchOAuthResponse(_ params: Dictionary<String, String>) -> PatronOAuth? {
     var requestResponse: PatronOAuth?
     let semaphore = DispatchSemaphore(value: 0)

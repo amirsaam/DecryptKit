@@ -9,6 +9,7 @@ import SwiftUI
 import RealmSwift
 import DataCache
 
+// MARK: - View Struct
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
   
@@ -30,7 +31,8 @@ struct OpenRealmView: View {
   @State private var newUser = deUser()
   
   @State private var sourceData: [deCrippleSource]?
-  
+
+// MARK: - View Body
   var body: some View {
     switch asyncOpen {
     case .connecting:
@@ -75,6 +77,7 @@ struct OpenRealmView: View {
       }
     }
   }
+// MARK: - Get/Send UserData to Realm
   func doCheckUser() {
     let semaphore = DispatchSemaphore(value: 0)
     if ((user.customData["userId"]) == nil) {
@@ -112,6 +115,7 @@ struct OpenRealmView: View {
       checkForDuplicateUsers(userUID, userEmailAddress)
     }
   }
+// MARK: - Check for Possible Ban
   func checkForDuplicateUsers(_ uid: String, _ email: String) {
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
