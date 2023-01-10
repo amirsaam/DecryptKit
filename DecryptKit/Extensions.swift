@@ -38,42 +38,37 @@ struct Shake: GeometryEffect {
   var amount: CGFloat = 10
   var shakesPerUnit = 3
   var animatableData: CGFloat
-  
   func effectValue(size: CGSize) -> ProjectionTransform {
-    ProjectionTransform(CGAffineTransform(translationX: amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)), y: 0))
+    ProjectionTransform(
+      CGAffineTransform(
+        translationX: amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)), y: 0
+      )
+    )
   }
 }
 
 /// Email address validation function
 func isValidEmailAddress(emailAddressString: String) -> Bool {
-  
   var returnValue = true
   let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
-  
   do {
     let regex = try NSRegularExpression(pattern: emailRegEx)
     let nsString = emailAddressString as NSString
     let results = regex.matches(in: emailAddressString, range: NSRange(location: 0, length: nsString.length))
-    
-    if results.count == 0
-    {
+    if results.count == 0 {
       returnValue = false
     }
-    
   } catch let error as NSError {
     print("invalid regex: \(error.localizedDescription)")
     returnValue = false
   }
-  
-  return  returnValue
+  return returnValue
 }
 
 /// Check if an String contains only Number
 extension String {
   var isNumber: Bool {
-    return self.range(
-      of: "^[0-9]*$",
-      options: .regularExpression) != nil
+    return self.range(of: "^[0-9]*$", options: .regularExpression) != nil
   }
 }
 

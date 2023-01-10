@@ -62,11 +62,10 @@ struct PatreonView: View {
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
-      $0.userId == user.id
+      $0.userId.contains(user.id)
     }
-    let userToUpdate = currentUser[0]
     try! realm.write {
-      userToUpdate.userPatreonToken = callbackCode
+      currentUser[0].userPatreonToken = callbackCode
     }
     isDeeplink = false
   }
