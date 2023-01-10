@@ -5,11 +5,13 @@
 //  Created by Amir Mohammadi on 9/3/1401 AP.
 //
 
+import Foundation
 import SwiftUI
 import Neumorphic
 import RealmSwift
 import DataCache
 
+let uid = UIDevice.current.identifierForVendor?.uuidString ?? "UID not Found"
 let mainColor = Color.Neumorphic.main
 let secondaryColor = Color.Neumorphic.secondary
 let defaults = UserDefaults.standard

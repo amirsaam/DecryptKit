@@ -15,7 +15,7 @@ struct MainView: View {
   @EnvironmentObject var errorHandler: ErrorHandler
 
   @State var user: User
-  @Binding var userUUID: String
+  @Binding var userUID: String
   @Binding var userIsBanned: Bool
   @Binding var userEmailAddress: String
   @Binding var userTier: Int
@@ -39,7 +39,22 @@ struct MainView: View {
         .ignoresSafeArea(.all)
       GeometryReader { geo in
         if userIsBanned {
-          
+          HStack {
+            Spacer()
+            VStack {
+              Spacer()
+              Text("This account has been Restricted!")
+                .font(.title.monospaced())
+              Text("decryptkit.support@gmail.com")
+                .font(.headline.monospaced())
+                .padding(.top)
+              Text("Contact above Email Address for more Information")
+                .font(.headline.monospaced())
+                .padding(.top, 1)
+              Spacer()
+            }
+            Spacer()
+          }
         } else {
           VStack {
             HStack(alignment: .center, spacing: geo.size.width * (0.25/10)) {

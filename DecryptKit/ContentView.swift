@@ -17,7 +17,7 @@ struct ContentView: View {
   var body: some View {
     if let user = app.currentUser {
       let config = user.flexibleSyncConfiguration(
-        clientResetMode: .discardUnsyncedChanges(),
+        clientResetMode: .recoverOrDiscardUnsyncedChanges(),
         initialSubscriptions: { subs in
           let reqsSubscriptionExists = subs.first(named: "requestedId")
           let looksSubscriptionExists = subs.first(named: "lookedId")

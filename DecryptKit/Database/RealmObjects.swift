@@ -25,7 +25,7 @@ class deStat: Object, ObjectKeyIdentifiable {
 class deUser: Object, ObjectKeyIdentifiable {
   @Persisted(primaryKey: true) var _id: ObjectId
   @Persisted var userId: String
-  @Persisted var userUUID: String
+  @Persisted var userUID: String
   @Persisted var userIsBanned: Bool
   @Persisted var userEmail: String
   @Persisted var userTier: Int

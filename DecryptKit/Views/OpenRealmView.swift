@@ -5,7 +5,6 @@
 //  Created by Amir Mohammadi on 9/18/1401 AP.
 //
 
-import Foundation
 import SwiftUI
 import RealmSwift
 import DataCache
@@ -21,17 +20,17 @@ struct OpenRealmView: View {
   
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
-  @State private var userUUID = ""
+  @State private var userUID = ""
   @State private var userIsBanned = false
   @State private var userEmailAddress = ""
   @State private var userTier = 0
   @State private var userPatreonToken = ""
-
+  
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
   
   @State private var sourceData: [deCrippleSource]?
-
+  
   var body: some View {
     switch asyncOpen {
     case .connecting:
@@ -50,17 +49,15 @@ struct OpenRealmView: View {
       }
     case .open(let realm):
       MainView(user: user,
-               userUUID: $userUUID,
+               userUID: $userUID,
                userIsBanned: $userIsBanned,
                userEmailAddress: $userEmailAddress,
                userTier: $userTier,
                sourceData: $sourceData)
       .environment(\.realm, realm)
       .environmentObject(errorHandler)
-      .task(priority: .high) {
-        await doAddUser()
-        await resolveSourceData()
-        sourceData = try? cache.readCodable(forKey: "cachedSourceData")
+      .task(priority: .high) { @MainActor in
+        await doCheckUser()
       }
     case .progress(let progress):
       ZStack {
@@ -78,31 +75,59 @@ struct OpenRealmView: View {
       }
     }
   }
-  func doAddUser() async {
-    if user.customData["userUUID"] != nil {
+  func doCheckUser() async {
+    if ((user.customData["userId"]) == nil) {
+      print(user.customData)
+      userUID = uid
+      userEmailAddress = defaults.string(forKey: "Email") ?? ""
+      debugPrint("Appending user.customData to Realm")
+      newUser.userId = user.id
+      newUser.userUID = userUID
+      newUser.userIsBanned = false
+      newUser.userEmail = userEmailAddress
+      newUser.userTier = 0
+      newUser.userPatreonToken = "Not Logged In to Patreon Yet"
+      $users.append(newUser)
+    } else {
       user.refreshCustomData { (result) in
         switch result {
         case .failure(let error):
           print("Failed to refresh custom data: \(error.localizedDescription)")
         case .success(let customData):
           print("Succesfully refreshed custom data")
-          userUUID = customData["userUUID"] as! String
+          userUID = customData["userUID"] as! String
           userIsBanned = customData["userIsBanned"] as! Bool
           userEmailAddress = customData["userEmail"] as! String
           userTier = customData["userTier"] as! Int
           userPatreonToken = customData["userPatreonToken"] as! String
+          print(customData)
         }
       }
+    }
+    try? await Task.sleep(nanoseconds: 5000000000)
+    if !userIsBanned {
+      await checkForDuplicateUsers(userUID, userEmailAddress)
+    }
+  }
+  func checkForDuplicateUsers(_ uid: String, _ email: String) async {
+    let realm = users.realm!.thaw()
+    let thawedUsers = users.thaw()!
+    let duplicateUser = thawedUsers.where {
+      !$0.userEmail.contains(userEmailAddress) && $0.userUID.contains(userUID)
+    }
+    let currentUser = thawedUsers.where {
+      $0.userId.contains(user.id)
+    }
+    if duplicateUser.isEmpty {
+      debugPrint("No duplicate user found")
+      await resolveSourceData()
+      sourceData = try? cache.readCodable(forKey: "cachedSourceData")
     } else {
-      userEmailAddress = defaults.string(forKey: "Email") ?? ""
-      debugPrint("Appending user.customData to Realm")
-      newUser.userId = user.id
-      newUser.userUUID = UIDevice.current.identifierForVendor?.uuidString ?? "Not Found"
-      newUser.userIsBanned = false
-      newUser.userEmail = userEmailAddress
-      newUser.userTier = 0
-      newUser.userPatreonToken = "Not Logged In to Patreon Yet"
-      $users.append(newUser)
+      debugPrint("Duplicate user found, banning user")
+      try! realm.write {
+        currentUser[0].userIsBanned = true
+      }
+      userIsBanned = true
     }
   }
 }

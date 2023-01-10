@@ -15,8 +15,8 @@ struct AccountingView: View {
   @EnvironmentObject var errorHandler: ErrorHandler
 
   @State private var email = ""
-  @State private var emailIsValid: Bool = false
-  @State private var emailAttempts: Int = 0
+  @State private var emailIsValid = false
+  @State private var emailAttempts = 0
   @State private var password = ""
 
   @State private var hasAccount = true
