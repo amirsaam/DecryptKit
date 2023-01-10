@@ -57,7 +57,7 @@ struct OpenRealmView: View {
       .environment(\.realm, realm)
       .environmentObject(errorHandler)
       .task(priority: .high) { @MainActor in
-        await doCheckUser()
+        doCheckUser()
       }
     case .progress(let progress):
       ZStack {
@@ -75,7 +75,8 @@ struct OpenRealmView: View {
       }
     }
   }
-  func doCheckUser() async {
+  func doCheckUser() {
+    let semaphore = DispatchSemaphore(value: 0)
     if ((user.customData["userId"]) == nil) {
       print(user.customData)
       userUID = uid
@@ -88,6 +89,7 @@ struct OpenRealmView: View {
       newUser.userTier = 0
       newUser.userPatreonToken = "Not Logged In to Patreon Yet"
       $users.append(newUser)
+      semaphore.signal()
     } else {
       user.refreshCustomData { (result) in
         switch result {
@@ -102,14 +104,15 @@ struct OpenRealmView: View {
           userPatreonToken = customData["userPatreonToken"] as! String
           print(customData)
         }
+        semaphore.signal()
       }
     }
-    try? await Task.sleep(nanoseconds: 5000000000)
+    semaphore.wait()
     if !userIsBanned {
-      await checkForDuplicateUsers(userUID, userEmailAddress)
+      checkForDuplicateUsers(userUID, userEmailAddress)
     }
   }
-  func checkForDuplicateUsers(_ uid: String, _ email: String) async {
+  func checkForDuplicateUsers(_ uid: String, _ email: String) {
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let duplicateUser = thawedUsers.where {
@@ -120,7 +123,9 @@ struct OpenRealmView: View {
     }
     if duplicateUser.isEmpty {
       debugPrint("No duplicate user found")
-      await resolveSourceData()
+      Task {
+        await resolveSourceData()
+      }
       sourceData = try? cache.readCodable(forKey: "cachedSourceData")
     } else {
       debugPrint("Duplicate user found, banning user")

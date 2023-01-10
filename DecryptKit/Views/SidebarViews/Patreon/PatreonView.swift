@@ -21,6 +21,7 @@ struct PatreonView: View {
   @State private var newUser = deUser()
 
   @State private var patreon = Patreon()
+  @State private var patreonUser: PatronOAuth?
 
   var body: some View {
     ZStack {
@@ -30,7 +31,7 @@ struct PatreonView: View {
             VStack(alignment: .leading, spacing: 25.0) {
               Text("Click to OAuth")
                 .onTapGesture {
-                  patreon.oauth()
+                  patreon.doOAuth()
                 }
               Button {
                 withAnimation(.spring()) {
@@ -47,18 +48,24 @@ struct PatreonView: View {
           }
           .onAppear {
             if isDeeplink {
-              handleCallback("onAppear")
+              Task {
+                await handleCallback(callbackCode)
+                print(patreonUser ?? "getting tokens failed")
+              }
             }
           }
           .onChange(of: isDeeplink) { boolean in
             if boolean {
-              handleCallback("onChange")
+              Task {
+                await handleCallback(callbackCode)
+                print(patreonUser ?? "getting tokens failed")
+              }
             }
           }
       }
     }
   }
-  func handleCallback(_ text: String) {
+  func handleCallback(_ callbackCode: String) async {
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
@@ -67,6 +74,7 @@ struct PatreonView: View {
     try! realm.write {
       currentUser[0].userPatreonToken = callbackCode
     }
+    patreonUser = await patreon.getOAuthTokens(callbackCode)
     isDeeplink = false
   }
 }
