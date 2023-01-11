@@ -20,6 +20,8 @@ struct MainView: View {
   @Binding var userIsBanned: Bool
   @Binding var userEmailAddress: String
   @Binding var userTier: Int
+  @Binding var userPAT: String
+  @Binding var userPRT: String
   @Binding var sourceData: [deCrippleSource]?
 
   @ObservedResults(deUser.self) private var users
@@ -175,7 +177,8 @@ struct MainView: View {
                             isDeeplink: $isDeeplink,
                             showPatreon: $showPatreon,
                             callbackCode: $patreonCallbackCode,
-                            callbackState: $patreonCallbackState)
+                            userPAT: $userPAT,
+                            userPRT: $userPRT)
               } else {
                 VStack {
                   Creators()

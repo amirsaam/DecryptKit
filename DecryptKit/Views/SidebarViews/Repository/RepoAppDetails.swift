@@ -10,6 +10,7 @@ import Neumorphic
 import CachedAsyncImage
 import DataCache
 
+// MARK: - App Details Definer
 struct RepoAppDetails: View {
 
   @State var appBundleID: String
@@ -28,6 +29,7 @@ struct RepoAppDetails: View {
   }
 }
 
+// MARK: - AppStore Apps View
 struct InAppStore: View {
 
   @State var appBundleID: String
@@ -85,6 +87,7 @@ struct InAppStore: View {
   }
 }
 
+// MARK: - Custom Apps View
 struct OutAppStore: View {
   
   @State var appBundleID: String

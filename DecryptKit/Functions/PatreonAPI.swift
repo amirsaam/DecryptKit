@@ -74,17 +74,21 @@ class Patreon {
     let semaphore = AsyncSemaphore(value: 0)
     guard let url = URL(string: "https://www.patreon.com/api/oauth2/token") else { return nil }
     let headers: HTTPHeaders = ["Content-Type": "application/x-www-form-urlencoded"]
-    almonfire.request(url, method: .post, parameters: params, headers: headers)
-      .responseDecodable(of: PatronOAuth.self) { (response: DataResponse<PatronOAuth, AFError>) in
-        switch response.result {
-        case .success(let data):
-          requestResponse = data
-        case .failure(let error):
-          debugPrint(error)
-          requestResponse = nil
-        }
-        semaphore.signal()
+    almonfire.request(url,
+                      method: .post,
+                      parameters: params,
+                      headers: headers)
+    .responseDecodable(of: PatronOAuth.self) {
+      (response: DataResponse<PatronOAuth, AFError>) in
+      switch response.result {
+      case .success(let data):
+        requestResponse = data
+      case .failure(let error):
+        debugPrint(error)
+        requestResponse = nil
       }
+      semaphore.signal()
+    }
     await semaphore.wait()
     return requestResponse
   }

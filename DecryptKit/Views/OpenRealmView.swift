@@ -57,6 +57,8 @@ struct OpenRealmView: View {
                userIsBanned: $userIsBanned,
                userEmailAddress: $userEmailAddress,
                userTier: $userTier,
+               userPAT: $userPAT,
+               userPRT: $userPRT,
                sourceData: $sourceData)
       .environment(\.realm, realm)
       .environmentObject(errorHandler)
