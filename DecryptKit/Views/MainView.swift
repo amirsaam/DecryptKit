@@ -193,9 +193,9 @@ struct MainView: View {
       isDeeplink = false
       let callback = url.params()
       if callback.isEmpty {
-        print(url)
+        debugPrint(url)
       } else {
-        print(url)
+        debugPrint(url)
         (showRepo, showLookup) = (false, false)
         patreonCallbackCode = callback["code"] as! String
         patreonCallbackState = callback["state"] as! String

@@ -29,5 +29,6 @@ class deUser: Object, ObjectKeyIdentifiable {
   @Persisted var userIsBanned: Bool
   @Persisted var userEmail: String
   @Persisted var userTier: Int
-  @Persisted var userPatreonToken: String
+  @Persisted var userPAT: String
+  @Persisted var userPRT: String
 }

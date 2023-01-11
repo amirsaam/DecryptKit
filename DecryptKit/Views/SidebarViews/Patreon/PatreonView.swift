@@ -49,32 +49,33 @@ struct PatreonView: View {
           .onAppear {
             if isDeeplink {
               Task {
-                await handleCallback(callbackCode)
-                print(patreonUser ?? "getting tokens failed")
+                await handleOAuthCallback(callbackCode)
+                debugPrint(patreonUser ?? "getting tokens failed")
               }
             }
           }
           .onChange(of: isDeeplink) { boolean in
             if boolean {
               Task {
-                await handleCallback(callbackCode)
-                print(patreonUser ?? "getting tokens failed")
+                await handleOAuthCallback(callbackCode)
+                debugPrint(patreonUser ?? "getting tokens failed")
               }
             }
           }
       }
     }
   }
-  func handleCallback(_ callbackCode: String) async {
+  func handleOAuthCallback(_ callbackCode: String) async {
+    patreonUser = await patreon.getOAuthTokens(callbackCode)
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
       $0.userId.contains(user.id)
     }
     try! realm.write {
-      currentUser[0].userPatreonToken = callbackCode
+      currentUser[0].userPAT = patreonUser?.access_token ?? ""
+      currentUser[0].userPRT = patreonUser?.refresh_token ?? ""
     }
-    patreonUser = await patreon.getOAuthTokens(callbackCode)
     isDeeplink = false
   }
 }

@@ -80,10 +80,10 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
     if jsonResult.resultCount > 0 {
       return jsonResult
     } else {
-      print("resultCount is smaller or equal to 0")
+      debugPrint("resultCount is smaller or equal to 0")
     }
   } catch {
-    print("Error getting iTunes data from URL: \(url): \(error)")
+    debugPrint("Error getting iTunes data from URL: \(url): \(error)")
   }
   return nil
 }

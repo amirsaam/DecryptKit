@@ -124,9 +124,9 @@ struct AccountingView: View {
     defaults.set(email, forKey: "Email")
     do {
       let user = try await realmApp.login(credentials: Credentials.emailPassword(email: email, password: password))
-      print("Successfully logged in user: \(user)")
+      debugPrint("Successfully logged in user: \(user)")
     } catch {
-      print("Failed to log in user: \(error.localizedDescription)")
+      debugPrint("Failed to log in user: \(error.localizedDescription)")
       errorHandler.error = error
     }
   }
@@ -134,10 +134,10 @@ struct AccountingView: View {
   func signUp(email: String, password: String) async {
     do {
       try await realmApp.emailPasswordAuth.registerUser(email: email, password: password)
-      print("Successfully registered user")
+      debugPrint("Successfully registered user")
       await login(email: email, password: password)
     } catch {
-      print("Failed to register user: \(error.localizedDescription)")
+      debugPrint("Failed to register user: \(error.localizedDescription)")
       errorHandler.error = error
     }
   }
@@ -185,9 +185,9 @@ struct SignOutButton: View {
   func logout(user: User) async {
     do {
       try await user.logOut()
-      print("Successfully logged user out")
+      debugPrint("Successfully logged user out")
     } catch {
-      print("Failed to log user out: \(error.localizedDescription)")
+      debugPrint("Failed to log user out: \(error.localizedDescription)")
       self.errorMessage = RealmSignOutError(errorText: error.localizedDescription)
     }
   }

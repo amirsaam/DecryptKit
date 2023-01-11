@@ -59,7 +59,7 @@ func isValidEmailAddress(emailAddressString: String) -> Bool {
       returnValue = false
     }
   } catch let error as NSError {
-    print("invalid regex: \(error.localizedDescription)")
+    debugPrint("invalid regex: \(error.localizedDescription)")
     returnValue = false
   }
   return returnValue

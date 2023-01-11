@@ -8,6 +8,7 @@
 import SwiftUI
 import RealmSwift
 import DataCache
+import Semaphore
 
 // MARK: - View Struct
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
@@ -25,7 +26,8 @@ struct OpenRealmView: View {
   @State private var userIsBanned = false
   @State private var userEmailAddress = ""
   @State private var userTier = 0
-  @State private var userPatreonToken = ""
+  @State private var userPAT = ""
+  @State private var userPRT = ""
   
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
@@ -59,7 +61,7 @@ struct OpenRealmView: View {
       .environment(\.realm, realm)
       .environmentObject(errorHandler)
       .task(priority: .high) { @MainActor in
-        doCheckUser()
+        await doCheckUser()
       }
     case .progress(let progress):
       ZStack {
@@ -78,56 +80,58 @@ struct OpenRealmView: View {
     }
   }
 // MARK: - Get/Send UserData to Realm
-  func doCheckUser() {
-    let semaphore = DispatchSemaphore(value: 0)
-    if ((user.customData["userId"]) == nil) {
-      print(user.customData)
-      userUID = uid
-      userEmailAddress = defaults.string(forKey: "Email") ?? ""
-      debugPrint("Appending user.customData to Realm")
-      newUser.userId = user.id
-      newUser.userUID = userUID
-      newUser.userIsBanned = false
-      newUser.userEmail = userEmailAddress
-      newUser.userTier = 0
-      newUser.userPatreonToken = "Not Logged In to Patreon Yet"
-      $users.append(newUser)
-      semaphore.signal()
-    } else {
-      user.refreshCustomData { (result) in
-        switch result {
-        case .failure(let error):
-          print("Failed to refresh custom data: \(error.localizedDescription)")
-        case .success(let customData):
-          print("Succesfully refreshed custom data")
+  func doCheckUser() async {
+    let semaphore = AsyncSemaphore(value: 0)
+    user.refreshCustomData { (result) in
+      switch result {
+      case .failure(let error):
+        debugPrint("Failed to refresh custom data: \(error.localizedDescription)")
+      case .success(let customData):
+        if customData["userId"] == nil {
+          userUID = uid
+          userEmailAddress = defaults.string(forKey: "Email") ?? ""
+          debugPrint("Appending new custom data to Realm")
+          Task { @MainActor in
+            newUser.userId = user.id
+            newUser.userUID = userUID
+            newUser.userIsBanned = false
+            newUser.userEmail = userEmailAddress
+            newUser.userTier = 0
+            newUser.userPAT = ""
+            newUser.userPRT = ""
+            $users.append(newUser)
+          }
+        } else {
+          debugPrint("Succesfully retrieved custom data from Realm")
           userUID = customData["userUID"] as! String
           userIsBanned = customData["userIsBanned"] as! Bool
           userEmailAddress = customData["userEmail"] as! String
           userTier = customData["userTier"] as! Int
-          userPatreonToken = customData["userPatreonToken"] as! String
-          print(customData)
+          userPAT = customData["userPAT"] as! String
+          userPRT = customData["userPRT"] as! String
+          debugPrint(customData)
         }
-        semaphore.signal()
       }
+      semaphore.signal()
     }
-    semaphore.wait()
+    await semaphore.wait()
     if !userIsBanned {
-      checkForDuplicateUsers(userUID, userEmailAddress)
+      checkForDuplicateUsers(userUID)
     }
   }
 // MARK: - Check for Possible Ban
-  func checkForDuplicateUsers(_ uid: String, _ email: String) {
+  func checkForDuplicateUsers(_ uid: String) {
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let duplicateUser = thawedUsers.where {
-      !$0.userEmail.contains(userEmailAddress) && $0.userUID.contains(userUID)
+      !$0.userId.contains(user.id) && $0.userUID.contains(uid)
     }
     let currentUser = thawedUsers.where {
       $0.userId.contains(user.id)
     }
     if duplicateUser.isEmpty {
       debugPrint("No duplicate user found")
-      Task {
+      Task { @MainActor in
         await resolveSourceData()
       }
       sourceData = try? cache.readCodable(forKey: "cachedSourceData")

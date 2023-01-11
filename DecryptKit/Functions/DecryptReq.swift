@@ -41,7 +41,7 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
     let jsonResult: deCrippleResult = try decoder.decode(deCrippleResult.self, from: data)
     return jsonResult
   } catch {
-    print("Error getting Result data from URL: \(url): \(error)")
+    debugPrint("Error getting Result data from URL: \(url): \(error)")
   }
   return nil
 }
