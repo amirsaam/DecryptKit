@@ -131,9 +131,9 @@
 		685D098C29422B4A00AFD730 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				685D098D29422D0A00AFD730 /* AccountingView.swift */,
 				6845694D2942A5D700BD53D8 /* OpenRealmView.swift */,
 				685D098A2942121D00AFD730 /* MainView.swift */,
-				685D098D29422D0A00AFD730 /* AccountingView.swift */,
 				68DE97F22938CF4B00A565B8 /* Components.swift */,
 				68A33AEF2940FBFA0024DFFE /* SidebarViews */,
 			);
