@@ -55,11 +55,11 @@ struct PatreonView: View {
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonUser ?? "getting tokens failed")
-        } else {
-          if !userPRT.isEmpty && !tokensFetched {
-            await handleRefreshToken(userPRT)
-            debugPrint(patreonUser ?? "refreshing tokens failed")
-          }
+          tokensFetched = true
+        } else if !userPRT.isEmpty && !tokensFetched {
+          await handleRefreshToken(userPRT)
+          debugPrint(patreonUser ?? "refreshing tokens failed")
+          tokensFetched = true
         }
       }
     }
@@ -68,6 +68,7 @@ struct PatreonView: View {
         Task {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonUser ?? "getting tokens failed")
+          tokensFetched = true
         }
       }
     }
@@ -86,7 +87,6 @@ struct PatreonView: View {
     userPAT = patreonUser?.access_token ?? ""
     userPRT = patreonUser?.refresh_token ?? ""
     isDeeplink = false
-    tokensFetched = true
   }
   func handleRefreshToken(_ refreshToken: String) async {
     patreonUser = await patreon.refreshOAuthTokens(refreshToken)
@@ -101,6 +101,5 @@ struct PatreonView: View {
     }
     userPAT = patreonUser?.access_token ?? ""
     userPRT = patreonUser?.refresh_token ?? ""
-    tokensFetched = true
   }
 }
