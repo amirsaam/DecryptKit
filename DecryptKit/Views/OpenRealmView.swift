@@ -36,46 +36,34 @@ struct OpenRealmView: View {
 
 // MARK: - View Body
   var body: some View {
-    switch asyncOpen {
-    case .connecting:
-      ZStack {
-        mainColor
-          .ignoresSafeArea(.all)
+    ZStack {
+      mainColor
+        .ignoresSafeArea(.all)
+      switch asyncOpen {
+      case .connecting:
         ProgressView()
           .padding()
-      }
-    case .waitingForUser:
-      ZStack {
-        mainColor
-          .ignoresSafeArea(.all)
+      case .waitingForUser:
         ProgressView("Waiting for user to log in...")
           .padding()
-      }
-    case .open(let realm):
-      MainView(user: user,
-               userUID: $userUID,
-               userIsBanned: $userIsBanned,
-               userEmailAddress: $userEmailAddress,
-               userTier: $userTier,
-               userPAT: $userPAT,
-               userPRT: $userPRT,
-               sourceData: $sourceData)
-      .environment(\.realm, realm)
-      .environmentObject(errorHandler)
-      .task(priority: .high) { @MainActor in
-        await doCheckUser()
-      }
-    case .progress(let progress):
-      ZStack {
-        mainColor
-          .ignoresSafeArea(.all)
+      case .open(let realm):
+        MainView(user: user,
+                 userUID: $userUID,
+                 userIsBanned: $userIsBanned,
+                 userEmailAddress: $userEmailAddress,
+                 userTier: $userTier,
+                 userPAT: $userPAT,
+                 userPRT: $userPRT,
+                 sourceData: $sourceData)
+        .environment(\.realm, realm)
+        .environmentObject(errorHandler)
+        .task(priority: .high) { @MainActor in
+          await doCheckUser()
+        }
+      case .progress(let progress):
         ProgressView(progress)
           .padding()
-      }
-    case .error(let error):
-      ZStack {
-        mainColor
-          .ignoresSafeArea(.all)
+      case .error(let error):
         RealmError(error: error)
           .padding()
       }

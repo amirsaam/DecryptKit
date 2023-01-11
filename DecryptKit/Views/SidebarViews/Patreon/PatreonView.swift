@@ -13,6 +13,7 @@ struct PatreonView: View {
 
   @State var user: User
   @Binding var isDeeplink: Bool
+  @Binding var tokensFetched: Bool
   @Binding var showPatreon: Bool
   @Binding var callbackCode: String
   @Binding var userPAT: String
@@ -23,7 +24,6 @@ struct PatreonView: View {
 
   @State private var patreon = Patreon()
   @State private var patreonUser: PatronOAuth?
-  @State private var tokensFetched = false
 
   var body: some View {
     ZStack {
@@ -55,11 +55,9 @@ struct PatreonView: View {
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonUser ?? "getting tokens failed")
-          tokensFetched = true
         } else if !userPRT.isEmpty && !tokensFetched {
           await handleRefreshToken(userPRT)
           debugPrint(patreonUser ?? "refreshing tokens failed")
-          tokensFetched = true
         }
       }
     }
@@ -68,7 +66,6 @@ struct PatreonView: View {
         Task {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonUser ?? "getting tokens failed")
-          tokensFetched = true
         }
       }
     }
@@ -87,6 +84,7 @@ struct PatreonView: View {
     userPAT = patreonUser?.access_token ?? ""
     userPRT = patreonUser?.refresh_token ?? ""
     isDeeplink = false
+    tokensFetched = true
   }
   func handleRefreshToken(_ refreshToken: String) async {
     patreonUser = await patreon.refreshOAuthTokens(refreshToken)
@@ -101,5 +99,6 @@ struct PatreonView: View {
     }
     userPAT = patreonUser?.access_token ?? ""
     userPRT = patreonUser?.refresh_token ?? ""
+    tokensFetched = true
   }
 }
