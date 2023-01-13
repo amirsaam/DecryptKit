@@ -56,7 +56,7 @@ struct InAppStore: View {
           Text(lookedup?.results[0].trackName ?? "")
             .font(.headline)
           Text("by \(lookedup?.results[0].artistName ?? "")")
-          .font(.caption)
+            .font(.caption)
         }
       }
       HStack(spacing: 5) {
@@ -89,11 +89,11 @@ struct InAppStore: View {
 
 // MARK: - Custom Apps View
 struct OutAppStore: View {
-  
+
   @State var appBundleID: String
   @State var appName: String
   @State var appVersion: String
-  
+
   var body: some View {
     let app = NotAPApp(rawValue: appBundleID)
     VStack(alignment: .leading, spacing: 15) {

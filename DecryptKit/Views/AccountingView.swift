@@ -24,7 +24,7 @@ struct AccountingView: View {
   @State private var showProgress = false
   @State private var error: Error?
 
-// MARK: - Sign In/Up View Body
+  // MARK: - Sign In/Up View Body
   var body: some View {
     ZStack {
       mainColor
@@ -94,7 +94,7 @@ struct AccountingView: View {
                 } label: {
                   Label(hasAccount ? "Sign in" : "Sign up",
                         systemImage: hasAccount ? "key.fill" : "plus")
-                    .frame(width: 100)
+                  .frame(width: 100)
                 }
                 .softButtonStyle(
                   RoundedRectangle(cornerRadius: 15),
@@ -119,7 +119,7 @@ struct AccountingView: View {
       }
     }
   }
-// MARK: Sign In Function
+  // MARK: Sign In Function
   func login(email: String, password: String) async {
     defaults.set(email, forKey: "Email")
     do {
@@ -130,7 +130,7 @@ struct AccountingView: View {
       errorHandler.error = error
     }
   }
-// MARK: Sign Up Function
+  // MARK: Sign Up Function
   func signUp(email: String, password: String) async {
     do {
       try await realmApp.emailPasswordAuth.registerUser(email: email, password: password)
@@ -150,7 +150,7 @@ struct SignOutButton: View {
   @State var isSigningOut = false
   @State var error: Error?
   @State var errorMessage: RealmSignOutError? = nil
-  
+
   var body: some View {
     HStack {
       Button {
@@ -181,7 +181,7 @@ struct SignOutButton: View {
       }
     }
   }
-// MARK: - Sign Out Function
+  // MARK: - Sign Out Function
   func logout(user: User) async {
     do {
       try await user.logOut()

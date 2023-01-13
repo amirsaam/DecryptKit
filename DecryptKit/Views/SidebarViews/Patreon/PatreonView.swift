@@ -22,7 +22,7 @@ struct PatreonView: View {
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
-  @State private var patreon = Patreon()
+  @State private var patreon = Patreon.shared
   @State private var patreonUser: PatronOAuth?
 
   var body: some View {
@@ -58,6 +58,7 @@ struct PatreonView: View {
         } else if !userPRT.isEmpty && !tokensFetched {
           await handleRefreshToken(userPRT)
           debugPrint(patreonUser ?? "refreshing tokens failed")
+          let _ = await patreon.getDataForCampaign(userPAT)
         }
       }
     }

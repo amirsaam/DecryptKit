@@ -9,12 +9,14 @@ import Foundation
 import SwiftUI
 import Neumorphic
 import RealmSwift
+import Alamofire
 import DataCache
 
 let uid = UIDevice.current.identifierForVendor?.uuidString ?? "UID not Found"
 let mainColor = Color.Neumorphic.main
 let secondaryColor = Color.Neumorphic.secondary
 let defaults = UserDefaults.standard
+let alamofire = AF
 let cache = DataCache.instance
 let playcoverURL = URL(string: "playcover:source?action=add&url=https://amrsm.ir/decrypted.json")
 

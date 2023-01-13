@@ -10,10 +10,10 @@ import Neumorphic
 import RealmSwift
 
 struct ContentView: View {
-  
+
   @ObservedObject var app: RealmSwift.App
   @EnvironmentObject var errorHandler: ErrorHandler
-  
+
   var body: some View {
     if let user = app.currentUser {
       let config = user.flexibleSyncConfiguration(

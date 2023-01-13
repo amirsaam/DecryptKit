@@ -11,7 +11,7 @@ import RealmSwift
 
 // MARK: - View Struct
 struct MainView: View {
-  
+
   @Environment(\.openURL) private var openURL
   @EnvironmentObject var errorHandler: ErrorHandler
 
@@ -37,7 +37,7 @@ struct MainView: View {
   @State private var patreonCallbackCode: String = ""
   @State private var patreonCallbackState: String = ""
 
-// MARK: - View Body
+  // MARK: - View Body
   var body: some View {
     GeometryReader { geo in
       if userIsBanned {
@@ -189,7 +189,7 @@ struct MainView: View {
         .padding(.leading, geo.size.width * (0.5/10))
       }
     }
-// MARK: - Hnadling URL Schema
+    // MARK: - Hnadling URL Schema
     .onOpenURL { url in
       isDeeplink = false
       let callback = url.params()

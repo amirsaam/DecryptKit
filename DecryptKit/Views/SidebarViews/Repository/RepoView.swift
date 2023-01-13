@@ -18,7 +18,7 @@ struct RepoView: View {
   @State private var progressAmount = 0.0
   let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
-// MARK: - View Body
+  // MARK: - View Body
   var body: some View {
     GeometryReader { geo in
       ZStack {
