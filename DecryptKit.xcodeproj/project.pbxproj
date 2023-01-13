@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		606DC61E2971B78D00436E00 /* EcryptKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DC61D2971B78D00436E00 /* EcryptKit.swift */; };
 		68100188293A925A00418B40 /* CustomLookups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68100187293A925A00418B40 /* CustomLookups.swift */; };
 		6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6810018A293A982B00418B40 /* CachedAsyncImage */; };
 		6823E625293FDFC3007E5438 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 6823E624293FDFC3007E5438 /* Realm */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		606DC61D2971B78D00436E00 /* EcryptKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EcryptKit.swift; sourceTree = "<group>"; };
 		68100187293A925A00418B40 /* CustomLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLookups.swift; sourceTree = "<group>"; };
 		683E367A294F512800B1DAA7 /* DecryptKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DecryptKit.entitlements; sourceTree = "<group>"; };
 		6843C616292FB586008FDA73 /* DecryptKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DecryptKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,6 +183,7 @@
 		68A33AF32940FE3E0024DFFE /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				606DC61D2971B78D00436E00 /* EcryptKit.swift */,
 				6843C632292FDA93008FDA73 /* DecryptReq.swift */,
 				6843C62A292FB69F008FDA73 /* iTunesLookup.swift */,
 				68A33AF12940FDA50024DFFE /* SourceData.swift */,
@@ -291,6 +294,7 @@
 				6843C61A292FB586008FDA73 /* deCrippleApp.swift in Sources */,
 				687EEC662961D4F700A340B4 /* PatreonAPI.swift in Sources */,
 				68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */,
+				606DC61E2971B78D00436E00 /* EcryptKit.swift in Sources */,
 				68DE97F12938CE0200A565B8 /* RepoView.swift in Sources */,
 				685B3EE3293292130010E24D /* ContentView.swift in Sources */,
 				68EFC738296AC1CB00C8819A /* PatreonView.swift in Sources */,
@@ -434,7 +438,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DecryptKit/Preview Content\"";
-				DEVELOPMENT_TEAM = 44JD6UQ5FG;
+				DEVELOPMENT_TEAM = HNQUTH2TPW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DecryptKit/Info.plist;
@@ -451,7 +455,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tech.deCripple;
+				PRODUCT_BUNDLE_IDENTIFIER = tech.deCripplee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -473,7 +477,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DecryptKit/Preview Content\"";
-				DEVELOPMENT_TEAM = 44JD6UQ5FG;
+				DEVELOPMENT_TEAM = HNQUTH2TPW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DecryptKit/Info.plist;
@@ -490,7 +494,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tech.deCripple;
+				PRODUCT_BUNDLE_IDENTIFIER = tech.deCripplee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
