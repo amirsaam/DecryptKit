@@ -26,6 +26,7 @@
 		685B3EE3293292130010E24D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C61B292FB586008FDA73 /* ContentView.swift */; };
 		685D098B2942121D00AFD730 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098A2942121D00AFD730 /* MainView.swift */; };
 		685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098D29422D0A00AFD730 /* AccountingView.swift */; };
+		68752C6B2971BFAF00C39483 /* EcryptKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68752C6A2971BFAF00C39483 /* EcryptKit.swift */; };
 		687EEC662961D4F700A340B4 /* PatreonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687EEC652961D4F700A340B4 /* PatreonAPI.swift */; };
 		68A33AEC2940F4E30024DFFE /* Realm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68A33AEB2940F4E30024DFFE /* Realm.plist */; };
 		68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF12940FDA50024DFFE /* SourceData.swift */; };
@@ -54,6 +55,7 @@
 		684EB84D2933A22500F3C57A /* LookupAppDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupAppDetails.swift; sourceTree = "<group>"; };
 		685D098A2942121D00AFD730 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		685D098D29422D0A00AFD730 /* AccountingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountingView.swift; sourceTree = "<group>"; };
+		68752C6A2971BFAF00C39483 /* EcryptKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EcryptKit.swift; sourceTree = "<group>"; };
 		687EEC652961D4F700A340B4 /* PatreonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonAPI.swift; sourceTree = "<group>"; };
 		68A33AEB2940F4E30024DFFE /* Realm.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Realm.plist; sourceTree = "<group>"; };
 		68A33AF12940FDA50024DFFE /* SourceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceData.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 		68A33AF32940FE3E0024DFFE /* Functions */ = {
 			isa = PBXGroup;
 			children = (
+				68752C6A2971BFAF00C39483 /* EcryptKit.swift */,
 				6843C632292FDA93008FDA73 /* DecryptReq.swift */,
 				6843C62A292FB69F008FDA73 /* iTunesLookup.swift */,
 				68A33AF12940FDA50024DFFE /* SourceData.swift */,
@@ -302,6 +305,7 @@
 				68DE97F32938CF4B00A565B8 /* Components.swift in Sources */,
 				68100188293A925A00418B40 /* CustomLookups.swift in Sources */,
 				685D098B2942121D00AFD730 /* MainView.swift in Sources */,
+				68752C6B2971BFAF00C39483 /* EcryptKit.swift in Sources */,
 				685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */,
 				684EB84E2933A22500F3C57A /* LookupAppDetails.swift in Sources */,
 			);
