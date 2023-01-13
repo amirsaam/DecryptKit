@@ -16,11 +16,12 @@ struct LookupView: View {
   @Binding var showLookup: Bool
   @Binding var userEmailAddress: String
   @Binding var sourceData: [deCrippleSource]?
-  
+
   @ObservedResults(deStat.self) private var stats
   @State private var newStat = deStat()
   @ObservedResults(deReq.self) private var requests
   @State private var newReq = deReq()
+
   @State private var requestProgress = false
   @State private var requestSubmitted = false
   @State private var serviceIsOn = false
@@ -35,7 +36,7 @@ struct LookupView: View {
   @State private var idIsPaid: Bool = false
   @State private var idOnSource: Bool = false
 
-// MARK: - View Body
+  // MARK: - View Body
   var body: some View {
     GeometryReader { geo in
       ZStack {
@@ -83,9 +84,9 @@ struct LookupView: View {
                         if !serviceIsOn {
                           Label("Decryption may take longer due to heavy load!",
                                 systemImage: "exclamationmark.triangle.fill")
-                            .font(.caption)
-                            .foregroundColor(.red)
-                            .padding(.top, 1)
+                          .font(.caption)
+                          .foregroundColor(.red)
+                          .padding(.top, 1)
                         }
                       }
                     }
@@ -194,7 +195,7 @@ struct LookupView: View {
       }
     }
   }
-// MARK: - Get Lookup Function
+  // MARK: - Get Lookup Function
   func doGetLookup(_ input: String) {
     Task {
       var id: String
@@ -219,7 +220,7 @@ struct LookupView: View {
       }
     }
   }
-// MARK: - Add Stat Function
+  // MARK: - Add Stat Function
   func doAddStat(_ id: String) {
     let realm = stats.realm!.thaw()
     let thawedStats = stats.thaw()!
@@ -250,7 +251,7 @@ struct LookupView: View {
       }
     }
   }
-// MARK: - Send Request Function
+  // MARK: - Send Request Function
   func doRequest(_ id: String) {
     Task {
       serviceIsOn = await isServiceRunning()

@@ -13,13 +13,13 @@ import Semaphore
 // MARK: - View Struct
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
-  
+
   @AsyncOpen(appId: realmAppConfig.appId, timeout: 2000) var asyncOpen
-  
+
   // Configuration used to open the realm.
   @Environment(\.realmConfiguration) private var config
   @EnvironmentObject var errorHandler: ErrorHandler
-  
+
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
   @State private var userUID = ""
@@ -28,13 +28,13 @@ struct OpenRealmView: View {
   @State private var userTier = 0
   @State private var userPAT = ""
   @State private var userPRT = ""
-  
+
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
-  
+
   @State private var sourceData: [deCrippleSource]?
 
-// MARK: - View Body
+  // MARK: - View Body
   var body: some View {
     ZStack {
       mainColor
@@ -69,7 +69,7 @@ struct OpenRealmView: View {
       }
     }
   }
-// MARK: - Get/Send UserData to Realm
+  // MARK: - Get/Send UserData to Realm
   func doCheckUser() async {
     let semaphore = AsyncSemaphore(value: 0)
     user.refreshCustomData { (result) in
@@ -109,7 +109,7 @@ struct OpenRealmView: View {
       checkForDuplicateUsers(userUID)
     }
   }
-// MARK: - Check for Possible Ban
+  // MARK: - Check for Possible Ban
   func checkForDuplicateUsers(_ uid: String) {
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
