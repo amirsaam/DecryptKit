@@ -1,6 +1,6 @@
 //
 //  MainView.swift
-//  DecryptKit
+//  deCripple
 //
 //  Created by Amir Mohammadi on 9/17/1401 AP.
 //
@@ -47,7 +47,7 @@ struct MainView: View {
             Spacer()
             Text("This account has been Restricted!")
               .font(.title.monospaced())
-            Text("decryptkit.support@gmail.com")
+            Text("support@decryptkit.xyz")
               .font(.headline.monospaced())
               .padding(.top)
             Text("Contact above Email Address for more Information")

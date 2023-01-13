@@ -1,6 +1,6 @@
 //
 //  RealmObjects.swift
-//  DecryptKit
+//  deCripple
 //
 //  Created by Amir Mohammadi on 9/16/1401 AP.
 //

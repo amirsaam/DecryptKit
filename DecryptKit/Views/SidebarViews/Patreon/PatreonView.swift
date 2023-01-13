@@ -1,6 +1,6 @@
 //
 //  PatreonView.swift
-//  DecryptKit
+//  deCripple
 //
 //  Created by Amir Mohammadi on 10/18/1401 AP.
 //
@@ -52,13 +52,14 @@ struct PatreonView: View {
     }
     .onAppear {
       Task {
+        let _ = await patreon.getDataForCampaign()
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonUser ?? "getting tokens failed")
         } else if !userPRT.isEmpty && !tokensFetched {
           await handleRefreshToken(userPRT)
           debugPrint(patreonUser ?? "refreshing tokens failed")
-          let _ = await patreon.getDataForCampaign(userPAT)
+          let _ = await patreon.getDataForCampaign()
         }
       }
     }

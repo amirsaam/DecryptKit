@@ -1,6 +1,6 @@
 //
 //  PatreonAPI.swift
-//  DecryptKit
+//  deCripple
 //
 //  Created by Amir Mohammadi on 10/11/1401 AP.
 //
@@ -11,7 +11,7 @@ import Alamofire
 import Semaphore
 
 // MARK: - Patreon Client Details
-struct PatreonClient {
+private struct PatreonClient {
   let clientID = "MKzRZxagIOea-ceFt_54sjf9yyA2TzTHln9LiUoybU8ZRg7ljS4KE9HrBPa9i6aA"
   let clientSecret = "4kTPw037oTE6D9zGHDwBgxqljtd70UkLBXAA25lIk83ZRbrlQjNr3sN8-TFa8dI6"
   let creatorAccessToken = "mfN-03GqFy6AiE7Jzq-I7CEdWuXfHMg_2VlLO0kcMgE"
@@ -20,22 +20,13 @@ struct PatreonClient {
   let campaignID = "9760149"
 }
 
-// MARK: - Patron's OAuth Detail
-struct PatronOAuth: Codable {
-  let access_token: String
-  let refresh_token: String
-  let expires_in: Int
-  let scope: String
-  let token_type: String
-}
-
 // MARK: - Patreon Class
 class Patreon {
   private let client = PatreonClient()
   public static let shared = Patreon()
 }
 
-// MARK: - Patreon OAuth
+// MARK: - Patreon OAuth Calls
 extension Patreon {
 
   // 1st OAuth Call
@@ -101,10 +92,19 @@ extension Patreon {
 
 }
 
-// MARK: - Patreon API
+// MARK: - Patron's OAuth Detail
+struct PatronOAuth: Codable {
+  let access_token: String
+  let refresh_token: String
+  let expires_in: Int
+  let scope: String
+  let token_type: String
+}
+
+// MARK: - Patreon API Calls
 extension Patreon {
 
-  //
+  // Returns User's Patreon Account Information
   func getUserIdentity(_ userPAT: String) async -> PatronIdentity? {
     let returnValue: PatronIdentity?
     let path = "identity"
@@ -112,7 +112,8 @@ extension Patreon {
       URLQueryItem(name: "fields[user]",
                    value: "about,created,email,first_name,full_name,image_url,last_name,social_connections,thumb_url,url,vanity")
     ]
-    let fetchedData = await fetchPatreonData(userPAT, path, queries, PatronIdentity.self)
+    let fetchedData = await fetchPatreonData(userPAT, path, queries,
+                                             PatronIdentity.self)
     if let identity = fetchedData {
       returnValue = identity
       debugPrint(identity)
@@ -123,7 +124,7 @@ extension Patreon {
     return returnValue
   }
 
-  //
+  // Returns Campaigns owned by the User
   func getUserOwnedCampaigns(_ userPAT: String) async -> PatronOwnedCampaigns? {
     let returnValue: PatronOwnedCampaigns?
     let path = "campaigns"
@@ -131,7 +132,8 @@ extension Patreon {
       URLQueryItem(name: "fields[campaign]",
                    value: "created_at,creation_name,discord_server_id,image_small_url,image_url,is_charged_immediately,is_monthly,is_nsfw,main_video_embed,main_video_url,one_liner,one_liner,patron_count,pay_per_name,pledge_url,published_at,summary,thanks_embed,thanks_msg,thanks_video_url,has_rss,has_sent_rss_notify,rss_feed_title,rss_artwork_url,patron_count,discord_server_id,google_analytics_id")
     ]
-    let fetchedData = await fetchPatreonData(userPAT, path, queries, PatronOwnedCampaigns.self)
+    let fetchedData = await fetchPatreonData(userPAT,path, queries,
+                                             PatronOwnedCampaigns.self)
     if let ownedCampaigns = fetchedData {
       returnValue = ownedCampaigns
       debugPrint(ownedCampaigns)
@@ -142,14 +144,17 @@ extension Patreon {
     return returnValue
   }
 
-  func getDataForCampaign(_ userPAT: String) async -> PatreonCampaignDetails? {
+  // Returns details about a Campaign identified by ID
+  func getDataForCampaign() async -> PatreonCampaignDetails? {
     let returnValue: PatreonCampaignDetails?
     let path = "campaigns/" + client.campaignID
     let queries = [
       URLQueryItem(name: "fields[campaign]",
                    value: "created_at,creation_name,discord_server_id,image_small_url,image_url,is_charged_immediately,is_monthly,main_video_embed,main_video_url,one_liner,one_liner,patron_count,pay_per_name,pledge_url,published_at,summary,thanks_embed,thanks_msg,thanks_video_url")
     ]
-    let fetchedData = await fetchPatreonData(client.creatorAccessToken, path, queries, PatreonCampaignDetails.self)
+    let fetchedData = await fetchPatreonData(client.creatorAccessToken,
+                                             path, queries,
+                                             PatreonCampaignDetails.self)
     if let campaignData = fetchedData {
       returnValue = campaignData
       debugPrint(campaignData)
@@ -160,7 +165,7 @@ extension Patreon {
     return returnValue
   }
 
-  //
+  // Returns a list Patrons of a Campaign identified by ID
   func getMembersForCampaign() async -> PatreonCampaignMembers? {
     let returnValue: PatreonCampaignMembers?
     let path = "campaigns/" + client.campaignID + "/members"
@@ -173,7 +178,9 @@ extension Patreon {
       URLQueryItem(name: "fields[address]",
                    value: "addressee,city,line_1,line_2,phone_number,postal_code,state")
     ]
-    let fetchedData = await fetchPatreonData(client.creatorAccessToken, path, query, PatreonCampaignMembers.self)
+    let fetchedData = await fetchPatreonData(client.creatorAccessToken,
+                                             path, query,
+                                             PatreonCampaignMembers.self)
     if let campaignMembers = fetchedData {
       returnValue = campaignMembers
       debugPrint(campaignMembers)
@@ -184,7 +191,7 @@ extension Patreon {
     return returnValue
   }
 
-  //
+  // Returns Details about a Campaign Patron identifies by ID
   func getMemberForCampaignByID() async -> PatronFetchedByID? {
     let returnValue: PatronFetchedByID?
     let path = "campaigns/members/" + "member_id"
@@ -193,7 +200,9 @@ extension Patreon {
       URLQueryItem(name: "fields[member]", value: "full_name,is_follower,last_charge_date"),
       URLQueryItem(name: "include", value: "address,user")
     ]
-    let fetchedData = await fetchPatreonData(client.creatorAccessToken, path, query, PatronFetchedByID.self)
+    let fetchedData = await fetchPatreonData(client.creatorAccessToken,
+                                             path, query,
+                                             PatronFetchedByID.self)
     if let fetchedPatron = fetchedData {
       returnValue = fetchedPatron
       debugPrint(fetchedPatron)
@@ -241,7 +250,7 @@ extension Patreon {
 
 }
 
-// MARK: - Patron Identity
+// MARK: - Patreon User Identity Struct
 struct PatronIdentity: Codable {
   let data: Data
   let included: [Included]?
@@ -293,7 +302,7 @@ struct PatronIdentity: Codable {
   }
 }
 
-// MARK: -
+// MARK: - User's Campaign Struct
 struct PatronOwnedCampaigns: Codable {
   let data: [Data]
   let meta: Meta
@@ -340,7 +349,7 @@ struct PatronOwnedCampaigns: Codable {
   }
 }
 
-// MARK: -
+// MARK: - Campaign Details Struct
 struct PatreonCampaignDetails: Codable {
   let data: Data
   
@@ -372,7 +381,7 @@ struct PatreonCampaignDetails: Codable {
   }
 }
 
-// MARK: -
+// MARK: - Campaign's Patrons Struct
 struct PatreonCampaignMembers: Codable {
   let data: [Data]
   let included: [Included]
@@ -450,7 +459,7 @@ struct PatreonCampaignMembers: Codable {
   }
 }
 
-// MARK: -
+// MARK: - A Patron Details Struct
 struct PatronFetchedByID: Codable {
   let data: Data
   let included: [Included]
