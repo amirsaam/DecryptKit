@@ -46,6 +46,35 @@ struct BrandInfo: View {
   }
 }
 
+// MARK: - DecryptKit ProgressView
+struct BrandProgress: View {
+  @State var logoSize: CGFloat
+  @State var progressText: String?
+  @State private var isRotating = 0.0
+  var body: some View {
+    VStack {
+      Image("deCripple")
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .frame(width: logoSize, height: logoSize)
+        .rotationEffect(.degrees(isRotating))
+        .softOuterShadow()
+        .onAppear {
+          withAnimation(
+            .linear(duration: 1)
+            .speed(0.2)
+            .repeatForever(autoreverses: false)
+          ) {
+            isRotating = 360.0
+          }
+        }
+      Text(progressText ?? "")
+        .font(.caption.monospaced())
+        .textCase(.uppercase)
+    }
+  }
+}
+
 // MARK: - DecryptKit People
 struct Creators: View {
   var body: some View {

@@ -123,7 +123,10 @@ struct AccountingView: View {
   func login(email: String, password: String) async {
     defaults.set(email, forKey: "Email")
     do {
-      let user = try await realmApp.login(credentials: Credentials.emailPassword(email: email, password: password))
+      let user = try await realmApp.login(
+        credentials: Credentials.emailPassword(email: email,
+                                               password: password)
+      )
       debugPrint("Successfully logged in user: \(user)")
     } catch {
       debugPrint("Failed to log in user: \(error.localizedDescription)")

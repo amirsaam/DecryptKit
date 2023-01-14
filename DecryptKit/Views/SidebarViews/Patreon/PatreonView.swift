@@ -23,7 +23,7 @@ struct PatreonView: View {
   @State private var newUser = deUser()
 
   @State private var patreon = Patreon.shared
-  @State private var patreonUser: PatronOAuth?
+  @State private var patreonOAuth: PatronOAuth?
 
   var body: some View {
     ZStack {
@@ -54,10 +54,10 @@ struct PatreonView: View {
       Task {
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
-          debugPrint(patreonUser ?? "getting tokens failed")
+          debugPrint(patreonOAuth ?? "getting tokens failed")
         } else if !userPRT.isEmpty && !tokensFetched {
           await handleRefreshToken(userPRT)
-          debugPrint(patreonUser ?? "refreshing tokens failed")
+          debugPrint(patreonOAuth ?? "refreshing tokens failed")
         }
       }
     }
@@ -65,40 +65,40 @@ struct PatreonView: View {
       if boolean {
         Task {
           await handleOAuthCallback(callbackCode)
-          debugPrint(patreonUser ?? "getting tokens failed")
+          debugPrint(patreonOAuth ?? "getting tokens failed")
         }
       }
     }
   }
   func handleOAuthCallback(_ callbackCode: String) async {
-    patreonUser = await patreon.getOAuthTokens(callbackCode)
+    patreonOAuth = await patreon.getOAuthTokens(callbackCode)
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
       $0.userId.contains(user.id)
     }
     try! realm.write {
-      currentUser[0].userPAT = patreonUser?.access_token ?? ""
-      currentUser[0].userPRT = patreonUser?.refresh_token ?? ""
+      currentUser[0].userPAT = patreonOAuth?.access_token ?? ""
+      currentUser[0].userPRT = patreonOAuth?.refresh_token ?? ""
     }
-    userPAT = patreonUser?.access_token ?? ""
-    userPRT = patreonUser?.refresh_token ?? ""
+    userPAT = patreonOAuth?.access_token ?? ""
+    userPRT = patreonOAuth?.refresh_token ?? ""
     isDeeplink = false
     tokensFetched = true
   }
   func handleRefreshToken(_ refreshToken: String) async {
-    patreonUser = await patreon.refreshOAuthTokens(refreshToken)
+    patreonOAuth = await patreon.refreshOAuthTokens(refreshToken)
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
       $0.userId.contains(user.id)
     }
     try! realm.write {
-      currentUser[0].userPAT = patreonUser?.access_token ?? ""
-      currentUser[0].userPRT = patreonUser?.refresh_token ?? ""
+      currentUser[0].userPAT = patreonOAuth?.access_token ?? ""
+      currentUser[0].userPRT = patreonOAuth?.refresh_token ?? ""
     }
-    userPAT = patreonUser?.access_token ?? ""
-    userPRT = patreonUser?.refresh_token ?? ""
+    userPAT = patreonOAuth?.access_token ?? ""
+    userPRT = patreonOAuth?.refresh_token ?? ""
     tokensFetched = true
   }
 }

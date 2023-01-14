@@ -28,6 +28,7 @@ struct OpenRealmView: View {
   @State private var userTier = 0
   @State private var userPAT = ""
   @State private var userPRT = ""
+  @State private var dataLoaded = false
 
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
@@ -41,11 +42,13 @@ struct OpenRealmView: View {
         .ignoresSafeArea(.all)
       switch asyncOpen {
       case .connecting:
-        ProgressView()
+        BrandProgress(logoSize: 50,
+                      progressText: "Connecting...")
           .padding()
       case .waitingForUser:
-        ProgressView("Waiting for user to log in...")
-          .padding()
+        BrandProgress(logoSize: 50,
+                      progressText: "Waiting for user to log in...")
+        .padding()
       case .open(let realm):
         MainView(user: user,
                  userUID: $userUID,
@@ -54,6 +57,7 @@ struct OpenRealmView: View {
                  userTier: $userTier,
                  userPAT: $userPAT,
                  userPRT: $userPRT,
+                 dataLoaded: $dataLoaded,
                  sourceData: $sourceData)
         .environment(\.realm, realm)
         .environmentObject(errorHandler)
@@ -123,6 +127,7 @@ struct OpenRealmView: View {
       debugPrint("No duplicate user found")
       Task { @MainActor in
         await resolveSourceData()
+        dataLoaded = true
       }
       sourceData = try? cache.readCodable(forKey: "cachedSourceData")
     } else {

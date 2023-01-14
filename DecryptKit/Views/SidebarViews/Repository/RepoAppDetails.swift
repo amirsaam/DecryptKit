@@ -46,7 +46,11 @@ struct InAppStore: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
           } placeholder: {
-            ProgressView()
+            Rectangle()
+              .fill(mainColor)
+              .overlay {
+                ProgressView()
+              }
           }
           .frame(width: 50, height: 50)
           .cornerRadius(12)
@@ -104,7 +108,11 @@ struct OutAppStore: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
           } placeholder: {
-            ProgressView()
+            Rectangle()
+              .fill(mainColor)
+              .overlay {
+                ProgressView()
+              }
           }
           .frame(width: 50, height: 50)
           .cornerRadius(12)
