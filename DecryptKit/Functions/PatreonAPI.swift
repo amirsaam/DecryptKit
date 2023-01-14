@@ -67,10 +67,13 @@ extension Patreon {
   private func fetchOAuthResponse(
     _ params: Dictionary<String, String>
   ) async -> PatronOAuth? {
-    var requestResponse: PatronOAuth?
+
     let semaphore = AsyncSemaphore(value: 0)
+    var requestResponse: PatronOAuth?
+  
     guard let url = URL(string: "https://www.patreon.com/api/oauth2/token") else { return nil }
     let headers: HTTPHeaders = ["Content-Type": "application/x-www-form-urlencoded"]
+
     alamofire.request(url,
                       method: .post,
                       parameters: params,
@@ -86,6 +89,7 @@ extension Patreon {
       }
       semaphore.signal()
     }
+
     await semaphore.wait()
     return requestResponse
   }
@@ -220,16 +224,21 @@ extension Patreon {
     _ apiQueries: [URLQueryItem],
     _ returnType: T.Type
   ) async -> T? {
+
     let semaphore = AsyncSemaphore(value: 0)
     var data: T?
+
     var urlComponents = URLComponents()
     urlComponents.scheme = "https"
     urlComponents.host = "www.patreon.com"
     urlComponents.path = "/api/oauth2/v2/" + apiPath
     urlComponents.queryItems = apiQueries
+
     guard let url = urlComponents.url else { return nil }
-    print(url)
+    debugPrint(url)
+
     let headers: HTTPHeaders = ["Authorization": "Bearer \(accessToken)"]
+  
     alamofire.request(url,
                       method: .get,
                       headers: headers)
@@ -244,6 +253,7 @@ extension Patreon {
       }
       semaphore.signal()
     }
+
     await semaphore.wait()
     return data
   }
