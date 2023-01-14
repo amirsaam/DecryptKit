@@ -92,7 +92,7 @@ extension Patreon {
 
 }
 
-// MARK: - Patron's OAuth Detail
+// MARK: - Patron's OAuth Struct
 struct PatronOAuth: Codable {
   let access_token: String
   let refresh_token: String
@@ -145,8 +145,8 @@ extension Patreon {
   }
 
   // Returns details about a Campaign identified by ID
-  func getDataForCampaign() async -> PatreonCampaignDetails? {
-    let returnValue: PatreonCampaignDetails?
+  func getDataForCampaign() async -> PatreonCampaignInfo? {
+    let returnValue: PatreonCampaignInfo?
     let path = "campaigns/" + client.campaignID
     let queries = [
       URLQueryItem(name: "fields[campaign]",
@@ -154,7 +154,7 @@ extension Patreon {
     ]
     let fetchedData = await fetchPatreonData(client.creatorAccessToken,
                                              path, queries,
-                                             PatreonCampaignDetails.self)
+                                             PatreonCampaignInfo.self)
     if let campaignData = fetchedData {
       returnValue = campaignData
       debugPrint(campaignData)
@@ -192,9 +192,9 @@ extension Patreon {
   }
 
   // Returns Details about a Campaign Patron identifies by ID
-  func getMemberForCampaignByID() async -> PatronFetchedByID? {
+  func getMemberForCampaignByID(_ memberID: String) async -> PatronFetchedByID? {
     let returnValue: PatronFetchedByID?
-    let path = "campaigns/members/" + "member_id"
+    let path = "campaigns/members/" + memberID
     let query = [
       URLQueryItem(name: "fields[address]", value: "line_1,line_2,addressee,postal_code,city"),
       URLQueryItem(name: "fields[member]", value: "full_name,is_follower,last_charge_date"),
@@ -350,7 +350,7 @@ struct PatronOwnedCampaigns: Codable {
 }
 
 // MARK: - Campaign Details Struct
-struct PatreonCampaignDetails: Codable {
+struct PatreonCampaignInfo: Codable {
   let data: Data
   
   struct Data: Codable {
@@ -384,7 +384,7 @@ struct PatreonCampaignDetails: Codable {
 // MARK: - Campaign's Patrons Struct
 struct PatreonCampaignMembers: Codable {
   let data: [Data]
-  let included: [Included]
+  let included: [Included]?
   let meta: Meta
   
   struct Data: Codable {
@@ -396,22 +396,30 @@ struct PatreonCampaignMembers: Codable {
     struct Attributes: Codable {
       let full_name: String
       let is_follower: Bool
-      let last_charge_date: String
-      let last_charge_status: String
+      let last_charge_date: String?
+      let last_charge_status: String?
       let lifetime_support_cents: Int
       let currently_entitled_amount_cents: Int
-      let patron_status: String
+      let patron_status: String?
     }
     
     struct Relationships: Codable {
       let address: RelationshipData
-      let currently_entitled_tiers: RelationshipData
+      let currently_entitled_tiers: RelationshipArrayData
       
       struct RelationshipData: Codable {
-        let data: Datum
+        let data: Datum?
         
         struct Datum: Codable {
           let id: String
+          let type: String
+        }
+      }
+      struct RelationshipArrayData: Codable {
+        let data: [ArrayDatum]
+        
+        struct ArrayDatum: Codable {
+          let id: String?
           let type: String
         }
       }
@@ -424,6 +432,11 @@ struct PatreonCampaignMembers: Codable {
     let type: String
     
     struct IncludedAttributes: Codable {
+      let address: AddressAttributes?
+      let tier: TierAttributes?
+    }
+    
+    struct AddressAttributes: Codable {
       let addressee: String?
       let city: String?
       let country: String?
@@ -433,7 +446,11 @@ struct PatreonCampaignMembers: Codable {
       let phone_number: String?
       let postal_code: String?
       let state: String?
+    }
+
+    struct TierAttributes: Codable {
       let amount_cents: Int?
+      let created_at: String?
       let description: String?
       let discord_role_ids: [String]?
       let edited_at: String?
@@ -453,7 +470,7 @@ struct PatreonCampaignMembers: Codable {
       let total: Int
       
       struct Cursors: Codable {
-        let next: String
+        let next: String?
       }
     }
   }

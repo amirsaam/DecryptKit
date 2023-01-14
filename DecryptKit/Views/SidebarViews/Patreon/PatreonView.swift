@@ -52,14 +52,12 @@ struct PatreonView: View {
     }
     .onAppear {
       Task {
-        let _ = await patreon.getDataForCampaign()
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonUser ?? "getting tokens failed")
         } else if !userPRT.isEmpty && !tokensFetched {
           await handleRefreshToken(userPRT)
           debugPrint(patreonUser ?? "refreshing tokens failed")
-          let _ = await patreon.getDataForCampaign()
         }
       }
     }

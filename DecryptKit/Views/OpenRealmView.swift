@@ -14,7 +14,7 @@ import Semaphore
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
 
-  @AsyncOpen(appId: realmAppConfig.appId, timeout: 2000) var asyncOpen
+  @AsyncOpen(appId: realmAppConfig.appId, timeout: 15000) var asyncOpen
 
   // Configuration used to open the realm.
   @Environment(\.realmConfiguration) private var config
