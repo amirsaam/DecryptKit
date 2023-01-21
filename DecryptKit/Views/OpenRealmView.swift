@@ -50,7 +50,7 @@ struct OpenRealmView: View {
                       progressText: "Waiting for user to log in...")
         .padding()
       case .open(let realm):
-        MainView(user: user,
+        MainView(user: $user,
                  userUID: $userUID,
                  userIsBanned: $userIsBanned,
                  userEmailAddress: $userEmailAddress,
@@ -127,7 +127,9 @@ struct OpenRealmView: View {
       debugPrint("No duplicate user found")
       Task { @MainActor in
         await resolveSourceData()
-        dataLoaded = true
+        withAnimation {
+          dataLoaded = true
+        }
       }
       sourceData = try? cache.readCodable(forKey: "cachedSourceData")
     } else {

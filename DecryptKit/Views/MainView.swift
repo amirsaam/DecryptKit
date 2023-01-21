@@ -15,7 +15,7 @@ struct MainView: View {
   @Environment(\.openURL) private var openURL
   @EnvironmentObject var errorHandler: ErrorHandler
 
-  @State var user: User
+  @Binding var user: User
   @Binding var userUID: String
   @Binding var userIsBanned: Bool
   @Binding var userEmailAddress: String
@@ -42,22 +42,7 @@ struct MainView: View {
   var body: some View {
     GeometryReader { geo in
       if userIsBanned {
-        HStack {
-          Spacer()
-          VStack {
-            Spacer()
-            Text("This account has been Restricted!")
-              .font(.title.monospaced())
-            Text("support@decryptkit.xyz")
-              .font(.headline.monospaced())
-              .padding(.top)
-            Text("Contact above Email Address for more Information")
-              .font(.headline.monospaced())
-              .padding(.top, 1)
-            Spacer()
-          }
-          Spacer()
-        }
+        RestrictedUser()
       } else {
         if dataLoaded {
           VStack {

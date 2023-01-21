@@ -40,7 +40,7 @@ struct InAppStore: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 15) {
       HStack(spacing: 10) {
-        if let url = URL(string: lookedup?.results[0].artworkUrl60 ?? "") {
+        if let url = URL(string: lookedup?.results[0].artworkUrl512 ?? "") {
           CachedAsyncImage(url: url) { image in
             image
               .resizable()

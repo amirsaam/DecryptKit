@@ -103,6 +103,28 @@ struct Creators: View {
   }
 }
 
+// MARK: - Restricted User View
+struct RestrictedUser: View {
+  var body: some View {
+    HStack {
+      Spacer()
+      VStack {
+        Spacer()
+        Text("This account has been Restricted!")
+          .font(.title.monospaced())
+        Text("support@decryptkit.xyz")
+          .font(.headline.monospaced())
+          .padding(.top)
+        Text("Contact above Email Address for more Information")
+          .font(.headline.monospaced())
+          .padding(.top, 1)
+        Spacer()
+      }
+      Spacer()
+    }
+  }
+}
+
 // MARK: - Sidebar Views Background
 struct SidebarBackground: View {
   var body: some View {
