@@ -43,22 +43,43 @@ struct PatreonView: View {
                   .font(.headline)
                   .multilineTextAlignment(.leading)
                 PatreonCampaignDetails(patreonCampaign: $patreonCampaign)
-                Button {
-                  patreonAPI.doOAuth()
-                } label: {
-                  Label(userPAT.isEmpty
-                        ? "Link your Patreon"
-                        : patreonVM.patronIdentity == nil
+                HStack {
+                  Button {
+                    patreonAPI.doOAuth()
+                  } label: {
+                    Label(userPAT.isEmpty
+                          ? "Link your Patreon"
+                          : patreonVM.patronIdentity == nil
                           ? "Loading..."
                           : "Logged in as \(patreonVM.patronIdentity?.data.attributes.full_name ?? "")",
-                        systemImage: !userPAT.isEmpty && patreonVM.patronIdentity != nil ? "link" : "circle.dotted")
+                          systemImage: !userPAT.isEmpty && patreonVM.patronIdentity == nil ? "circle.dotted" : "link")
                     .font(.caption2)
+                  }
+                  .softButtonStyle(
+                    RoundedRectangle(cornerRadius: 7.5),
+                    padding: 10,
+                    pressedEffect: .flat
+                  )
+                  Spacer()
+                  Button {
+                    if let url = URL(string: "https://www.patreon.com" + (patreonCampaign?.data.attributes.pledge_url ?? "")) {
+                      UIApplication.shared.open(url)
+                    }
+                  } label: {
+                    Label("Subscribe", systemImage: "giftcard.fill")
+                      .font(.caption2)
+                  }
+                  .softButtonStyle(
+                    RoundedRectangle(cornerRadius: 7.5),
+                    padding: 10,
+                    mainColor: .red,
+                    textColor: .white,
+                    darkShadowColor: .redNeuDS,
+                    lightShadowColor: .redNeuLS,
+                    pressedEffect: .flat
+                  )
+                  .disabled(userPAT.isEmpty || patreonVM.patronIdentity == nil)
                 }
-                .softButtonStyle(
-                  RoundedRectangle(cornerRadius: 7.5),
-                  padding: 10,
-                  pressedEffect: .flat
-                )
                 Button {
                   withAnimation(.spring()) {
                     showPatreon = false
