@@ -33,7 +33,9 @@ struct OpenRealmView: View {
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
-  @State private var sourceData: [deCrippleSource]?
+  @State private var freeSourceData: [deCrippleSource]?
+  @State private var vipSourceData: [deCrippleSource]?
+  @State private var patreonCampaign: PatreonCampaignInfo?
 
   // MARK: - View Body
   var body: some View {
@@ -44,7 +46,7 @@ struct OpenRealmView: View {
       case .connecting:
         BrandProgress(logoSize: 50,
                       progressText: "Connecting...")
-          .padding()
+        .padding()
       case .waitingForUser:
         BrandProgress(logoSize: 50,
                       progressText: "Waiting for user to log in...")
@@ -58,11 +60,14 @@ struct OpenRealmView: View {
                  userPAT: $userPAT,
                  userPRT: $userPRT,
                  dataLoaded: $dataLoaded,
-                 sourceData: $sourceData)
+                 freeSourceData: $freeSourceData,
+                 vipSourceData: $vipSourceData,
+                 patreonCampaign: $patreonCampaign)
         .environment(\.realm, realm)
         .environmentObject(errorHandler)
-        .task(priority: .high) { @MainActor in
+        .task(priority: .high) {
           await doCheckUser()
+          patreonCampaign = await Patreon.shared.getDataForCampaign()
         }
       case .progress(let progress):
         ProgressView(progress)
@@ -131,7 +136,8 @@ struct OpenRealmView: View {
           dataLoaded = true
         }
       }
-      sourceData = try? cache.readCodable(forKey: "cachedSourceData")
+      freeSourceData = try? cache.readCodable(forKey: "cachedFreeSourceData")
+      vipSourceData = try? cache.readCodable(forKey: "cachedVIPSourceData")
     } else {
       debugPrint("Duplicate user found, banning user")
       try! realm.write {

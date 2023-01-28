@@ -15,7 +15,7 @@ struct LookupView: View {
   
   @Binding var showLookup: Bool
   @Binding var userEmailAddress: String
-  @Binding var sourceData: [deCrippleSource]?
+  @Binding var freeSourceData: [deCrippleSource]?
 
   @ObservedResults(deStat.self) private var stats
   @State private var newStat = deStat()
@@ -179,7 +179,10 @@ struct LookupView: View {
       }
     }
     .task {
-      sourceData = try? cache.readCodable(forKey: "cachedSourceData")
+      if freeSourceData == nil {
+        await resolveSourceData()
+      }
+      freeSourceData = try? cache.readCodable(forKey: "cachedFreeSourceData")
     }
   }
   func searchApp() {
@@ -210,7 +213,7 @@ struct LookupView: View {
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1
       if idIsValid {
-        idOnSource = sourceData?.contains { app in
+        idOnSource = freeSourceData?.contains { app in
           app.bundleID == lookedup?.results[0].bundleId ?? ""
         } ?? false
         idIsPaid = lookedup?.results[0].price != 0

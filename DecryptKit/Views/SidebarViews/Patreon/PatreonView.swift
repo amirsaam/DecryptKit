@@ -9,55 +9,84 @@ import SwiftUI
 import Neumorphic
 import RealmSwift
 
+class PatreonVM: ObservableObject {
+  public static let shared = PatreonVM()
+  var tokensFetched: Bool = false
+  var patreonOAuth: PatronOAuth? = nil
+  var patronIdentity: PatronIdentity? = nil
+}
+
 struct PatreonView: View {
 
   @State var user: User
   @Binding var isDeeplink: Bool
-  @Binding var tokensFetched: Bool
   @Binding var showPatreon: Bool
   @Binding var callbackCode: String
   @Binding var userPAT: String
   @Binding var userPRT: String
+  @Binding var patreonCampaign: PatreonCampaignInfo?
 
+  @EnvironmentObject var patreonVM: PatreonVM
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
-  @State private var patreon = Patreon.shared
-  @State private var patreonOAuth: PatronOAuth?
+  @State private var patreonAPI = Patreon.shared
 
   var body: some View {
-    ZStack {
-      if showPatreon {
-        SidebarBackground()
-          .overlay {
-            VStack(alignment: .leading, spacing: 25.0) {
-              Text("Click to OAuth")
-                .onTapGesture {
-                  patreon.doOAuth()
+    GeometryReader { geo in
+      ZStack {
+        if showPatreon {
+          SidebarBackground()
+            .overlay {
+              VStack(alignment: .leading, spacing: 25.0) {
+                Text("Subscribe to our Patreon for accessing premium services!")
+                  .font(.headline)
+                  .multilineTextAlignment(.leading)
+                PatreonCampaignDetails(patreonCampaign: $patreonCampaign)
+                Button {
+                  patreonAPI.doOAuth()
+                } label: {
+                  Label(userPAT.isEmpty
+                        ? "Link your Patreon"
+                        : patreonVM.patronIdentity == nil
+                          ? "Loading..."
+                          : "Logged in as \(patreonVM.patronIdentity?.data.attributes.full_name ?? "")",
+                        systemImage: !userPAT.isEmpty && patreonVM.patronIdentity != nil ? "link" : "circle.dotted")
+                    .font(.caption2)
                 }
-              Button {
-                withAnimation(.spring()) {
-                  showPatreon = false
+                .softButtonStyle(
+                  RoundedRectangle(cornerRadius: 7.5),
+                  padding: 10,
+                  pressedEffect: .flat
+                )
+                Button {
+                  withAnimation(.spring()) {
+                    showPatreon = false
+                  }
+                } label: {
+                  Image(systemName: "chevron.compact.right")
                 }
-              } label: {
-                Image(systemName: "chevron.compact.right")
+                .softButtonStyle(
+                  Circle(),
+                  pressedEffect: .flat
+                )
               }
-              .softButtonStyle(
-                Circle(),
-                pressedEffect: .flat
-              )
+              .frame(width: geo.size.width * (8.25/10))
             }
-          }
+        }
       }
     }
     .onAppear {
       Task {
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
-          debugPrint(patreonOAuth ?? "getting tokens failed")
-        } else if !userPRT.isEmpty && !tokensFetched {
+          debugPrint(patreonVM.patreonOAuth ?? "getting tokens failed")
+        } else if !userPRT.isEmpty && !patreonVM.tokensFetched {
           await handleRefreshToken(userPRT)
-          debugPrint(patreonOAuth ?? "refreshing tokens failed")
+          debugPrint(patreonVM.patreonOAuth ?? "refreshing tokens failed")
+        }
+        if patreonVM.tokensFetched {
+          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userPAT)
         }
       }
     }
@@ -65,40 +94,40 @@ struct PatreonView: View {
       if boolean {
         Task {
           await handleOAuthCallback(callbackCode)
-          debugPrint(patreonOAuth ?? "getting tokens failed")
+          debugPrint(patreonVM.patreonOAuth ?? "getting tokens failed")
         }
       }
     }
   }
   func handleOAuthCallback(_ callbackCode: String) async {
-    patreonOAuth = await patreon.getOAuthTokens(callbackCode)
+    patreonVM.patreonOAuth = await patreonAPI.getOAuthTokens(callbackCode)
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
       $0.userId.contains(user.id)
     }
     try! realm.write {
-      currentUser[0].userPAT = patreonOAuth?.access_token ?? ""
-      currentUser[0].userPRT = patreonOAuth?.refresh_token ?? ""
+      currentUser[0].userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+      currentUser[0].userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     }
-    userPAT = patreonOAuth?.access_token ?? ""
-    userPRT = patreonOAuth?.refresh_token ?? ""
+    userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+    userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     isDeeplink = false
-    tokensFetched = true
+    patreonVM.tokensFetched = true
   }
   func handleRefreshToken(_ refreshToken: String) async {
-    patreonOAuth = await patreon.refreshOAuthTokens(refreshToken)
+    patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(refreshToken)
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
       $0.userId.contains(user.id)
     }
     try! realm.write {
-      currentUser[0].userPAT = patreonOAuth?.access_token ?? ""
-      currentUser[0].userPRT = patreonOAuth?.refresh_token ?? ""
+      currentUser[0].userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+      currentUser[0].userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     }
-    userPAT = patreonOAuth?.access_token ?? ""
-    userPRT = patreonOAuth?.refresh_token ?? ""
-    tokensFetched = true
+    userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+    userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
+    patreonVM.tokensFetched = true
   }
 }

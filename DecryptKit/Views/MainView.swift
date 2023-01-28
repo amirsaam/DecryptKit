@@ -23,7 +23,9 @@ struct MainView: View {
   @Binding var userPAT: String
   @Binding var userPRT: String
   @Binding var dataLoaded: Bool
-  @Binding var sourceData: [deCrippleSource]?
+  @Binding var freeSourceData: [deCrippleSource]?
+  @Binding var vipSourceData: [deCrippleSource]?
+  @Binding var patreonCampaign: PatreonCampaignInfo?
 
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
@@ -153,18 +155,21 @@ struct MainView: View {
               if showLookup {
                 LookupView(showLookup: $showLookup,
                            userEmailAddress: $userEmailAddress,
-                           sourceData: $sourceData)
+                           freeSourceData: $freeSourceData)
               } else if showRepo {
                 RepoView(showRepo: $showRepo,
-                         sourceData: $sourceData)
+                         freeSourceData: $freeSourceData,
+                         vipSourceData: $vipSourceData,
+                         userTier: $userTier)
               } else if showPatreon {
                 PatreonView(user: user,
                             isDeeplink: $isDeeplink,
-                            tokensFetched: $tokensFetched,
                             showPatreon: $showPatreon,
                             callbackCode: $patreonCallbackCode,
                             userPAT: $userPAT,
-                            userPRT: $userPRT)
+                            userPRT: $userPRT,
+                            patreonCampaign: $patreonCampaign)
+                .environmentObject(PatreonVM.shared)
               } else {
                 VStack {
                   Creators()

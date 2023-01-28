@@ -17,16 +17,22 @@ struct deCrippleSource: Codable {
   var link: String
 }
 
+// MARK: - Sources
+enum SourcesURLs: String, CaseIterable {
+  case free = "https://amrsm.ir/decrypted.json"
+  case vip = "https://amrsm.ir/vip.json"
+}
+
 // MARK: - Get Live Source Data
-func getSourceData() async -> [deCrippleSource]? {
-  guard let url = URL(string: "https://amrsm.ir/decrypted.json") else { return nil }
+func getSourceData(source: SourcesURLs) async -> [deCrippleSource]? {
+  guard let url = URL(string: source.rawValue) else { return nil }
   do {
     let (data, _) = try await URLSession.shared.data(
       for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
     )
     let decoder = JSONDecoder()
     let jsonResult: [deCrippleSource] = try decoder.decode([deCrippleSource].self, from: data)
-    debugPrint("SourceData Fetched")
+    debugPrint("SourceData from \(source.rawValue) Fetched")
     return jsonResult
   } catch {
     debugPrint("Error getting Result data from URL: \(url): \(error)")
@@ -36,11 +42,21 @@ func getSourceData() async -> [deCrippleSource]? {
 
 // MARK: - Get & Cache Source Data
 func resolveSourceData() async {
-  let refreshedSourceData: [deCrippleSource]? = await getSourceData()
-  try? cache.write(codable: refreshedSourceData, forKey: "cachedSourceData")
-  debugPrint("SourceData Refreshed")
-  if let data = refreshedSourceData {
-    data.forEach { app in
+  let refreshedFreeSourceData: [deCrippleSource]? = await getSourceData(source: .free)
+  debugPrint("FreeSourceData Refreshed")
+  try? cache.write(codable: refreshedFreeSourceData, forKey: "cachedFreeSourceData")
+  if let freeData = refreshedFreeSourceData {
+    freeData.forEach { app in
+      if !outAppStoreBundleID.contains(app.bundleID) {
+        resolveLookupData(app.bundleID)
+      }
+    }
+  }
+  let refreshedVIPSourceData: [deCrippleSource]? = await getSourceData(source: .vip)
+  debugPrint("VIPSourceData Refreshed")
+  try? cache.write(codable: refreshedVIPSourceData, forKey: "cachedVIPSourceData")
+  if let vipData = refreshedVIPSourceData {
+    vipData.forEach { app in
       if !outAppStoreBundleID.contains(app.bundleID) {
         resolveLookupData(app.bundleID)
       }

@@ -370,20 +370,21 @@ struct PatreonCampaignInfo: Codable {
     
     struct Attributes: Codable {
       let created_at: String
-      let creation_name: String
+      let creation_name: String?
       let discord_server_id: String?
+      let google_analytics_id: String?
       let image_small_url: String
       let image_url: String
-      let is_charged_immediately: Bool
+      let is_charged_immediately: Bool?
       let is_monthly: Bool
       let main_video_embed: String?
       let main_video_url: String?
       let one_liner: String?
       let patron_count: Int
-      let pay_per_name: String
+      let pay_per_name: String?
       let pledge_url: String
-      let published_at: String
-      let summary: String
+      let published_at: String?
+      let summary: String?
       let thanks_embed: String?
       let thanks_msg: String?
       let thanks_video_url: String?
