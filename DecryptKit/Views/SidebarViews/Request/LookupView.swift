@@ -8,20 +8,19 @@
 import SwiftUI
 import Neumorphic
 import RealmSwift
-import DataCache
 
 // MARK: - View Struct
 struct LookupView: View {
   
   @Binding var showLookup: Bool
-  @Binding var userEmailAddress: String
-  @Binding var freeSourceData: [deCrippleSource]?
 
   @ObservedResults(deStat.self) private var stats
   @State private var newStat = deStat()
   @ObservedResults(deReq.self) private var requests
   @State private var newReq = deReq()
 
+  @State private var freeSourceData = SourceVM.shared.freeSourceData
+  @State private var userEmailAddress = UserVM.shared.userEmail
   @State private var requestProgress = false
   @State private var requestSubmitted = false
   @State private var serviceIsOn = false
@@ -182,7 +181,7 @@ struct LookupView: View {
       if freeSourceData == nil {
         await resolveSourceData()
       }
-      freeSourceData = try? cache.readCodable(forKey: "cachedFreeSourceData")
+      freeSourceData = SourceVM.shared.freeSourceData
     }
   }
   func searchApp() {

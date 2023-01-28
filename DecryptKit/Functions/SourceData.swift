@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import DataCache
 
 // MARK: - Source Structure
 struct deCrippleSource: Codable {
@@ -44,7 +43,7 @@ func getSourceData(source: SourcesURLs) async -> [deCrippleSource]? {
 func resolveSourceData() async {
   let refreshedFreeSourceData: [deCrippleSource]? = await getSourceData(source: .free)
   debugPrint("FreeSourceData Refreshed")
-  try? cache.write(codable: refreshedFreeSourceData, forKey: "cachedFreeSourceData")
+  SourceVM.shared.freeSourceData = refreshedFreeSourceData
   if let freeData = refreshedFreeSourceData {
     freeData.forEach { app in
       if !outAppStoreBundleID.contains(app.bundleID) {
@@ -54,7 +53,7 @@ func resolveSourceData() async {
   }
   let refreshedVIPSourceData: [deCrippleSource]? = await getSourceData(source: .vip)
   debugPrint("VIPSourceData Refreshed")
-  try? cache.write(codable: refreshedVIPSourceData, forKey: "cachedVIPSourceData")
+  SourceVM.shared.vipSourceData = refreshedVIPSourceData
   if let vipData = refreshedVIPSourceData {
     vipData.forEach { app in
       if !outAppStoreBundleID.contains(app.bundleID) {

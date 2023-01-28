@@ -7,7 +7,6 @@
 
 import SwiftUI
 import RealmSwift
-import DataCache
 import Semaphore
 
 // MARK: - View Struct
@@ -22,20 +21,11 @@ struct OpenRealmView: View {
 
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
-  @State private var userUID = ""
-  @State private var userIsBanned = false
-  @State private var userEmailAddress = ""
-  @State private var userTier = 0
-  @State private var userPAT = ""
-  @State private var userPRT = ""
+  @State private var userVM = UserVM.shared
   @State private var dataLoaded = false
 
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
-
-  @State private var freeSourceData: [deCrippleSource]?
-  @State private var vipSourceData: [deCrippleSource]?
-  @State private var patreonCampaign: PatreonCampaignInfo?
 
   // MARK: - View Body
   var body: some View {
@@ -53,21 +43,12 @@ struct OpenRealmView: View {
         .padding()
       case .open(let realm):
         MainView(user: $user,
-                 userUID: $userUID,
-                 userIsBanned: $userIsBanned,
-                 userEmailAddress: $userEmailAddress,
-                 userTier: $userTier,
-                 userPAT: $userPAT,
-                 userPRT: $userPRT,
-                 dataLoaded: $dataLoaded,
-                 freeSourceData: $freeSourceData,
-                 vipSourceData: $vipSourceData,
-                 patreonCampaign: $patreonCampaign)
+                 dataLoaded: $dataLoaded)
         .environment(\.realm, realm)
         .environmentObject(errorHandler)
         .task(priority: .high) {
           await doCheckUser()
-          patreonCampaign = await Patreon.shared.getDataForCampaign()
+          PatreonVM.shared.patreonCampaign = await PatreonAPI.shared.getDataForCampaign()
         }
       case .progress(let progress):
         ProgressView(progress)
@@ -87,14 +68,13 @@ struct OpenRealmView: View {
         debugPrint("Failed to refresh custom data: \(error.localizedDescription)")
       case .success(let customData):
         if customData["userId"] == nil {
-          userUID = uid
-          userEmailAddress = defaults.string(forKey: "Email") ?? ""
+          userVM.userUID = uid
           debugPrint("Appending new custom data to Realm")
           Task { @MainActor in
             newUser.userId = user.id
-            newUser.userUID = userUID
+            newUser.userUID = userVM.userUID
             newUser.userIsBanned = false
-            newUser.userEmail = userEmailAddress
+            newUser.userEmail = userVM.userEmail
             newUser.userTier = 0
             newUser.userPAT = ""
             newUser.userPRT = ""
@@ -102,20 +82,20 @@ struct OpenRealmView: View {
           }
         } else {
           debugPrint("Succesfully retrieved custom data from Realm")
-          userUID = customData["userUID"] as! String
-          userIsBanned = customData["userIsBanned"] as! Bool
-          userEmailAddress = customData["userEmail"] as! String
-          userTier = customData["userTier"] as! Int
-          userPAT = customData["userPAT"] as! String
-          userPRT = customData["userPRT"] as! String
+          userVM.userUID = customData["userUID"] as! String
+          userVM.userIsBanned = customData["userIsBanned"] as! Bool
+          userVM.userEmail = customData["userEmail"] as! String
+          userVM.userTier = customData["userTier"] as! Int
+          userVM.userPAT = customData["userPAT"] as! String
+          userVM.userPRT = customData["userPRT"] as! String
           debugPrint(customData)
         }
       }
       semaphore.signal()
     }
     await semaphore.wait()
-    if !userIsBanned {
-      checkForDuplicateUsers(userUID)
+    if !userVM.userIsBanned {
+      checkForDuplicateUsers(userVM.userUID)
     }
   }
   // MARK: - Check for Possible Ban
@@ -136,14 +116,12 @@ struct OpenRealmView: View {
           dataLoaded = true
         }
       }
-      freeSourceData = try? cache.readCodable(forKey: "cachedFreeSourceData")
-      vipSourceData = try? cache.readCodable(forKey: "cachedVIPSourceData")
     } else {
       debugPrint("Duplicate user found, banning user")
       try! realm.write {
         currentUser[0].userIsBanned = true
       }
-      userIsBanned = true
+      userVM.userIsBanned = true
     }
   }
 }

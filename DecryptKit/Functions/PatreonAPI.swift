@@ -21,13 +21,13 @@ private struct PatreonClient {
 }
 
 // MARK: - Patreon Class
-class Patreon {
+class PatreonAPI {
   private let client = PatreonClient()
-  public static let shared = Patreon()
+  public static let shared = PatreonAPI()
 }
 
 // MARK: - Patreon OAuth Calls
-extension Patreon {
+extension PatreonAPI {
 
   // 1st OAuth Call
   func doOAuth() {
@@ -106,7 +106,7 @@ struct PatronOAuth: Codable {
 }
 
 // MARK: - Patreon API Calls
-extension Patreon {
+extension PatreonAPI {
 
   // Returns User's Patreon Account Information
   func getUserIdentity(_ userPAT: String) async -> PatronIdentity? {

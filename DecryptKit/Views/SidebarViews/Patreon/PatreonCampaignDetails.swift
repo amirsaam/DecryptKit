@@ -7,10 +7,11 @@
 
 import SwiftUI
 import Neumorphic
-import CachedAsyncImage
 
 struct PatreonCampaignDetails: View {
+
   @Binding var patreonCampaign: PatreonCampaignInfo?
+
     var body: some View {
       VStack(alignment: .leading, spacing: 15) {
         HStack(spacing: 10) {

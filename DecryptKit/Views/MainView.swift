@@ -16,16 +16,7 @@ struct MainView: View {
   @EnvironmentObject var errorHandler: ErrorHandler
 
   @Binding var user: User
-  @Binding var userUID: String
-  @Binding var userIsBanned: Bool
-  @Binding var userEmailAddress: String
-  @Binding var userTier: Int
-  @Binding var userPAT: String
-  @Binding var userPRT: String
   @Binding var dataLoaded: Bool
-  @Binding var freeSourceData: [deCrippleSource]?
-  @Binding var vipSourceData: [deCrippleSource]?
-  @Binding var patreonCampaign: PatreonCampaignInfo?
 
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
@@ -35,7 +26,6 @@ struct MainView: View {
   @State private var showLookup = false
   @State private var showPatreon = false
   @State private var isDeeplink = false
-  @State private var tokensFetched = false
 
   @State private var patreonCallbackCode: String = ""
   @State private var patreonCallbackState: String = ""
@@ -43,7 +33,7 @@ struct MainView: View {
   // MARK: - View Body
   var body: some View {
     GeometryReader { geo in
-      if userIsBanned {
+      if UserVM.shared.userIsBanned {
         RestrictedUser()
       } else {
         if dataLoaded {
@@ -153,22 +143,14 @@ struct MainView: View {
               .foregroundColor(secondaryColor)
               .frame(width: geo.size.width * (4.25/10))
               if showLookup {
-                LookupView(showLookup: $showLookup,
-                           userEmailAddress: $userEmailAddress,
-                           freeSourceData: $freeSourceData)
+                LookupView(showLookup: $showLookup)
               } else if showRepo {
-                RepoView(showRepo: $showRepo,
-                         freeSourceData: $freeSourceData,
-                         vipSourceData: $vipSourceData,
-                         userTier: $userTier)
+                RepoView(showRepo: $showRepo)
               } else if showPatreon {
                 PatreonView(user: user,
                             isDeeplink: $isDeeplink,
                             showPatreon: $showPatreon,
-                            callbackCode: $patreonCallbackCode,
-                            userPAT: $userPAT,
-                            userPRT: $userPRT,
-                            patreonCampaign: $patreonCampaign)
+                            callbackCode: $patreonCallbackCode)
                 .environmentObject(PatreonVM.shared)
               } else {
                 VStack {

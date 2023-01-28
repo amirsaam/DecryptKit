@@ -33,6 +33,7 @@
 		68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF12940FDA50024DFFE /* SourceData.swift */; };
 		68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF42941045B0024DFFE /* RealmConfig.swift */; };
 		68A33AF72941124A0024DFFE /* RealmObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF62941124A0024DFFE /* RealmObjects.swift */; };
+		68D2CCE42985C7260052B42B /* ViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2CCE32985C7260052B42B /* ViewModels.swift */; };
 		68DE97F12938CE0200A565B8 /* RepoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F02938CE0200A565B8 /* RepoView.swift */; };
 		68DE97F32938CF4B00A565B8 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F22938CF4B00A565B8 /* Components.swift */; };
 		68DE97F5293987B400A565B8 /* RepoAppDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F4293987B400A565B8 /* RepoAppDetails.swift */; };
@@ -63,6 +64,7 @@
 		68A33AF12940FDA50024DFFE /* SourceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceData.swift; sourceTree = "<group>"; };
 		68A33AF42941045B0024DFFE /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		68A33AF62941124A0024DFFE /* RealmObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmObjects.swift; sourceTree = "<group>"; };
+		68D2CCE32985C7260052B42B /* ViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewModels.swift; path = DecryptKit/ViewModels.swift; sourceTree = SOURCE_ROOT; };
 		68DE97F02938CE0200A565B8 /* RepoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoView.swift; sourceTree = "<group>"; };
 		68DE97F22938CF4B00A565B8 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		68DE97F4293987B400A565B8 /* RepoAppDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoAppDetails.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				68A33AF02940FD100024DFFE /* Database */,
 				6843C619292FB586008FDA73 /* deCrippleApp.swift */,
 				6843C62C292FB6C8008FDA73 /* Extensions.swift */,
+				68D2CCE32985C7260052B42B /* ViewModels.swift */,
 				68100187293A925A00418B40 /* CustomLookups.swift */,
 				6843C61B292FB586008FDA73 /* ContentView.swift */,
 				685D098C29422B4A00AFD730 /* Views */,
@@ -300,6 +303,7 @@
 				68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */,
 				68DE97F12938CE0200A565B8 /* RepoView.swift in Sources */,
 				685B3EE3293292130010E24D /* ContentView.swift in Sources */,
+				68D2CCE42985C7260052B42B /* ViewModels.swift in Sources */,
 				68EFC738296AC1CB00C8819A /* PatreonView.swift in Sources */,
 				6843C62B292FB6A0008FDA73 /* iTunesLookup.swift in Sources */,
 				68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */,

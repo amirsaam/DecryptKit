@@ -9,28 +9,19 @@ import SwiftUI
 import Neumorphic
 import RealmSwift
 
-class PatreonVM: ObservableObject {
-  public static let shared = PatreonVM()
-  var tokensFetched: Bool = false
-  var patreonOAuth: PatronOAuth? = nil
-  var patronIdentity: PatronIdentity? = nil
-}
-
 struct PatreonView: View {
 
   @State var user: User
   @Binding var isDeeplink: Bool
   @Binding var showPatreon: Bool
   @Binding var callbackCode: String
-  @Binding var userPAT: String
-  @Binding var userPRT: String
-  @Binding var patreonCampaign: PatreonCampaignInfo?
 
   @EnvironmentObject var patreonVM: PatreonVM
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
-  @State private var patreonAPI = Patreon.shared
+  @State private var patreonAPI = PatreonAPI.shared
+  @State private var userVM = UserVM.shared
 
   var body: some View {
     GeometryReader { geo in
@@ -42,17 +33,19 @@ struct PatreonView: View {
                 Text("Subscribe to our Patreon for accessing premium services!")
                   .font(.headline)
                   .multilineTextAlignment(.leading)
-                PatreonCampaignDetails(patreonCampaign: $patreonCampaign)
+                PatreonCampaignDetails(patreonCampaign: $patreonVM.patreonCampaign)
                 HStack {
                   Button {
                     patreonAPI.doOAuth()
                   } label: {
-                    Label(userPAT.isEmpty
+                    Label(userVM.userPAT.isEmpty
                           ? "Link your Patreon"
                           : patreonVM.patronIdentity == nil
-                          ? "Loading..."
-                          : "Logged in as \(patreonVM.patronIdentity?.data.attributes.full_name ?? "")",
-                          systemImage: !userPAT.isEmpty && patreonVM.patronIdentity == nil ? "circle.dotted" : "link")
+                            ? "Loading..."
+                            : "Signed-In as \(patreonVM.patronIdentity?.data.attributes.full_name ?? "")",
+                          systemImage: !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil
+                          ? "circle.dotted"
+                          : "link")
                     .font(.caption2)
                   }
                   .softButtonStyle(
@@ -62,7 +55,7 @@ struct PatreonView: View {
                   )
                   Spacer()
                   Button {
-                    if let url = URL(string: "https://www.patreon.com" + (patreonCampaign?.data.attributes.pledge_url ?? "")) {
+                    if let url = URL(string: "https://www.patreon.com" + (patreonVM.patreonCampaign?.data.attributes.pledge_url ?? "")) {
                       UIApplication.shared.open(url)
                     }
                   } label: {
@@ -78,7 +71,7 @@ struct PatreonView: View {
                     lightShadowColor: .redNeuLS,
                     pressedEffect: .flat
                   )
-                  .disabled(userPAT.isEmpty || patreonVM.patronIdentity == nil)
+                  .disabled(userVM.userPAT.isEmpty || patreonVM.patronIdentity == nil)
                 }
                 Button {
                   withAnimation(.spring()) {
@@ -102,8 +95,8 @@ struct PatreonView: View {
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonVM.patreonOAuth ?? "getting tokens failed")
-        } else if !userPRT.isEmpty && !patreonVM.tokensFetched {
-          await handleRefreshToken(userPRT)
+        } else if !userVM.userPAT.isEmpty && !patreonVM.tokensFetched {
+          await handleRefreshToken(userVM.userPRT)
           debugPrint(patreonVM.patreonOAuth ?? "refreshing tokens failed")
         }
       }
@@ -119,7 +112,7 @@ struct PatreonView: View {
     .onChange(of: patreonVM.tokensFetched) { boolean in
       Task {
         if boolean {
-          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userPAT)
+          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userVM.userPAT)
         }
       }
     }
@@ -135,8 +128,8 @@ struct PatreonView: View {
       currentUser[0].userPAT = patreonVM.patreonOAuth?.access_token ?? ""
       currentUser[0].userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     }
-    userPAT = patreonVM.patreonOAuth?.access_token ?? ""
-    userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
+    userVM.userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+    userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     isDeeplink = false
     patreonVM.tokensFetched = true
   }
@@ -151,8 +144,8 @@ struct PatreonView: View {
       currentUser[0].userPAT = patreonVM.patreonOAuth?.access_token ?? ""
       currentUser[0].userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     }
-    userPAT = patreonVM.patreonOAuth?.access_token ?? ""
-    userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
+    userVM.userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+    userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     patreonVM.tokensFetched = true
   }
 }

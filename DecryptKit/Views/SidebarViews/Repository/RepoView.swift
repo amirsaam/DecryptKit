@@ -7,18 +7,15 @@
 
 import SwiftUI
 import Neumorphic
-import DataCache
 
 // MARK: - View Struct
 struct RepoView: View {
 
   @Binding var showRepo: Bool
-  @Binding var freeSourceData: [deCrippleSource]?
-  @Binding var vipSourceData: [deCrippleSource]?
-  @Binding var userTier: Int
-
   @Namespace var animation
 
+  @State private var freeSourceData = SourceVM.shared.freeSourceData
+  @State private var vipSourceData = SourceVM.shared.vipSourceData
   @State private var selectedSource: SourceTabs = .free
   @State private var progressAmount = 0.0
 
@@ -54,12 +51,10 @@ struct RepoView: View {
                     progressAmount = 0
                     (freeSourceData, vipSourceData) = (nil, nil)
                     URLCache.shared.removeAllCachedResponses()
-                    cache.clean(byKey: "cachedFreeSourceData")
-                    cache.clean(byKey: "cachedVIPSourceData")
                     try? await Task.sleep(nanoseconds: 10000000000)
                     await resolveSourceData()
-                    freeSourceData = try? cache.readCodable(forKey: "cachedFreeSourceData")
-                    vipSourceData = try? cache.readCodable(forKey: "cachedVIPSourceData")
+                    freeSourceData = SourceVM.shared.freeSourceData
+                    vipSourceData = SourceVM.shared.vipSourceData
                   }
                 } label: {
                   Image(systemName: "arrow.clockwise")
@@ -119,7 +114,6 @@ struct RepoView: View {
                 .padding(.top)
                 .tag(SourceTabs.free)
                 VIPSourceList(vipSourceData: $vipSourceData,
-                              userTier: $userTier,
                               progressAmount: $progressAmount)
                 .padding(.top)
                 .tag(SourceTabs.vip)
@@ -133,8 +127,8 @@ struct RepoView: View {
       if freeSourceData == nil || vipSourceData == nil {
         await resolveSourceData()
       }
-      freeSourceData = try? cache.readCodable(forKey: "cachedFreeSourceData")
-      vipSourceData = try? cache.readCodable(forKey: "cachedVIPSourceData")
+      freeSourceData = SourceVM.shared.freeSourceData
+      vipSourceData = SourceVM.shared.vipSourceData
     }
   }
 }
@@ -182,7 +176,6 @@ struct FreeSourceList: View {
 // MARK: - VIP Source ListView
 struct VIPSourceList: View {
   @Binding var vipSourceData: [deCrippleSource]?
-  @Binding var userTier: Int
   @Binding var progressAmount: Double
   var body: some View {
     List {
@@ -190,7 +183,7 @@ struct VIPSourceList: View {
         LoadingSourceView(progressAmount: $progressAmount)
           .listRowBackground(mainColor)
       } else {
-        if userTier < 2 {
+        if UserVM.shared.userTier < 2 {
           Label("Subscribe to Partron to use VIP source!", systemImage: "exclamationmark.triangle.fill")
             .font(.subheadline)
             .foregroundColor(.red)
