@@ -85,9 +85,6 @@ struct PatreonView: View {
           await handleRefreshToken(userPRT)
           debugPrint(patreonVM.patreonOAuth ?? "refreshing tokens failed")
         }
-        if patreonVM.tokensFetched {
-          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userPAT)
-        }
       }
     }
     .onChange(of: isDeeplink) { boolean in
@@ -95,6 +92,13 @@ struct PatreonView: View {
         Task {
           await handleOAuthCallback(callbackCode)
           debugPrint(patreonVM.patreonOAuth ?? "getting tokens failed")
+        }
+      }
+    }
+    .onChange(of: patreonVM.tokensFetched) { boolean in
+      Task {
+        if boolean {
+          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userPAT)
         }
       }
     }
