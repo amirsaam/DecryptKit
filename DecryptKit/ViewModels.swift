@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - User's Data VM
 class UserVM: ObservableObject {
   public static let shared = UserVM()
 
@@ -19,6 +20,7 @@ class UserVM: ObservableObject {
   var userPRT: String = ""
 }
 
+// MARK: - Source's Data VM
 class SourceVM: ObservableObject {
   public static let shared = SourceVM()
   
@@ -26,11 +28,50 @@ class SourceVM: ObservableObject {
   var vipSourceData: [deCrippleSource]? = nil
 }
 
+// MARK: - Patreon's Data VM
 class PatreonVM: ObservableObject {
   public static let shared = PatreonVM()
   
   var tokensFetched: Bool = false
-  var patreonCampaign: PatreonCampaignInfo? = nil
   var patreonOAuth: PatronOAuth? = nil
-  var patronIdentity: PatronIdentity? = nil
+  var patronIdentity: PatreonUserIdentity? = nil
+  var campaignTiers: [CampaignIncludedTier] = []
+  var campaignBenefits: [CampaignIncludedBenefit] = []
+  var patreonCampaign: PatreonCampaignInfo? {
+    didSet {
+      if let campaign = patreonCampaign {
+        campaignTiers = extractCampaignTiers(from: campaign.included)
+        campaignBenefits = extractCampaignBenefits(from: campaign.included)
+      } else {
+        campaignTiers = []
+        campaignBenefits = []
+      }
+    }
+  }
+  
+  func extractCampaignTiers(from campaign: [CampaignIncludedAny]) -> [CampaignIncludedTier] {
+    var decodedArray = [CampaignIncludedTier]()
+    for campaignIncluded in campaign {
+      if campaignIncluded.type == "tier" {
+        let decoded = try? JSONDecoder().decode(CampaignIncludedTier.self, from: try JSONEncoder().encode(campaignIncluded))
+        if let decoded = decoded {
+          decodedArray.append(decoded)
+        }
+      }
+    }
+    return decodedArray
+  }
+  
+  func extractCampaignBenefits(from campaign: [CampaignIncludedAny]) -> [CampaignIncludedBenefit] {
+    var decodedArray = [CampaignIncludedBenefit]()
+    for campaignIncluded in campaign {
+      if campaignIncluded.type == "benefit" {
+        let decoded = try? JSONDecoder().decode(CampaignIncludedBenefit.self, from: try JSONEncoder().encode(campaignIncluded))
+        if let decoded = decoded {
+          decodedArray.append(decoded)
+        }
+      }
+    }
+    return decodedArray
+  }
 }

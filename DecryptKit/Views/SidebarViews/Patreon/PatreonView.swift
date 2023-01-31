@@ -33,46 +33,29 @@ struct PatreonView: View {
                 Text("Subscribe to our Patreon for accessing premium services!")
                   .font(.headline)
                   .multilineTextAlignment(.leading)
-                PatreonCampaignDetails(patreonCampaign: $patreonVM.patreonCampaign)
-                HStack {
-                  Button {
-                    patreonAPI.doOAuth()
-                  } label: {
-                    Label(userVM.userPAT.isEmpty
-                          ? "Link your Patreon"
-                          : patreonVM.patronIdentity == nil
-                            ? "Loading..."
-                            : "Signed-In as \(patreonVM.patronIdentity?.data.attributes.full_name ?? "")",
-                          systemImage: !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil
-                          ? "circle.dotted"
-                          : "link")
-                    .font(.caption2)
-                  }
-                  .softButtonStyle(
-                    RoundedRectangle(cornerRadius: 7.5),
-                    padding: 10,
-                    pressedEffect: .flat
-                  )
-                  Spacer()
-                  Button {
-                    if let url = URL(string: "https://www.patreon.com" + (patreonVM.patreonCampaign?.data.attributes.pledge_url ?? "")) {
-                      UIApplication.shared.open(url)
-                    }
-                  } label: {
-                    Label("Subscribe", systemImage: "giftcard.fill")
-                      .font(.caption2)
-                  }
-                  .softButtonStyle(
-                    RoundedRectangle(cornerRadius: 7.5),
-                    padding: 10,
-                    mainColor: .red,
-                    textColor: .white,
-                    darkShadowColor: .redNeuDS,
-                    lightShadowColor: .redNeuLS,
-                    pressedEffect: .flat
-                  )
-                  .disabled(userVM.userPAT.isEmpty || patreonVM.patronIdentity == nil)
+                PatreonCampaignDetails(patreonCampaign: $patreonVM.patreonCampaign,
+                                       patreonTiers: $patreonVM.campaignTiers,
+                                       patreonBenefits: $patreonVM.campaignBenefits)
+                Button {
+                  patreonAPI.doOAuth()
+                } label: {
+                  Label(userVM.userPAT.isEmpty
+                        ? "Link your Patreon"
+                        : patreonVM.patronIdentity == nil
+                        ? "Loading..."
+                        : "Signed-In as \(patreonVM.patronIdentity?.data.attributes.full_name ?? "")",
+                        systemImage: !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil
+                        ? "circle.dotted"
+                        : "link")
+                  .font(.caption2)
+                  .frame(maxWidth: .infinity)
                 }
+                .softButtonStyle(
+                  RoundedRectangle(cornerRadius: 7.5),
+                  padding: 10,
+                  pressedEffect: .flat
+                )
+                .padding(.top)
                 Button {
                   withAnimation(.spring()) {
                     showPatreon = false
