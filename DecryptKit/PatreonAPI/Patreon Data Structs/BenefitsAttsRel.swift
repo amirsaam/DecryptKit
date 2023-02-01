@@ -31,7 +31,6 @@ struct CampaignBenefit: Codable {
   
   struct CampaignBenefitRelationships: Codable {
     let campaign: PatreonCampaignInfo
-    // let campaign_installation: CampaignInstallation?
     let deliverables: [CampaignDeliverable]
     let tiers: [CampaignTier]
   }

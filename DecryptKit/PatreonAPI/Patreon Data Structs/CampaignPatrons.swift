@@ -9,58 +9,41 @@ import Foundation
 
 // MARK: - Campaign's Patrons List
 struct PatreonCampaignMembers: Codable {
-  let data: [Data]
-  let included: [Included]?
-  let meta: Meta
+  let data: [CampaignMembersData]
+  let included: [CampaignMembersIncluded]?
+  let meta: CampaignMembersMeta
+}
+
+struct CampaignMembersData: Codable {
+  let attributes: Attributes
+  let id: String
+  let relationships: Relationships
+  let type: String
   
-  struct Data: Codable {
-    let attributes: Attributes
-    let id: String
-    let relationships: Relationships
-    let type: String
-    
-    struct Attributes: Codable {
-      let full_name: String
-      let is_follower: Bool
-      let last_charge_date: String?
-      let last_charge_status: String?
-      let lifetime_support_cents: Int
-      let currently_entitled_amount_cents: Int
-      let patron_status: String?
-    }
-    
-    struct Relationships: Codable {
-      let address: RelationshipData
-      let currently_entitled_tiers: RelationshipArrayData
-      
-      struct RelationshipData: Codable {
-        let data: Datum?
-        
-        struct Datum: Codable {
-          let id: String
-          let type: String
-        }
-      }
-      struct RelationshipArrayData: Codable {
-        let data: [ArrayDatum]
-        
-        struct ArrayDatum: Codable {
-          let id: String?
-          let type: String
-        }
-      }
-    }
+  struct Attributes: Codable {
+    let full_name: String
+    let is_follower: Bool
+    let last_charge_date: String?
+    let last_charge_status: String?
+    let lifetime_support_cents: Int
+    let currently_entitled_amount_cents: Int
+    let patron_status: String?
   }
   
-  struct Included: Codable {
-    let attributes: IncludedAttributes
-    let id: String
-    let type: String
-    
-    struct IncludedAttributes: Codable {
-      let address: AddressAttributes?
-      let tier: TierAttributes?
-    }
+  struct Relationships: Codable {
+    let address: IdTypePlain
+    let currently_entitled_tiers: IdTypeArray
+  }
+}
+  
+struct CampaignMembersIncluded: Codable {
+  let attributes: IncludedAttributes
+  let id: String
+  let type: String
+  
+  struct IncludedAttributes: Codable {
+    let address: AddressAttributes?
+    let tier: TierAttributes?
     
     struct AddressAttributes: Codable {
       let addressee: String?
@@ -73,7 +56,7 @@ struct PatreonCampaignMembers: Codable {
       let postal_code: String?
       let state: String?
     }
-
+    
     struct TierAttributes: Codable {
       let amount_cents: Int?
       let created_at: String?
@@ -88,67 +71,61 @@ struct PatreonCampaignMembers: Codable {
       let url: String?
     }
   }
-  struct Meta: Codable {
-    let pagination: Pagination
+}
+
+struct CampaignMembersMeta: Codable {
+  let pagination: Pagination
+  
+  struct Pagination: Codable {
+    let cursors: Cursors
+    let total: Int
     
-    struct Pagination: Codable {
-      let cursors: Cursors
-      let total: Int
-      
-      struct Cursors: Codable {
-        let next: String?
-      }
+    struct Cursors: Codable {
+      let next: String?
     }
   }
 }
 
 // MARK: - A Patron's Details
 struct PatronFetchedByID: Codable {
-  let data: Data
-  let included: [Included]
+  let data: ByPatronIDData
+  let included: [ByPatronIDIncluded]
   let links: SelfLink
+}
+
+struct ByPatronIDData: Codable {
+  let attributes: Attributes
+  let id: String
+  let relationships: Relationships
+  let type: String
   
-  struct Data: Codable {
-    let attributes: Attributes
-    let id: String
-    let relationships: Relationships
-    let type: String
-    
-    struct Attributes: Codable {
-      let full_name: String
-      let is_follower: Bool
-      let last_charge_date: String
-    }
-    
-    struct Relationships: Codable {
-      let address: RelationshipData
-      let user: RelationshipData
-      struct RelationshipData: Codable {
-        let data: Datum
-        let links: Link
-        
-        struct Datum: Codable {
-          let id: String
-          let type: String
-        }
-        struct Link: Codable {
-          let related: String
-        }
-      }
-    }
+  struct Attributes: Codable {
+    let full_name: String
+    let is_follower: Bool
+    let last_charge_date: String
   }
   
-  struct Included: Codable {
-    let attributes: IncludedAttributes
-    let id: String
-    let type: String
+  struct Relationships: Codable {
+    let address: RelationshipData
+    let user: RelationshipData
     
-    struct IncludedAttributes: Codable {
-      let addressee: String?
-      let city: String?
-      let line_1: String?
-      let line_2: String?
-      let postal_code: String?
+    struct RelationshipData: Codable {
+      let data: IdType
+      let links: RelatedLink
     }
+  }
+}
+  
+struct ByPatronIDIncluded: Codable {
+  let attributes: IncludedAttributes
+  let id: String
+  let type: String
+  
+  struct IncludedAttributes: Codable {
+    let addressee: String?
+    let city: String?
+    let line_1: String?
+    let line_2: String?
+    let postal_code: String?
   }
 }

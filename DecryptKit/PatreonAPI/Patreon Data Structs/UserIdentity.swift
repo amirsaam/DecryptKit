@@ -8,47 +8,39 @@
 import Foundation
 
 struct PatreonUserIdentity: Codable {
-  let data: Data
-  let included: [Included]?
-  let links: Links
+  let data: IdentityData
+  let included: [IdentityIncluded]?
+  let links: SelfLink
+}
+
+struct IdentityData: Codable {
+  let attributes: Attributes
+  let id: String
+  let relationships: Relationships?
+  let type: String
   
-  struct Data: Codable {
-    let attributes: Attributes
-    let id: String
-    let relationships: Relationships?
-    let type: String
-    
-    struct Attributes: Codable {
-      let email: String?
-      let full_name: String
-    }
-    
-    struct Relationships: Codable {
-      let campaign: Campaign
-      
-      struct Campaign: Codable {
-        let data: IdTypePlain
-        let links: CampaignLinks
-        
-        struct CampaignLinks: Codable {
-          let related: String
-        }
-      }
-    }
+  struct Attributes: Codable {
+    let email: String?
+    let full_name: String
   }
   
-  struct Included: Codable {
-    let attributes: IncludedAttributes
-    let id: String
-    let type: String
+  struct Relationships: Codable {
+    let campaign: Campaign
     
-    struct IncludedAttributes: Codable {
-      let is_monthly: Bool
-      let summary: String
+    struct Campaign: Codable {
+      let data: IdType
+      let links: RelatedLink
     }
   }
+}
   
-  struct Links: Codable {
-    let `self`: String
+struct IdentityIncluded: Codable {
+  let attributes: IncludedAttributes
+  let id: String
+  let type: String
+  
+  struct IncludedAttributes: Codable {
+    let is_monthly: Bool
+    let summary: String
   }
 }

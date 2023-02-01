@@ -7,9 +7,18 @@
 
 import Foundation
 
-struct IdTypePlain: Codable {
+struct IdType: Codable {
   let id: String
   let type: String
+}
+
+struct IdTypePlain: Codable {
+  let data: InnerData
+
+  struct InnerData: Codable {
+    let id: String
+    let type: String
+  }
 }
 
 struct IdTypeArray: Codable {
@@ -23,4 +32,8 @@ struct IdTypeArray: Codable {
 
 struct SelfLink: Codable {
     let `self`: String
+}
+
+struct RelatedLink: Codable {
+  let related: String
 }

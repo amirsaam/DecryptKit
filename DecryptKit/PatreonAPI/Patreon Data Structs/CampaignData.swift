@@ -69,12 +69,8 @@ struct CampaignData: Codable {
   }
   
   struct Creator: Codable {
-    let data: IdTypePlain?
-    let links: Links
-    
-    struct Links: Codable {
-      let related: String
-    }
+    let data: IdType?
+    let links: RelatedLink
   }
 }
 
