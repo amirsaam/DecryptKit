@@ -12,33 +12,33 @@ import PatreonAPI
 class UserVM: ObservableObject {
   public static let shared = UserVM()
 
-  var userId: String = ""
-  var userUID: String = ""
-  var userIsBanned: Bool = false
-  var userEmail: String = ""
-  var userTier: Int = 0
-  var userPAT: String = ""
-  var userPRT: String = ""
+  @Published var userId: String = ""
+  @Published var userUID: String = ""
+  @Published var userIsBanned: Bool = false
+  @Published var userEmail: String = ""
+  @Published var userTier: Int = 0
+  @Published var userPAT: String = ""
+  @Published var userPRT: String = ""
 }
 
 // MARK: - Source's Data VM
 class SourceVM: ObservableObject {
   public static let shared = SourceVM()
   
-  var freeSourceData: [deCrippleSource]? = nil
-  var vipSourceData: [deCrippleSource]? = nil
+  @Published var freeSourceData: [deCrippleSource]? = nil
+  @Published var vipSourceData: [deCrippleSource]? = nil
 }
 
 // MARK: - Patreon's Data VM
 class PatreonVM: ObservableObject {
   public static let shared = PatreonVM()
   
-  var tokensFetched: Bool = false
-  var patreonOAuth: PatronOAuth? = nil
-  var patronIdentity: PatreonUserIdentity? = nil
-  var campaignTiers: [CampaignIncludedTier] = []
-  var campaignBenefits: [CampaignIncludedBenefit] = []
-  var patreonCampaign: PatreonCampaignInfo? {
+  @Published var tokensFetched: Bool = false
+  @Published var patreonOAuth: PatronOAuth? = nil
+  @Published var patronIdentity: PatreonUserIdentity? = nil
+  @Published var campaignTiers: [CampaignIncludedTier] = []
+  @Published var campaignBenefits: [CampaignIncludedBenefit] = []
+  @Published var patreonCampaign: PatreonCampaignInfo? {
     didSet {
       if let campaign = patreonCampaign {
         campaignTiers = extractCampaignTiers(from: campaign.included)

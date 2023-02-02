@@ -39,14 +39,15 @@ struct PatreonView: View {
                 Button {
                   patreonAPI.doOAuth()
                 } label: {
-                  Label(userVM.userPAT.isEmpty
-                        ? "Link your Patreon"
-                        : patreonVM.patronIdentity == nil
-                        ? "Loading..."
-                        : "Signed-In as \(patreonVM.patronIdentity?.data.attributes.full_name ?? "")",
-                        systemImage: !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil
-                        ? "circle.dotted"
-                        : "link")
+                  Group {
+                    if userVM.userPAT.isEmpty {
+                      Label("Link your Patreon", systemImage: "link")
+                    } else if !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil {
+                      Label("Loading...", systemImage: "circle.dotted")
+                    } else {
+                      Label("Sign Out (\(patreonVM.patronIdentity?.data.attributes.full_name ?? ""))", systemImage: "link")
+                    }
+                  }
                   .font(.caption2)
                   .frame(maxWidth: .infinity)
                 }
@@ -55,6 +56,7 @@ struct PatreonView: View {
                   padding: 10,
                   pressedEffect: .flat
                 )
+                .disabled(!userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil)
                 .padding(.top)
                 Button {
                   withAnimation(.spring()) {
