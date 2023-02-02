@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PatreonAPI
 
 // MARK: - User's Data VM
 class UserVM: ObservableObject {

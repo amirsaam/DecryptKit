@@ -8,6 +8,7 @@
 import SwiftUI
 import Neumorphic
 import RealmSwift
+import PatreonAPI
 
 struct PatreonView: View {
 
@@ -20,7 +21,6 @@ struct PatreonView: View {
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
-  @State private var patreonAPI = PatreonAPI.shared
   @State private var userVM = UserVM.shared
 
   var body: some View {

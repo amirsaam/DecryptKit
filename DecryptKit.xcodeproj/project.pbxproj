@@ -9,21 +9,8 @@
 /* Begin PBXBuildFile section */
 		68100188293A925A00418B40 /* CustomLookups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68100187293A925A00418B40 /* CustomLookups.swift */; };
 		6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6810018A293A982B00418B40 /* CachedAsyncImage */; };
-		68124F9A2989586900007799 /* UserIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124F992989586900007799 /* UserIdentity.swift */; };
-		68124F9C298958B000007799 /* PatreonMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124F9B298958B000007799 /* PatreonMedia.swift */; };
-		68124F9E298958DF00007799 /* OAuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124F9D298958DF00007799 /* OAuthData.swift */; };
-		68124FA02989591000007799 /* Miscs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124F9F2989591000007799 /* Miscs.swift */; };
-		68124FA22989598F00007799 /* BenefitsAttsRel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124FA12989598F00007799 /* BenefitsAttsRel.swift */; };
-		68124FA4298959BB00007799 /* GoalsAttsRel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124FA3298959BB00007799 /* GoalsAttsRel.swift */; };
-		68124FA6298959EE00007799 /* TiersAttsRel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124FA5298959EE00007799 /* TiersAttsRel.swift */; };
-		68124FA829895A2300007799 /* DeliverablesAttsRel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124FA729895A2300007799 /* DeliverablesAttsRel.swift */; };
-		68124FAA29895B5B00007799 /* CampaignData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124FA929895B5B00007799 /* CampaignData.swift */; };
-		68124FAC29895CCD00007799 /* CampaignPatrons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68124FAB29895CCD00007799 /* CampaignPatrons.swift */; };
 		6823E625293FDFC3007E5438 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 6823E624293FDFC3007E5438 /* Realm */; };
 		6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6823E626293FDFC3007E5438 /* RealmSwift */; };
-		682B9C0C2988443100EC4963 /* PatreonOAuthCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682B9C0B2988443100EC4963 /* PatreonOAuthCalls.swift */; };
-		682B9C0E2988450600EC4963 /* PatreonDataCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682B9C0D2988450600EC4963 /* PatreonDataCalls.swift */; };
-		683AAC09296DB5D50086A70A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 683AAC08296DB5D50086A70A /* Alamofire */; };
 		683E3674294E80A900B1DAA7 /* DataCache in Frameworks */ = {isa = PBXBuildFile; productRef = 683E3673294E80A900B1DAA7 /* DataCache */; };
 		6843C61A292FB586008FDA73 /* deCrippleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C619292FB586008FDA73 /* deCrippleApp.swift */; };
 		6843C61E292FB587008FDA73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6843C61D292FB587008FDA73 /* Assets.xcassets */; };
@@ -40,7 +27,7 @@
 		685D098B2942121D00AFD730 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098A2942121D00AFD730 /* MainView.swift */; };
 		685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098D29422D0A00AFD730 /* AccountingView.swift */; };
 		68752C6B2971BFAF00C39483 /* EncryptKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68752C6A2971BFAF00C39483 /* EncryptKit.swift */; };
-		687EEC662961D4F700A340B4 /* PatreonAPIClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687EEC652961D4F700A340B4 /* PatreonAPIClass.swift */; };
+		68837DF2298B38A0008B97B4 /* PatreonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 68837DF1298B38A0008B97B4 /* PatreonAPI */; };
 		68A33AEC2940F4E30024DFFE /* Realm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68A33AEB2940F4E30024DFFE /* Realm.plist */; };
 		68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF12940FDA50024DFFE /* SourceData.swift */; };
 		68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF42941045B0024DFFE /* RealmConfig.swift */; };
@@ -55,18 +42,6 @@
 
 /* Begin PBXFileReference section */
 		68100187293A925A00418B40 /* CustomLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLookups.swift; sourceTree = "<group>"; };
-		68124F992989586900007799 /* UserIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIdentity.swift; sourceTree = "<group>"; };
-		68124F9B298958B000007799 /* PatreonMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonMedia.swift; sourceTree = "<group>"; };
-		68124F9D298958DF00007799 /* OAuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthData.swift; sourceTree = "<group>"; };
-		68124F9F2989591000007799 /* Miscs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Miscs.swift; sourceTree = "<group>"; };
-		68124FA12989598F00007799 /* BenefitsAttsRel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenefitsAttsRel.swift; sourceTree = "<group>"; };
-		68124FA3298959BB00007799 /* GoalsAttsRel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsAttsRel.swift; sourceTree = "<group>"; };
-		68124FA5298959EE00007799 /* TiersAttsRel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TiersAttsRel.swift; sourceTree = "<group>"; };
-		68124FA729895A2300007799 /* DeliverablesAttsRel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliverablesAttsRel.swift; sourceTree = "<group>"; };
-		68124FA929895B5B00007799 /* CampaignData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignData.swift; sourceTree = "<group>"; };
-		68124FAB29895CCD00007799 /* CampaignPatrons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignPatrons.swift; sourceTree = "<group>"; };
-		682B9C0B2988443100EC4963 /* PatreonOAuthCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonOAuthCalls.swift; sourceTree = "<group>"; };
-		682B9C0D2988450600EC4963 /* PatreonDataCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonDataCalls.swift; sourceTree = "<group>"; };
 		683E367A294F512800B1DAA7 /* DecryptKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DecryptKit.entitlements; sourceTree = "<group>"; };
 		6843C616292FB586008FDA73 /* DecryptKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DecryptKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6843C619292FB586008FDA73 /* deCrippleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = deCrippleApp.swift; sourceTree = "<group>"; };
@@ -83,7 +58,6 @@
 		685D098A2942121D00AFD730 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		685D098D29422D0A00AFD730 /* AccountingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountingView.swift; sourceTree = "<group>"; };
 		68752C6A2971BFAF00C39483 /* EncryptKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptKit.swift; sourceTree = "<group>"; };
-		687EEC652961D4F700A340B4 /* PatreonAPIClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonAPIClass.swift; sourceTree = "<group>"; };
 		68A33AEB2940F4E30024DFFE /* Realm.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Realm.plist; sourceTree = "<group>"; };
 		68A33AF12940FDA50024DFFE /* SourceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceData.swift; sourceTree = "<group>"; };
 		68A33AF42941045B0024DFFE /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
@@ -105,43 +79,15 @@
 				6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */,
 				683E3674294E80A900B1DAA7 /* DataCache in Frameworks */,
 				6823E625293FDFC3007E5438 /* Realm in Frameworks */,
-				683AAC09296DB5D50086A70A /* Alamofire in Frameworks */,
 				6843C629292FB636008FDA73 /* Neumorphic in Frameworks */,
 				6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */,
+				68837DF2298B38A0008B97B4 /* PatreonAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		68124F982989583B00007799 /* Patreon Data Structs */ = {
-			isa = PBXGroup;
-			children = (
-				68124FA929895B5B00007799 /* CampaignData.swift */,
-				68124FAB29895CCD00007799 /* CampaignPatrons.swift */,
-				68124FA12989598F00007799 /* BenefitsAttsRel.swift */,
-				68124FA729895A2300007799 /* DeliverablesAttsRel.swift */,
-				68124FA3298959BB00007799 /* GoalsAttsRel.swift */,
-				68124FA5298959EE00007799 /* TiersAttsRel.swift */,
-				68124F9D298958DF00007799 /* OAuthData.swift */,
-				68124F9B298958B000007799 /* PatreonMedia.swift */,
-				68124F992989586900007799 /* UserIdentity.swift */,
-				68124F9F2989591000007799 /* Miscs.swift */,
-			);
-			path = "Patreon Data Structs";
-			sourceTree = "<group>";
-		};
-		682B9C0A298841AE00EC4963 /* PatreonAPI */ = {
-			isa = PBXGroup;
-			children = (
-				687EEC652961D4F700A340B4 /* PatreonAPIClass.swift */,
-				682B9C0B2988443100EC4963 /* PatreonOAuthCalls.swift */,
-				682B9C0D2988450600EC4963 /* PatreonDataCalls.swift */,
-				68124F982989583B00007799 /* Patreon Data Structs */,
-			);
-			path = PatreonAPI;
-			sourceTree = "<group>";
-		};
 		6843C60D292FB586008FDA73 = {
 			isa = PBXGroup;
 			children = (
@@ -175,7 +121,6 @@
 				6843C61B292FB586008FDA73 /* ContentView.swift */,
 				685D098C29422B4A00AFD730 /* Views */,
 				68A33AF32940FE3E0024DFFE /* Functions */,
-				682B9C0A298841AE00EC4963 /* PatreonAPI */,
 			);
 			path = DecryptKit;
 			sourceTree = "<group>";
@@ -280,8 +225,8 @@
 				6823E624293FDFC3007E5438 /* Realm */,
 				6823E626293FDFC3007E5438 /* RealmSwift */,
 				683E3673294E80A900B1DAA7 /* DataCache */,
-				683AAC08296DB5D50086A70A /* Alamofire */,
 				68E6CE0E296EB68200C474F0 /* Semaphore */,
+				68837DF1298B38A0008B97B4 /* PatreonAPI */,
 			);
 			productName = deCripple;
 			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
@@ -316,8 +261,8 @@
 				68100189293A982B00418B40 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */,
-				683AAC07296DB5D50086A70A /* XCRemoteSwiftPackageReference "Alamofire" */,
 				68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */,
+				68837DF0298B38A0008B97B4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */,
 			);
 			productRefGroup = 6843C617292FB586008FDA73 /* Products */;
 			projectDirPath = "";
@@ -348,38 +293,25 @@
 			files = (
 				6843C633292FDA93008FDA73 /* DecryptReq.swift in Sources */,
 				68DE97F5293987B400A565B8 /* RepoAppDetails.swift in Sources */,
-				68124FA02989591000007799 /* Miscs.swift in Sources */,
-				68124F9A2989586900007799 /* UserIdentity.swift in Sources */,
 				68A33AF72941124A0024DFFE /* RealmObjects.swift in Sources */,
-				68124FAC29895CCD00007799 /* CampaignPatrons.swift in Sources */,
 				6843C61A292FB586008FDA73 /* deCrippleApp.swift in Sources */,
 				6851468F2973254C00FBDC4A /* PatreonCampaignDetails.swift in Sources */,
-				68124FA4298959BB00007799 /* GoalsAttsRel.swift in Sources */,
-				682B9C0E2988450600EC4963 /* PatreonDataCalls.swift in Sources */,
-				68124F9C298958B000007799 /* PatreonMedia.swift in Sources */,
-				68124FA829895A2300007799 /* DeliverablesAttsRel.swift in Sources */,
-				687EEC662961D4F700A340B4 /* PatreonAPIClass.swift in Sources */,
 				68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */,
 				68DE97F12938CE0200A565B8 /* RepoView.swift in Sources */,
-				68124FA22989598F00007799 /* BenefitsAttsRel.swift in Sources */,
 				685B3EE3293292130010E24D /* ContentView.swift in Sources */,
-				68124F9E298958DF00007799 /* OAuthData.swift in Sources */,
 				68D2CCE42985C7260052B42B /* ViewModels.swift in Sources */,
 				68EFC738296AC1CB00C8819A /* PatreonView.swift in Sources */,
-				68124FA6298959EE00007799 /* TiersAttsRel.swift in Sources */,
 				6843C62B292FB6A0008FDA73 /* iTunesLookup.swift in Sources */,
 				68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */,
 				6845694E2942A5D700BD53D8 /* OpenRealmView.swift in Sources */,
 				6843C62D292FB6C8008FDA73 /* Extensions.swift in Sources */,
 				6843C631292FB6F5008FDA73 /* LookupView.swift in Sources */,
-				682B9C0C2988443100EC4963 /* PatreonOAuthCalls.swift in Sources */,
 				68DE97F32938CF4B00A565B8 /* Components.swift in Sources */,
 				68100188293A925A00418B40 /* CustomLookups.swift in Sources */,
 				685D098B2942121D00AFD730 /* MainView.swift in Sources */,
 				68752C6B2971BFAF00C39483 /* EncryptKit.swift in Sources */,
 				685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */,
 				684EB84E2933A22500F3C57A /* LookupAppDetails.swift in Sources */,
-				68124FAA29895B5B00007799 /* CampaignData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,14 +550,6 @@
 				minimumVersion = 10.0.0;
 			};
 		};
-		683AAC07296DB5D50086A70A /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.3.0;
-			};
-		};
 		683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/huynguyencong/DataCache";
@@ -640,6 +564,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.5;
+			};
+		};
+		68837DF0298B38A0008B97B4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amirsaam/PatreonAPI-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
 			};
 		};
 		68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
@@ -668,11 +600,6 @@
 			package = 6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
 		};
-		683AAC08296DB5D50086A70A /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 683AAC07296DB5D50086A70A /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
 		683E3673294E80A900B1DAA7 /* DataCache */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */;
@@ -682,6 +609,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6843C627292FB636008FDA73 /* XCRemoteSwiftPackageReference "neumorphic" */;
 			productName = Neumorphic;
+		};
+		68837DF1298B38A0008B97B4 /* PatreonAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68837DF0298B38A0008B97B4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */;
+			productName = PatreonAPI;
 		};
 		68E6CE0E296EB68200C474F0 /* Semaphore */ = {
 			isa = XCSwiftPackageProductDependency;

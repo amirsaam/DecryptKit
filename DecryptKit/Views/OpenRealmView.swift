@@ -8,6 +8,7 @@
 import SwiftUI
 import RealmSwift
 import Semaphore
+import PatreonAPI
 
 // MARK: - View Struct
 /// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
@@ -48,7 +49,7 @@ struct OpenRealmView: View {
         .environmentObject(errorHandler)
         .task(priority: .high) {
           await doCheckUser()
-          PatreonVM.shared.patreonCampaign = await PatreonAPI.shared.getDataForCampaign()
+          PatreonVM.shared.patreonCampaign = await patreonAPI.getDataForCampaign()
         }
       case .progress(let progress):
         ProgressView(progress)

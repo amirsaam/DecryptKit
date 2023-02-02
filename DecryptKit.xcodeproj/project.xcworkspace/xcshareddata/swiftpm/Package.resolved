@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "codableany",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/amirsaam/CodableAny.git",
+      "state" : {
+        "revision" : "eec6d8e967ff9489e9a20a83d081585e6799bd70",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "datacache",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/huynguyencong/DataCache",
@@ -25,6 +34,15 @@
       "state" : {
         "revision" : "03c6f7b3d27bfb28a082db2e9ffae45fbc69cb8b",
         "version" : "2.0.6"
+      }
+    },
+    {
+      "identity" : "patreonapi-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/amirsaam/PatreonAPI-Swift.git",
+      "state" : {
+        "revision" : "2c94251081f80e5282a1458c76ceb2602a04e580",
+        "version" : "0.9.2"
       }
     },
     {
