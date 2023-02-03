@@ -113,14 +113,14 @@ struct PatreonView: View {
     .onChange(of: patreonVM.tokensFetched) { boolean in
       Task {
         if boolean {
-          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userVM.userPAT)
+          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userAccessToken: userVM.userPAT)
         }
       }
     }
   }
 
   func handleOAuthCallback(_ callbackCode: String) async {
-    patreonVM.patreonOAuth = await patreonAPI.getOAuthTokens(callbackCode)
+    patreonVM.patreonOAuth = await patreonAPI.getOAuthTokens(callbackCode: callbackCode)
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
@@ -137,7 +137,7 @@ struct PatreonView: View {
   }
 
   func handleRefreshToken(_ refreshToken: String) async {
-    patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(refreshToken)
+    patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(userRefreshToken: refreshToken)
     let realm = users.realm!.thaw()
     let thawedUsers = users.thaw()!
     let currentUser = thawedUsers.where {
