@@ -22,6 +22,7 @@ struct PatreonView: View {
   @State private var newUser = deUser()
 
   @State private var userVM = UserVM.shared
+  @State private var presentPatreonUnlink = false
 
   var body: some View {
     GeometryReader { geo in
@@ -37,7 +38,13 @@ struct PatreonView: View {
                                        patreonTiers: $patreonVM.campaignTiers,
                                        patreonBenefits: $patreonVM.campaignBenefits)
                 Button {
-                  patreonAPI.doOAuth()
+                  if userVM.userPAT.isEmpty {
+                    patreonAPI.doOAuth()
+                  } else if !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil {
+                    
+                  } else {
+                    presentPatreonUnlink = true
+                  }
                 } label: {
                   Group {
                     if userVM.userPAT.isEmpty {
@@ -45,7 +52,7 @@ struct PatreonView: View {
                     } else if !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil {
                       Label("Loading...", systemImage: "circle.dotted")
                     } else {
-                      Label("Sign Out (\(patreonVM.patronIdentity?.data.attributes.full_name ?? ""))", systemImage: "link")
+                      Label("Unlink Patreon (\(patreonVM.patronIdentity?.data.attributes.full_name ?? ""))", systemImage: "link")
                     }
                   }
                   .font(.caption2)
@@ -56,8 +63,17 @@ struct PatreonView: View {
                   padding: 10,
                   pressedEffect: .flat
                 )
-                .disabled(!userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil)
                 .padding(.top)
+                .alert("Are you sure?", isPresented: $presentPatreonUnlink) {
+                  Button("Yes, Unlink!", role: .none) {
+                    Task {
+                      await handlePatreonUnlink()
+                    }
+                  }
+                  Button("Cancel", role: .cancel) { return }
+                } message: {
+                  Text("Unlinking your Patreon account from DecryptKit removes your access to the benefits you own but will not unsubscribe you from our Patreon.")
+                }
                 Button {
                   withAnimation(.spring()) {
                     showPatreon = false
@@ -102,6 +118,7 @@ struct PatreonView: View {
       }
     }
   }
+
   func handleOAuthCallback(_ callbackCode: String) async {
     patreonVM.patreonOAuth = await patreonAPI.getOAuthTokens(callbackCode)
     let realm = users.realm!.thaw()
@@ -118,6 +135,7 @@ struct PatreonView: View {
     isDeeplink = false
     patreonVM.tokensFetched = true
   }
+
   func handleRefreshToken(_ refreshToken: String) async {
     patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(refreshToken)
     let realm = users.realm!.thaw()
@@ -132,5 +150,20 @@ struct PatreonView: View {
     userVM.userPAT = patreonVM.patreonOAuth?.access_token ?? ""
     userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     patreonVM.tokensFetched = true
+  }
+
+  func handlePatreonUnlink() async {
+    let realm = users.realm!.thaw()
+    let thawedUsers = users.thaw()!
+    let currentUser = thawedUsers.where {
+      $0.userId.contains(user.id)
+    }
+    try! realm.write {
+      currentUser[0].userPAT = ""
+      currentUser[0].userPRT = ""
+      currentUser[0].userTier = 0
+    }
+    userVM.userPAT = ""
+    userVM.userPRT = ""
   }
 }

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SafariServices
 
 // MARK: - Custom Colours
 extension Color {

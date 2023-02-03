@@ -80,7 +80,7 @@ struct MainView: View {
                       pressedEffect: .flat
                     )
                     .alert("PlayCover is not Installed!", isPresented: $noPlayCover) {
-                      Button("Install PlayCover", role: .destructive) {
+                      Button("Install PlayCover", role: .none) {
                         if let url = URL(string: "https://github.com/PlayCover/PlayCover/releases") {
                           openURL(url)
                         }
