@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "DecryptKit.jpg",
+      "filename" : "DecryptKit-BBG.jpg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "DecryptKit-LBG.jpg",
       "idiom" : "universal"
     }
   ],

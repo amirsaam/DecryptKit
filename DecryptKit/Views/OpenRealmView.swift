@@ -72,14 +72,16 @@ struct OpenRealmView: View {
           userVM.userUID = uid
           debugPrint("Appending new custom data to Realm")
           Task { @MainActor in
+            let email = defaults.string(forKey: "Email") ?? ""
             newUser.userId = user.id
             newUser.userUID = userVM.userUID
             newUser.userIsBanned = false
-            newUser.userEmail = userVM.userEmail
+            newUser.userEmail = email
             newUser.userTier = 0
             newUser.userPAT = ""
             newUser.userPRT = ""
             $users.append(newUser)
+            userVM.userEmail = email
           }
         } else {
           debugPrint("Succesfully retrieved custom data from Realm")

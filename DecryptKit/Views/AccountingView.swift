@@ -121,7 +121,7 @@ struct AccountingView: View {
   }
   // MARK: Sign In Function
   func login(email: String, password: String) async {
-    UserVM.shared.userEmail = email
+    defaults.set(email, forKey: "Email")
     do {
       let user = try await realmApp.login(
         credentials: Credentials.emailPassword(email: email,

@@ -33,7 +33,6 @@ struct PatreonView: View {
               VStack(alignment: .leading, spacing: 25.0) {
                 Text("Subscribe to our Patreon for accessing premium services!")
                   .font(.headline)
-                  .multilineTextAlignment(.leading)
                 PatreonCampaignDetails(patreonCampaign: $patreonVM.patreonCampaign,
                                        patreonTiers: $patreonVM.campaignTiers,
                                        patreonBenefits: $patreonVM.campaignBenefits)
@@ -55,7 +54,7 @@ struct PatreonView: View {
                       Label("Unlink Patreon (\(patreonVM.patronIdentity?.data.attributes.full_name ?? ""))", systemImage: "link")
                     }
                   }
-                  .font(.caption2)
+                  .font(.caption2.bold())
                   .frame(maxWidth: .infinity)
                 }
                 .softButtonStyle(
@@ -95,10 +94,8 @@ struct PatreonView: View {
       Task {
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
-          debugPrint(patreonVM.patreonOAuth ?? "getting tokens failed")
         } else if !userVM.userPAT.isEmpty && !patreonVM.tokensFetched {
           await handleRefreshToken(userVM.userPRT)
-          debugPrint(patreonVM.patreonOAuth ?? "refreshing tokens failed")
         }
       }
     }
@@ -106,7 +103,6 @@ struct PatreonView: View {
       if boolean {
         Task {
           await handleOAuthCallback(callbackCode)
-          debugPrint(patreonVM.patreonOAuth ?? "getting tokens failed")
         }
       }
     }

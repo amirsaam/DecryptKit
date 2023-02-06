@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/amirsaam/PatreonAPI-Swift.git",
       "state" : {
-        "revision" : "b96ef59d7ac07c5bef09c01ab6a38818955c5ffa",
-        "version" : "0.9.9"
+        "revision" : "6892f7e6216ce821d24e71b0035f26ffc19f60c6",
+        "version" : "0.9.95"
       }
     },
     {

@@ -18,7 +18,12 @@ struct PatreonCampaignDetails: View {
 
   var body: some View {
     if patreonCampaign == nil {
-      BrandProgress(logoSize: 30)
+      HStack {
+        Spacer()
+        ProgressView()
+          .controlSize(.large)
+        Spacer()
+      }
     } else {
       VStack(alignment: .leading, spacing: 15) {
         HStack(spacing: 10) {
@@ -44,6 +49,7 @@ struct PatreonCampaignDetails: View {
         .font(.caption)
         VStack {
           ForEach(patreonTiers, id: \.id) { tier in
+            let formattedPrice = String(format: "$%.2f", Double(tier.attributes.amount_cents) / 100)
             VStack(alignment: .leading) {
               HStack(spacing: 10) {
                 CachedAsyncImage(url: URL(string: tier.attributes.image_url ?? "ProgressForEver")) { image in
@@ -72,9 +78,8 @@ struct PatreonCampaignDetails: View {
                     UIApplication.shared.open(url)
                   }
                 } label: {
-                  let formattedPrice = String(format: "$%.2f", Double(tier.attributes.amount_cents) / 100)
                   Label(formattedPrice, systemImage: "arrow.up.right.square")
-                    .font(.caption2)
+                    .font(.caption2.bold())
                 }
                 .softButtonStyle(
                   RoundedRectangle(cornerRadius: 10),
@@ -89,9 +94,8 @@ struct PatreonCampaignDetails: View {
               Text("Benefits:")
                 .font(.caption)
                 .padding(.top, 1)
-              let price = tier.attributes.amount_cents / 100
               let tierBenefits = patreonBenefits.filter { benefit in
-                benefit.attributes.tiers_count >= (price == 2 ? 3 : price == 4 && price != 2 ? 2 : 1)
+                benefit.attributes.tiers_count >= (formattedPrice == "$2.99" ? 3 : formattedPrice == "$4.99" ? 2 : 1)
               }
               VStack(alignment: .leading) {
                 ForEach(tierBenefits, id: \.id) { benefit in
