@@ -18,10 +18,11 @@ struct PatreonView: View {
   @Binding var callbackCode: String
 
   @EnvironmentObject var patreonVM: PatreonVM
+  @EnvironmentObject var userVM: UserVM
+
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
-  @State private var userVM = UserVM.shared
   @State private var presentPatreonUnlink = false
 
   var body: some View {
@@ -35,7 +36,8 @@ struct PatreonView: View {
                   .font(.headline)
                 PatreonCampaignDetails(patreonCampaign: $patreonVM.patreonCampaign,
                                        patreonTiers: $patreonVM.campaignTiers,
-                                       patreonBenefits: $patreonVM.campaignBenefits)
+                                       patreonBenefits: $patreonVM.campaignBenefits,
+                                       patronMembership: $patreonVM.patronMembership)
                 Button {
                   if userVM.userPAT.isEmpty {
                     patreonAPI.doOAuth()
@@ -51,7 +53,7 @@ struct PatreonView: View {
                     } else if !userVM.userPAT.isEmpty && patreonVM.patronIdentity == nil {
                       Label("Loading...", systemImage: "circle.dotted")
                     } else {
-                      Label("Unlink Patreon (\(patreonVM.patronIdentity?.data.attributes.full_name ?? ""))", systemImage: "link")
+                      Label("Unlink Patreon (\(patreonVM.patronIdentity?.data.attributes.full_name ?? ""))", systemImage: "personalhotspot")
                     }
                   }
                   .font(.caption2.bold())
@@ -94,7 +96,7 @@ struct PatreonView: View {
       Task {
         if isDeeplink {
           await handleOAuthCallback(callbackCode)
-        } else if !userVM.userPAT.isEmpty && !patreonVM.tokensFetched {
+        } else if !userVM.userPAT.isEmpty && !patreonVM.patronTokensFetched {
           await handleRefreshToken(userVM.userPRT)
         }
       }
@@ -106,7 +108,7 @@ struct PatreonView: View {
         }
       }
     }
-    .onChange(of: patreonVM.tokensFetched) { boolean in
+    .onChange(of: patreonVM.patronTokensFetched) { boolean in
       Task {
         if boolean {
           patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userAccessToken: userVM.userPAT)
@@ -129,7 +131,7 @@ struct PatreonView: View {
     userVM.userPAT = patreonVM.patreonOAuth?.access_token ?? ""
     userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
     isDeeplink = false
-    patreonVM.tokensFetched = true
+    patreonVM.patronTokensFetched = true
   }
 
   func handleRefreshToken(_ refreshToken: String) async {
@@ -145,7 +147,7 @@ struct PatreonView: View {
     }
     userVM.userPAT = patreonVM.patreonOAuth?.access_token ?? ""
     userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
-    patreonVM.tokensFetched = true
+    patreonVM.patronTokensFetched = true
   }
 
   func handlePatreonUnlink() async {

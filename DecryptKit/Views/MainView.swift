@@ -12,14 +12,10 @@ import RealmSwift
 // MARK: - View Struct
 struct MainView: View {
 
-  @Environment(\.openURL) private var openURL
-  @EnvironmentObject var errorHandler: ErrorHandler
-
   @Binding var user: User
   @Binding var dataLoaded: Bool
 
-  @ObservedResults(deUser.self) private var users
-  @State private var newUser = deUser()
+  @EnvironmentObject var errorHandler: ErrorHandler
 
   @State private var noPlayCover = false
   @State private var showRepo = false
@@ -63,7 +59,7 @@ struct MainView: View {
                     Button {
                       if let url = playcoverURL {
                         if UIApplication.shared.canOpenURL(url) {
-                          openURL(url)
+                          UIApplication.shared.open(url)
                         } else {
                           noPlayCover = true
                         }
@@ -82,7 +78,7 @@ struct MainView: View {
                     .alert("PlayCover is not Installed!", isPresented: $noPlayCover) {
                       Button("Install PlayCover", role: .none) {
                         if let url = URL(string: "https://github.com/PlayCover/PlayCover/releases") {
-                          openURL(url)
+                          UIApplication.shared.open(url)
                         }
                       }
                       Button("Cancel", role: .cancel) { return }
@@ -152,6 +148,7 @@ struct MainView: View {
                             showPatreon: $showPatreon,
                             callbackCode: $patreonCallbackCode)
                 .environmentObject(PatreonVM.shared)
+                .environmentObject(UserVM.shared)
               } else {
                 VStack {
                   Creators()

@@ -15,6 +15,7 @@ struct PatreonCampaignDetails: View {
   @Binding var patreonCampaign: PatreonCampaignInfo?
   @Binding var patreonTiers: [CampaignIncludedTier]
   @Binding var patreonBenefits: [CampaignIncludedBenefit]
+  @Binding var patronMembership: UserIdentityIncludedMembership?
 
   var body: some View {
     if patreonCampaign == nil {
@@ -78,8 +79,20 @@ struct PatreonCampaignDetails: View {
                     UIApplication.shared.open(url)
                   }
                 } label: {
-                  Label(formattedPrice, systemImage: "arrow.up.right.square")
-                    .font(.caption2.bold())
+                  if let membership = patronMembership {
+                    if !membership.relationships.currently_entitled_tiers.data.isEmpty {
+                      if membership.relationships.currently_entitled_tiers.data[0].id == tier.id {
+                        Label("Subscribed", systemImage: "signature")
+                          .font(.caption2.bold())
+                      }
+                    } else {
+                      Label(formattedPrice, systemImage: "arrow.up.right.square")
+                        .font(.caption2.bold())
+                    }
+                  } else {
+                    Label(formattedPrice, systemImage: "arrow.up.right.square")
+                      .font(.caption2.bold())
+                  }
                 }
                 .softButtonStyle(
                   RoundedRectangle(cornerRadius: 10),

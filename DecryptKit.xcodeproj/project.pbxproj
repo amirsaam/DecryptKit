@@ -27,12 +27,12 @@
 		685D098B2942121D00AFD730 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098A2942121D00AFD730 /* MainView.swift */; };
 		685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098D29422D0A00AFD730 /* AccountingView.swift */; };
 		68752C6B2971BFAF00C39483 /* EncryptKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68752C6A2971BFAF00C39483 /* EncryptKit.swift */; };
-		68837DF2298B38A0008B97B4 /* PatreonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 68837DF1298B38A0008B97B4 /* PatreonAPI */; };
 		68A33AEC2940F4E30024DFFE /* Realm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68A33AEB2940F4E30024DFFE /* Realm.plist */; };
 		68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF12940FDA50024DFFE /* SourceData.swift */; };
 		68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF42941045B0024DFFE /* RealmConfig.swift */; };
 		68A33AF72941124A0024DFFE /* RealmObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF62941124A0024DFFE /* RealmObjects.swift */; };
 		68D2CCE42985C7260052B42B /* ViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2CCE32985C7260052B42B /* ViewModels.swift */; };
+		68DBF8DE2993252700AB5F78 /* PatreonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 68DBF8DD2993252700AB5F78 /* PatreonAPI */; };
 		68DE97F12938CE0200A565B8 /* RepoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F02938CE0200A565B8 /* RepoView.swift */; };
 		68DE97F32938CF4B00A565B8 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F22938CF4B00A565B8 /* Components.swift */; };
 		68DE97F5293987B400A565B8 /* RepoAppDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F4293987B400A565B8 /* RepoAppDetails.swift */; };
@@ -81,7 +81,7 @@
 				6823E625293FDFC3007E5438 /* Realm in Frameworks */,
 				6843C629292FB636008FDA73 /* Neumorphic in Frameworks */,
 				6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */,
-				68837DF2298B38A0008B97B4 /* PatreonAPI in Frameworks */,
+				68DBF8DE2993252700AB5F78 /* PatreonAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +226,7 @@
 				6823E626293FDFC3007E5438 /* RealmSwift */,
 				683E3673294E80A900B1DAA7 /* DataCache */,
 				68E6CE0E296EB68200C474F0 /* Semaphore */,
-				68837DF1298B38A0008B97B4 /* PatreonAPI */,
+				68DBF8DD2993252700AB5F78 /* PatreonAPI */,
 			);
 			productName = deCripple;
 			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
@@ -262,7 +262,7 @@
 				6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */,
 				68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */,
-				68837DF0298B38A0008B97B4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */,
+				68DBF8DC2993252700AB5F78 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */,
 			);
 			productRefGroup = 6843C617292FB586008FDA73 /* Products */;
 			projectDirPath = "";
@@ -566,12 +566,12 @@
 				minimumVersion = 2.0.5;
 			};
 		};
-		68837DF0298B38A0008B97B4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */ = {
+		68DBF8DC2993252700AB5F78 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/amirsaam/PatreonAPI-Swift.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 		68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
@@ -610,9 +610,9 @@
 			package = 6843C627292FB636008FDA73 /* XCRemoteSwiftPackageReference "neumorphic" */;
 			productName = Neumorphic;
 		};
-		68837DF1298B38A0008B97B4 /* PatreonAPI */ = {
+		68DBF8DD2993252700AB5F78 /* PatreonAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 68837DF0298B38A0008B97B4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */;
+			package = 68DBF8DC2993252700AB5F78 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */;
 			productName = PatreonAPI;
 		};
 		68E6CE0E296EB68200C474F0 /* Semaphore */ = {

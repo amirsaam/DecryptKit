@@ -16,9 +16,9 @@ struct OpenRealmView: View {
 
   @AsyncOpen(appId: realmAppConfig.appId, timeout: 15000) var asyncOpen
 
+  @EnvironmentObject var errorHandler: ErrorHandler
   // Configuration used to open the realm.
   @Environment(\.realmConfiguration) private var config
-  @EnvironmentObject var errorHandler: ErrorHandler
 
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User

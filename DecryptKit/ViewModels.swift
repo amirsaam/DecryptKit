@@ -33,9 +33,16 @@ class SourceVM: ObservableObject {
 class PatreonVM: ObservableObject {
   public static let shared = PatreonVM()
   
-  @Published var tokensFetched: Bool = false
+  @Published var patronTokensFetched: Bool = false
   @Published var patreonOAuth: PatronOAuth? = nil
-  @Published var patronIdentity: PatreonUserIdentity? = nil
+  @Published var patronMembership: UserIdentityIncludedMembership? = nil
+  @Published var patronIdentity: PatreonUserIdentity? {
+    didSet {
+      if let identity = patronIdentity {
+        patronMembership = extractUserMembership(from: identity.included)
+      }
+    }
+  }
   @Published var campaignTiers: [CampaignIncludedTier] = []
   @Published var campaignBenefits: [CampaignIncludedBenefit] = []
   @Published var patreonCampaign: PatreonCampaignInfo? {
@@ -50,6 +57,19 @@ class PatreonVM: ObservableObject {
     }
   }
   
+  func extractUserMembership(from identity: [UserIdentityIncludedAny]) -> UserIdentityIncludedMembership? {
+    var decodedData: UserIdentityIncludedMembership?
+    for identityIncluded in identity {
+      if identityIncluded.type == "member" {
+        let decoded = try? JSONDecoder().decode(UserIdentityIncludedMembership.self, from: try JSONEncoder().encode(identityIncluded))
+        if let decoded = decoded {
+          decodedData = decoded
+        }
+      }
+    }
+    return decodedData
+  }
+
   func extractCampaignTiers(from campaign: [CampaignIncludedAny]) -> [CampaignIncludedTier] {
     var decodedArray = [CampaignIncludedTier]()
     for campaignIncluded in campaign {

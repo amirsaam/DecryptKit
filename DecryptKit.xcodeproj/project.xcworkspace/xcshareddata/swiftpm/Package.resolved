@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/amirsaam/PatreonAPI-Swift.git",
       "state" : {
-        "revision" : "6892f7e6216ce821d24e71b0035f26ffc19f60c6",
-        "version" : "0.9.95"
+        "branch" : "master",
+        "revision" : "1f12f0d353065169679968dfbfcbfcc47adfb287"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
       "state" : {
-        "revision" : "b77443ca7fa25407869ca537bf3ae912b1427bff",
-        "version" : "12.13.0"
+        "revision" : "b9467f3ecfead791cc87ab70b4f1c3c290be6ffd",
+        "version" : "13.4.0"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift",
       "state" : {
-        "revision" : "b1072f3ef733108dfcc62c2001781e5d65605fbf",
-        "version" : "10.34.1"
+        "revision" : "2ad431604aebedcb7313e1281c62aee4a98fb99e",
+        "version" : "10.35.0"
       }
     },
     {
