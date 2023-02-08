@@ -32,9 +32,10 @@ struct PatreonView: View {
           SidebarBackground()
             .overlay {
               VStack(alignment: .leading, spacing: 25.0) {
-                Text("Subscribe to our Patreon for accessing premium services!")
+                Text("Join our Patreon for access to premium services!")
                   .font(.headline)
-                PatreonCampaignDetails(patreonCampaign: $patreonVM.patreonCampaign,
+                PatreonCampaignDetails(user: user,
+                                       patreonCampaign: $patreonVM.patreonCampaign,
                                        patreonTiers: $patreonVM.campaignTiers,
                                        patreonBenefits: $patreonVM.campaignBenefits,
                                        patronMembership: $patreonVM.patronMembership)
@@ -73,7 +74,7 @@ struct PatreonView: View {
                   }
                   Button("Cancel", role: .cancel) { return }
                 } message: {
-                  Text("Unlinking your Patreon account from DecryptKit removes your access to the benefits you own but will not unsubscribe you from our Patreon.")
+                  Text("Disconnecting your Patreon account from DecryptKit will result in the revocation of your current privileges, but it shall not result in your unsubscription from our Patreon page.")
                 }
                 Button {
                   withAnimation(.spring()) {

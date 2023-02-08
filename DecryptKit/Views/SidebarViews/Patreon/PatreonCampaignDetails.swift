@@ -7,15 +7,23 @@
 
 import SwiftUI
 import Neumorphic
+import RealmSwift
 import CachedAsyncImage
 import PatreonAPI
 
 struct PatreonCampaignDetails: View {
-  
+
+  @State var user: User
   @Binding var patreonCampaign: PatreonCampaignInfo?
   @Binding var patreonTiers: [CampaignIncludedTier]
   @Binding var patreonBenefits: [CampaignIncludedBenefit]
-  @Binding var patronMembership: UserIdentityIncludedMembership?
+  @Binding var patronMembership: [UserIdentityIncludedMembership]
+
+  @ObservedResults(deUser.self) private var users
+  @State private var newUser = deUser()
+
+  @State private var userIsPatron = false
+  @State private var presentSubscribeAlert = false
 
   var body: some View {
     if patreonCampaign == nil {
@@ -75,24 +83,16 @@ struct PatreonCampaignDetails: View {
                 }
                 Spacer()
                 Button {
-                  if let url = URL(string: "https://www.patreon.com" + tier.attributes.url) {
-                    UIApplication.shared.open(url)
-                  }
+                  presentSubscribeAlert = true
                 } label: {
-                  if let membership = patronMembership {
-                    if !membership.relationships.currently_entitled_tiers.data.isEmpty {
-                      if membership.relationships.currently_entitled_tiers.data[0].id == tier.id {
-                        Label("Subscribed", systemImage: "signature")
-                          .font(.caption2.bold())
-                      }
+                  Group {
+                    if userIsPatron {
+                      Label("Subscribed", systemImage: "signature")
                     } else {
                       Label(formattedPrice, systemImage: "arrow.up.right.square")
-                        .font(.caption2.bold())
                     }
-                  } else {
-                    Label(formattedPrice, systemImage: "arrow.up.right.square")
-                      .font(.caption2.bold())
                   }
+                  .font(.caption2.bold())
                 }
                 .softButtonStyle(
                   RoundedRectangle(cornerRadius: 10),
@@ -103,6 +103,17 @@ struct PatreonCampaignDetails: View {
                   lightShadowColor: .redNeuLS,
                   pressedEffect: .flat
                 )
+                .disabled(userIsPatron)
+                .alert("Kindly Take Heed", isPresented: $presentSubscribeAlert) {
+                  Button("Open Patreon", role: .none) {
+                    if let url = URL(string: "https://www.patreon.com" + tier.attributes.url) {
+                      UIApplication.shared.open(url)
+                    }
+                  }
+                  Button("Cancel", role: .cancel) { return }
+                } message: {
+                  Text("Should you opt to grace us with your subscription, kindly note that a restart of the DecryptKit application will be required for the changes to take effect.")
+                }
               }
               Text("Benefits:")
                 .font(.caption)
@@ -119,11 +130,41 @@ struct PatreonCampaignDetails: View {
               }
               .padding(.top, 1)
             }
+            .padding(.top)
+            .task {
+              try? await Task.sleep(nanoseconds: 5000000000)
+              if !patronMembership.isEmpty {
+                userIsPatron = patronMembership.contains { data in
+                  data.relationships.currently_entitled_tiers.data.contains { entitledTier in
+                    entitledTier.id == tier.id
+                  }
+                }
+              }
+              if userIsPatron {
+                let userTier = (formattedPrice == "$2.99" ? 1 : formattedPrice == "$4.99" ? 2 : 3)
+                await handleSubscribedPatron(tier: userTier)
+              }
+            }
           }
-          .padding(.top)
         }
-        .padding(.top)
+        if !userIsPatron {
+          Text("You are using DecryptKit's FREE services.")
+            .font(.caption.italic())
+            .padding(.top)
+        }
       }
     }
+  }
+  
+  func handleSubscribedPatron(tier: Int) async {
+    let realm = users.realm!.thaw()
+    let thawedUsers = users.thaw()!
+    let currentUser = thawedUsers.where {
+      $0.userId.contains(user.id)
+    }
+    try! realm.write {
+      currentUser[0].userTier = tier
+    }
+    UserVM.shared.userTier = tier
   }
 }

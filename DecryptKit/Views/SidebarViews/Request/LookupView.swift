@@ -43,10 +43,11 @@ struct LookupView: View {
           SidebarBackground()
             .overlay {
               VStack(alignment: .leading, spacing: 25.0) {
-                Text("We have an IPA Decryption service, thanks to dear Amachi!")
+                Text("Our IPA Decryption service is made available through the generosity of dear Amachi!")
                   .font(.headline)
                 if !searchSuccess {
-                  Text("you need to use app store links or the number in the end of it, e.g 1517783697")
+                  Text("Utilization of either the app store links or the numerical code at the end is required.\n" +
+                       "e.g. 1517783697")
                     .font(.footnote.italic())
                 } else {
                   if lookedup != nil && (idIsValid || idOnSource || idIsPaid) {
@@ -57,12 +58,12 @@ struct LookupView: View {
                         }
                       }
                     if idIsPaid {
-                      ErrorMessage(errorLog: "DecryptKit does not support paid apps!")
+                      ErrorMessage(errorLog: "We do not offer decryption for paid apps.")
                     } else if idOnSource {
-                      ErrorMessage(errorLog: "This app is already on DecryptKit source!")
+                      ErrorMessage(errorLog: "It's already present within the public source.")
                     }
                   } else {
-                    ErrorMessage(errorLog: "AppStore Link or ID is not correct!")
+                    ErrorMessage(errorLog: "Incorrect App Store Link or ID.")
                   }
                 }
                 VStack(alignment: .leading) {
@@ -81,7 +82,7 @@ struct LookupView: View {
                         Divider()
                         Text(deResult ?? "")
                         if !serviceIsOn {
-                          Label("Decryption may take longer due to heavy load!",
+                          Label("The process of decryption may be temporarily delayed due to a high volume of demand.",
                                 systemImage: "exclamationmark.triangle.fill")
                           .font(.caption)
                           .foregroundColor(.red)

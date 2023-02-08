@@ -45,13 +45,11 @@ struct MainView: View {
                   .fontWeight(.heavy)
                   .font(.title.monospaced())
                 VStack(alignment: .leading, spacing: geo.size.width * (0.25/10)) {
-                  Text("DecryptKit is a free to use IPA Repository & Decrypting Service created just for ease of PlayCover users and Mac Gaming Community.")
+                  Text("DecryptKit is a gratis IPA Repository and Decrypting Service, crafted for the convenience of PlayCover users and the Mac Gaming Community.")
                     .font(.headline)
                     .fontWeight(.medium)
                   VStack(alignment: .leading) {
-                    Text("If you are a IPA Decryptor willing to donate your time to this community,")
-                      .fontWeight(.medium)
-                    Text("feel free to drop in DecryptKit creators DM on Discord!")
+                    Text("If you inclined to donate your time as an IPA Decryptor, kindly extend a message to the creators of DecryptKit via Ticket in our Discord Server.")
                       .fontWeight(.medium)
                   }
                   .font(.subheadline)
@@ -83,7 +81,7 @@ struct MainView: View {
                       }
                       Button("Cancel", role: .cancel) { return }
                     } message: {
-                      Text("You need to have PlayCover installed in order to use DecryptKit IPA Source.")
+                      Text("It is a requirement to have PlayCover installed for the utilization of the DecryptKit IPA Source.")
                     }
                     Button {
                       withAnimation(.spring()) {
