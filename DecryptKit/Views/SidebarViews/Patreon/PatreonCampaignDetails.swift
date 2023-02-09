@@ -119,7 +119,11 @@ struct PatreonCampaignDetails: View {
                 .font(.caption)
                 .padding(.top, 1)
               let tierBenefits = patreonBenefits.filter { benefit in
-                benefit.attributes.tiers_count >= (formattedPrice == "$2.99" ? 3 : formattedPrice == "$4.99" ? 2 : 1)
+                let data = benefit.relationships.tiers.data
+                let containsId = data.contains { relatedTier in
+                  relatedTier.id == tier.id
+                }
+                return containsId
               }
               VStack(alignment: .leading) {
                 ForEach(tierBenefits, id: \.id) { benefit in

@@ -156,6 +156,9 @@ enum SourceTabs: Int, CaseIterable {
 struct FreeSourceList: View {
   @Binding var freeSourceData: [deCrippleSource]?
   @Binding var progressAmount: Double
+
+  @State private var isSelected: Set<deCrippleSource> = []
+
   var body: some View {
     List {
       if freeSourceData == nil {
@@ -166,10 +169,59 @@ struct FreeSourceList: View {
         RepoAppDetails(appBundleID: app.bundleID,
                        appName: app.name,
                        appVersion: app.version)
+        .onTapGesture {
+          withAnimation {
+            if UserVM.shared.userTier >= 1 {
+              selectDeselect(app)
+            }
+          }
+        }
+        if isSelected.contains(app) {
+          ZStack {
+            Rectangle()
+              .fill(mainColor)
+              .softInnerShadow(
+                Rectangle(),
+                radius: 2.5
+              )
+              .frame(height: 45)
+              .overlay {
+                HStack {
+                  Spacer()
+                  Button {
+                    UIPasteboard.general.string = app.link
+                  } label: {
+                    HStack(spacing: 10) {
+                      Image(systemName: "arrow.down.square.fill")
+                      Text("Click to Copy Download Link to Clipboard")
+                    }
+                    .font(.caption)
+                  }
+                  Spacer()
+                }
+              }
+          }
+          .listRowInsets(
+            .init(
+              top: 0,
+              leading: 0,
+              bottom: 0,
+              trailing: 0)
+          )
+        }
       }
       .listRowBackground(mainColor)
     }
     .listStyle(.plain)
+  }
+  
+  private func selectDeselect(_ app: deCrippleSource) {
+    if isSelected.contains(app) {
+      isSelected.remove(app)
+    } else {
+      isSelected.removeAll()
+      isSelected.insert(app)
+    }
   }
 }
 
@@ -177,6 +229,9 @@ struct FreeSourceList: View {
 struct VIPSourceList: View {
   @Binding var vipSourceData: [deCrippleSource]?
   @Binding var progressAmount: Double
+
+  @State private var isSelected: Set<deCrippleSource> = []
+
   var body: some View {
     List {
       if vipSourceData == nil {
@@ -199,10 +254,59 @@ struct VIPSourceList: View {
         RepoAppDetails(appBundleID: app.bundleID,
                        appName: app.name,
                        appVersion: app.version)
+        .onTapGesture {
+          withAnimation {
+            if UserVM.shared.userTier >= 1 {
+              selectDeselect(app)
+            }
+          }
+        }
+        if isSelected.contains(app) {
+          ZStack {
+            Rectangle()
+              .fill(mainColor)
+              .softInnerShadow(
+                Rectangle(),
+                radius: 2.5
+              )
+              .frame(height: 45)
+              .overlay {
+                HStack {
+                  Spacer()
+                  Button {
+                    UIPasteboard.general.string = app.link
+                  } label: {
+                    HStack(spacing: 10) {
+                      Image(systemName: "arrow.down.square.fill")
+                      Text("Click to Copy Download Link to Clipboard")
+                    }
+                    .font(.caption)
+                  }
+                  Spacer()
+                }
+              }
+          }
+          .listRowInsets(
+            .init(
+              top: 0,
+              leading: 0,
+              bottom: 0,
+              trailing: 0)
+          )
+        }
       }
       .listRowBackground(mainColor)
     }
     .listStyle(.plain)
+  }
+  
+  private func selectDeselect(_ app: deCrippleSource) {
+    if isSelected.contains(app) {
+      isSelected.remove(app)
+    } else {
+      isSelected.removeAll()
+      isSelected.insert(app)
+    }
   }
 }
 

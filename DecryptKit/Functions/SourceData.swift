@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Source Structure
-struct deCrippleSource: Codable {
+struct deCrippleSource: Codable, Hashable {
   var bundleID: String
   var name: String
   var version: String
