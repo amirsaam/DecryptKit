@@ -170,6 +170,14 @@ struct MainView: View {
         }
       }
     }
+    .task {
+      print("EncryptKit, UID:", uid)
+      let encrypted = await EncryptKit().doReturnEncrypted()
+      print("EncryptKit, Encrypted:", encrypted)
+      try? await Task.sleep(nanoseconds: 50000000)
+      let decrypted = await EncryptKit().doReturnDecrypted(encryptedString: encrypted ?? "")
+      print("EncryptKit, Decrypted:", decrypted)
+    }
     // MARK: - Hnadling URL Schema
     .onOpenURL { url in
       isDeeplink = false

@@ -49,7 +49,6 @@ struct OpenRealmView: View {
         .environmentObject(errorHandler)
         .task(priority: .high) {
           await doCheckUser()
-          PatreonVM.shared.patreonCampaign = await patreonAPI.getDataForCampaign()
         }
       case .progress(let progress):
         ProgressView(progress)
@@ -115,6 +114,7 @@ struct OpenRealmView: View {
       debugPrint("No duplicate user found")
       Task { @MainActor in
         await resolveSourceData()
+        PatreonVM.shared.patreonCampaign = await patreonAPI.getDataForCampaign()
         withAnimation {
           dataLoaded = true
         }

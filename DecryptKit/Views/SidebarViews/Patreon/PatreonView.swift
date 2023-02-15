@@ -34,11 +34,20 @@ struct PatreonView: View {
               VStack(alignment: .leading, spacing: 25.0) {
                 Text("Join our Patreon for access to premium services!")
                   .font(.headline)
-                PatreonCampaignDetails(user: user,
-                                       patreonCampaign: $patreonVM.patreonCampaign,
-                                       patreonTiers: $patreonVM.campaignTiers,
-                                       patreonBenefits: $patreonVM.campaignBenefits,
-                                       patronMembership: $patreonVM.patronMembership)
+                if patreonVM.patreonCampaign == nil {
+                  HStack {
+                    Spacer()
+                    ProgressView()
+                      .controlSize(.large)
+                    Spacer()
+                  }
+                } else {
+                  PatreonCampaignDetails(user: user,
+                                         patreonCampaign: $patreonVM.patreonCampaign,
+                                         patreonTiers: $patreonVM.campaignTiers,
+                                         patreonBenefits: $patreonVM.campaignBenefits,
+                                         patronMembership: $patreonVM.patronMembership)
+                }
                 Button {
                   if userVM.userPAT.isEmpty {
                     patreonAPI.doOAuth()

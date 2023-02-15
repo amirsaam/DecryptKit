@@ -8,6 +8,18 @@
 import Foundation
 import PatreonAPI
 
+// MARK: - Patreon Client Data
+struct PatreonClient {
+  public static let shared = PatreonClient()
+  
+  let clientID = "MKzRZxagIOea-ceFt_54sjf9yyA2TzTHln9LiUoybU8ZRg7ljS4KE9HrBPa9i6aA"
+  let clientSecret = "4kTPw037oTE6D9zGHDwBgxqljtd70UkLBXAA25lIk83ZRbrlQjNr3sN8-TFa8dI6"
+  let creatorAccessToken = "FMzzaiCz9ycnKlUfU5VdYJA4yXFH_zKu5WcLH60lFOo"
+  let creatorRefreshToken = "rnz8ny-qw8kdVM3bFyL27fssb1jRqta11WARXfPUm_Q"
+  let redirectURI = "https://decryptkit.xyz/patreon/6NvbE37T33cKTmpu1DkAtvuEK4XdWzF"
+  let campaignID = "9760149"
+}
+
 // MARK: - User's Data VM
 class UserVM: ObservableObject {
   public static let shared = UserVM()
