@@ -263,6 +263,7 @@
 				683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */,
 				68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */,
 				681B37CD2995B053002649D4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */,
+				6893642F299EDFB500C0A4D1 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 6843C617292FB586008FDA73 /* Products */;
 			projectDirPath = "";
@@ -572,6 +573,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.5;
+			};
+		};
+		6893642F299EDFB500C0A4D1 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
 			};
 		};
 		68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
