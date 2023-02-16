@@ -23,6 +23,7 @@ struct OpenRealmView: View {
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
   @State private var userVM = UserVM.shared
+  @State private var patreonVM = PatreonVM.shared
   @State private var dataLoaded = false
 
   @ObservedResults(deUser.self) private var users
@@ -114,7 +115,18 @@ struct OpenRealmView: View {
       debugPrint("No duplicate user found")
       Task { @MainActor in
         await resolveSourceData()
-        PatreonVM.shared.patreonCampaign = await patreonAPI.getDataForCampaign()
+        patreonVM.patreonCampaign = await patreonAPI.getDataForCampaign()
+        if !userVM.userPAT.isEmpty && !patreonVM.patronTokensFetched {
+          patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(userRefreshToken: userVM.userPRT)
+          try! realm.write {
+            currentUser[0].userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+            currentUser[0].userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
+          }
+          userVM.userPAT = patreonVM.patreonOAuth?.access_token ?? ""
+          userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
+          patreonVM.patronTokensFetched = true
+          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userAccessToken: userVM.userPAT)
+        }
         withAnimation {
           dataLoaded = true
         }
