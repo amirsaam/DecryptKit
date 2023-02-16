@@ -7,60 +7,11 @@
 
 import Foundation
 import CommonCrypto
-import UIKit
 
-class EncryptKit {
-
-  private let concatenatedString = "00000000" + (UIDevice.current.identifierForVendor?.uuidString ?? "UID not Found")
-  private let concatenatedData = (
-    "00000000" +
-    (UIDevice.current.identifierForVendor?.uuidString ?? "UID not Found")
-  ).data(using: .utf8)
-
-  func doReturnEncrypted() async -> String? {
-    guard let encryptedData = await encryptAES256() else { return nil }
-    print("EncryptKit, EncryptedData: ", encryptedData)
-    let encryptedString = encryptedData.hexEncodedString()
-    print("EncryptKit, EncryptedString: ", encryptedString)
-    return String(encryptedString.dropFirst(14)) + String(encryptedString.prefix(14))
-  }
-
-  func doReturnDecrypted(encryptedString: String) async -> String? {
-    let revertedString = encryptedString.suffix(14) + encryptedString.dropLast(14)
-    print("EncryptKit, ReversedString: ", revertedString)
-    guard let decryptedData = await decryptAES256(encryptedData: Data(revertedString.utf8)) else { return nil }
-    print("EncryptKit, DecryptedData: ", decryptedData)
-    return String(data: decryptedData, encoding: .utf8)
-  }
-
-  // key and iv creation func
-  private func createKeyAndIV() -> (key: Data, iv: Data)? {
-    var key = Data(count: kCCKeySizeAES256)
-    var iv = Data(count: kCCBlockSizeAES128)
-    
-    let keyQueue = DispatchQueue(label: "keyQueue")
-    keyQueue.sync {
-        _ = key.withUnsafeMutableBytes { keyBytes in
-            SecRandomCopyBytes(kSecRandomDefault, keyBytes.count, keyBytes.baseAddress!)
-        }
-        _ = iv.withUnsafeMutableBytes { ivBytes in
-            SecRandomCopyBytes(kSecRandomDefault, ivBytes.count, ivBytes.baseAddress!)
-        }
-    }
-    
-    print("EncryptKit, Key: ", key)
-    print("EncryptKit, IV: ", iv)
-    return (key, iv)
-  }
-
-  // encryption  func
-  private func encryptAES256() async -> Data? {
-    
-    guard let (key, iv) = createKeyAndIV(),
-          let data = concatenatedData else {
-      return nil
-    }
-    
+func encryptKit(_ vendorID: String) -> String {
+  
+  //encryption  func
+  func encryptAES256(data: Data, key: Data, iv: Data) -> Data? {
     let cryptLength = data.count + kCCBlockSizeAES128
     var cryptData = Data(count: cryptLength)
     
@@ -86,20 +37,15 @@ class EncryptKit {
       }
     }
     
-    if status != kCCSuccess {
-      return nil
+    if status == kCCSuccess {
+      cryptData.count = bytesLength
+      return cryptData
     }
-    
-    cryptData.count = bytesLength
-    return cryptData
+    return nil
   }
-
-  // decryption func
-  private func decryptAES256(encryptedData: Data) async -> Data? {
-    
-    guard let (key, iv) = createKeyAndIV() else { return nil }
-    
-    let cryptLength = encryptedData.count + kCCBlockSizeAES128
+  //decryption func
+  func decryptAES256(data: Data, key: Data, iv: Data) -> Data? {
+    let cryptLength = data.count + kCCBlockSizeAES128
     var cryptData = Data(count: cryptLength)
     
     let keyLength = kCCKeySizeAES256
@@ -108,7 +54,7 @@ class EncryptKit {
     var bytesLength = 0
     
     let status = cryptData.withUnsafeMutableBytes { cryptBytes in
-      encryptedData.withUnsafeBytes { dataBytes in
+      data.withUnsafeBytes { dataBytes in
         key.withUnsafeBytes { keyBytes in
           iv.withUnsafeBytes { ivBytes in
             CCCrypt(CCOperation(kCCDecrypt),
@@ -116,7 +62,7 @@ class EncryptKit {
                     options,
                     keyBytes.baseAddress, keyLength,
                     ivBytes.baseAddress,
-                    dataBytes.baseAddress, encryptedData.count,
+                    dataBytes.baseAddress, data.count,
                     cryptBytes.baseAddress, cryptLength,
                     &bytesLength)
           }
@@ -124,12 +70,65 @@ class EncryptKit {
       }
     }
     
-    if status != kCCSuccess {
-      return nil
+    if status == kCCSuccess {
+      cryptData.count = bytesLength
+      return cryptData
     }
-
-    cryptData.count = bytesLength
-    return cryptData
+    return nil
+  }
+  let platformID = "00000000"
+  let concatenatedData = platformID
+  
+  let keyQueue = DispatchQueue(label: "keyQueue")
+  let dataToEncrypt = concatenatedData.data(using: .utf8)!
+  var key = Data(count: kCCKeySizeAES256)
+  var iv = Data(count: kCCBlockSizeAES128)
+  
+  keyQueue.sync {
+    _ = key.withUnsafeMutableBytes { keyBytes in
+      SecRandomCopyBytes(kSecRandomDefault, keyBytes.count, keyBytes.baseAddress!)
+    }
+    _ = iv.withUnsafeMutableBytes { ivBytes in
+      SecRandomCopyBytes(kSecRandomDefault, ivBytes.count, ivBytes.baseAddress!)
+    }
+  }
+  
+  
+  
+  let dataQueue = DispatchQueue(label: "dataQueue")
+  
+  return dataQueue.sync {
+    let dataToEncrypt = concatenatedData.data(using: .utf8)!
+    let encryptedData = encryptAES256(data: dataToEncrypt, key: key, iv: iv)!
+    let decryptedData = decryptAES256(data: encryptedData, key: key, iv: iv)!
+    let decryptedString = String(data: decryptedData, encoding: .utf8)
+    
+    let keyHex = key.map { String(format: "%02x", $0) }.joined()
+    let ivHex = iv.map { String(format: "%02x", $0) }.joined()
+    
+    print("Original String: \(concatenatedData)")
+    print("Encrypted Data: \(encryptedData.hexEncodedString())")
+    print("Decrypted String: \(decryptedString!)")
+    
+    print("Key: \(keyHex)")
+    print("Iv: \(iv.hexEncodedString())")
+    print("IvPrint:\(ivHex)")
+    
+    
+    
+    
+    
+    let result = encryptKit("test")
+    
+    let key_swapped = result
+    let first14 = key_swapped.prefix(14)
+    let newKey = String(key_swapped.dropFirst(14)) + String(first14)
+    //newkey is the thing u want to save to db
+    print(newKey)
+    
+    print("result is", newKey)
+    
+    return encryptedData.hexEncodedString()
   }
 }
 
