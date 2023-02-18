@@ -38,6 +38,8 @@
 		68DE97F5293987B400A565B8 /* RepoAppDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F4293987B400A565B8 /* RepoAppDetails.swift */; };
 		68E6CE0F296EB68200C474F0 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = 68E6CE0E296EB68200C474F0 /* Semaphore */; };
 		68EFC738296AC1CB00C8819A /* PatreonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EFC737296AC1CB00C8819A /* PatreonView.swift */; };
+		68F000E829A050780068021A /* AdMob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F000E729A050780068021A /* AdMob.swift */; };
+		68F000EB29A055EF0068021A /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 68F000EA29A055EF0068021A /* GoogleMobileAds */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,7 @@
 		68DE97F22938CF4B00A565B8 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		68DE97F4293987B400A565B8 /* RepoAppDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoAppDetails.swift; sourceTree = "<group>"; };
 		68EFC737296AC1CB00C8819A /* PatreonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonView.swift; sourceTree = "<group>"; };
+		68F000E729A050780068021A /* AdMob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMob.swift; sourceTree = "<group>"; };
 		68FFD2BF2958561C00AC073C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +82,7 @@
 				6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */,
 				683E3674294E80A900B1DAA7 /* DataCache in Frameworks */,
 				6823E625293FDFC3007E5438 /* Realm in Frameworks */,
+				68F000EB29A055EF0068021A /* GoogleMobileAds in Frameworks */,
 				6843C629292FB636008FDA73 /* Neumorphic in Frameworks */,
 				6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */,
 				681B37CF2995B053002649D4 /* PatreonAPI in Frameworks */,
@@ -93,6 +97,7 @@
 			children = (
 				6843C618292FB586008FDA73 /* DecryptKit */,
 				6843C617292FB586008FDA73 /* Products */,
+				68F000E929A055EF0068021A /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -139,6 +144,7 @@
 				685D098D29422D0A00AFD730 /* AccountingView.swift */,
 				6845694D2942A5D700BD53D8 /* OpenRealmView.swift */,
 				685D098A2942121D00AFD730 /* MainView.swift */,
+				68F000E729A050780068021A /* AdMob.swift */,
 				68DE97F22938CF4B00A565B8 /* Components.swift */,
 				68A33AEF2940FBFA0024DFFE /* SidebarViews */,
 			);
@@ -203,6 +209,13 @@
 			path = Patreon;
 			sourceTree = "<group>";
 		};
+		68F000E929A055EF0068021A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -227,6 +240,7 @@
 				683E3673294E80A900B1DAA7 /* DataCache */,
 				68E6CE0E296EB68200C474F0 /* Semaphore */,
 				681B37CE2995B053002649D4 /* PatreonAPI */,
+				68F000EA29A055EF0068021A /* GoogleMobileAds */,
 			);
 			productName = deCripple;
 			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
@@ -299,6 +313,7 @@
 				6851468F2973254C00FBDC4A /* PatreonCampaignDetails.swift in Sources */,
 				68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */,
 				68DE97F12938CE0200A565B8 /* RepoView.swift in Sources */,
+				68F000E829A050780068021A /* AdMob.swift in Sources */,
 				685B3EE3293292130010E24D /* ContentView.swift in Sources */,
 				68D2CCE42985C7260052B42B /* ViewModels.swift in Sources */,
 				68EFC738296AC1CB00C8819A /* PatreonView.swift in Sources */,
@@ -460,7 +475,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tech.deCripple;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = ir.amrsm.deCripple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -499,7 +515,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tech.deCripple;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = ir.amrsm.deCripple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -628,6 +645,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
+		};
+		68F000EA29A055EF0068021A /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6893642F299EDFB500C0A4D1 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

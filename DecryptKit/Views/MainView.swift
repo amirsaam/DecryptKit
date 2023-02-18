@@ -148,14 +148,32 @@ struct MainView: View {
                 .environmentObject(PatreonVM.shared)
                 .environmentObject(UserVM.shared)
               } else {
-                VStack {
-                  Creators()
-                }
+                Creators()
               }
             }
           }
           .foregroundColor(secondaryColor)
           .padding(.leading, geo.size.width * (0.5/10))
+          .overlay {
+            VStack {
+              Spacer()
+              HStack {
+                Spacer()
+                Button { } label: {
+                  BannerAd()
+                    .frame(width: 468, height: 60)
+                    .cornerRadius(15)
+                }
+                .softButtonStyle(
+                  RoundedRectangle(cornerRadius: 15),
+                  padding: 0,
+                  pressedEffect: .flat
+                )
+                Spacer()
+              }
+              .padding(.bottom)
+            }
+          }
         } else {
           VStack {
             Spacer()
