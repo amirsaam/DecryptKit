@@ -24,7 +24,6 @@ let patreonAPI = PatreonAPI(clientID: PatreonClient.shared.clientID,
                             creatorRefreshToken: PatreonClient.shared.creatorRefreshToken,
                             redirectURI: PatreonClient.shared.redirectURI,
                             campaignID: PatreonClient.shared.campaignID)
-let uid = UIDevice.current.identifierForVendor?.uuidString ?? "UID not Found"
 
 /// Load app config details from a Realm.plist we generated
 let realmAppConfig = loadRealmAppConfig()

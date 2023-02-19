@@ -69,7 +69,7 @@ struct OpenRealmView: View {
         debugPrint("Failed to refresh custom data: \(error.localizedDescription)")
       case .success(let customData):
         if customData["userId"] == nil {
-          userVM.userUID = uid
+          userVM.userUID = EncryptKit.shared.concatenatedString
           debugPrint("Appending new custom data to Realm")
           Task { @MainActor in
             let email = defaults.string(forKey: "Email") ?? ""
