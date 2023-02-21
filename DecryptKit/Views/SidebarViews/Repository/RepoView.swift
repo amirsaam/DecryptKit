@@ -51,7 +51,7 @@ struct RepoView: View {
                     progressAmount = 0
                     (freeSourceData, vipSourceData) = (nil, nil)
                     URLCache.shared.removeAllCachedResponses()
-                    try? await Task.sleep(nanoseconds: 10000000000)
+                    try? await Task.sleep(nanoseconds: 5000000000)
                     await resolveSourceData()
                     freeSourceData = SourceVM.shared.freeSourceData
                     vipSourceData = SourceVM.shared.vipSourceData

@@ -10,26 +10,30 @@ import Foundation
 let outAppStoreBundleID: Array = [
   "ir.amrsm.deCripple",
   "com.rileytestut.Delta",
-  "com.hammerandchisel.discord"
+  "com.hammerandchisel.discord",
+  "net.kdt.pojavlauncher"
 ]
 
 enum NotAPApp: String, CaseIterable {
   case deCripple = "ir.amrsm.deCripple"
   case delta = "com.rileytestut.Delta"
   case rosiecord = "com.hammerandchisel.discord"
+  case pojav = "net.kdt.pojavlauncher"
   
   var appIcon: String {
     switch self {
     case .deCripple: return "https://raw.githubusercontent.com/amirsaam/DecryptKit/main/DecryptKit.jpg"
-    case .delta: return "https://user-images.githubusercontent.com/705880/63391976-4d311700-c37a-11e9-91a8-4fb0c454413d.png"
+    case .delta: return "https://raw.githubusercontent.com/lonkelle/Deltroid/356f9c50abcd7ef5f0f21581b36d27a8905390d4/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
     case .rosiecord: return "https://raw.githubusercontent.com/acquitelol/rosiecord/master/Icons/EnmityIcon-Icon-60_Normal%402x.png"
+    case .pojav: return "https://raw.githubusercontent.com/PojavLauncherTeam/PojavLauncher_iOS/main/Natives/Assets.xcassets/AppIcon-Dark.appiconset/AppIcon-Dark_1024x1024.png"
     }
   }
   var appDeveloper: String {
     switch self {
     case .deCripple: return "DecryptKit Team"
-    case .delta: return "Riley Testut"
-    case .rosiecord: return "acquite#0001"
+    case .delta: return "Joelle Stickney"
+    case .rosiecord: return "Acquite#0001"
+    case .pojav: return "PojavLauncherTeam"
     }
   }
   var appSize: String {
@@ -37,6 +41,7 @@ enum NotAPApp: String, CaseIterable {
     case .deCripple: return "2097152"
     case .delta: return "19713229"
     case .rosiecord: return "81474355"
+    case .pojav: return "110100480"
     }
   }
   var appGenre: String {
@@ -44,6 +49,7 @@ enum NotAPApp: String, CaseIterable {
     case .deCripple: return "Utilities"
     case .delta: return "Utilities"
     case .rosiecord: return "Social Networking"
+    case .pojav: return "Games"
     }
   }
 }
