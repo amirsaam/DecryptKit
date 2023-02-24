@@ -291,7 +291,7 @@ struct LookupView: View {
       }
       lookedup = await getITunesData(id)
       idIsValid = lookedup?.resultCount == 1
-      if idIsValid {
+      if idIsValid && UserVM.shared.userTier < 4 {
         idOnSource = freeSourceData?.contains { app in
           app.bundleID == lookedup?.results[0].bundleId ?? ""
         } ?? false
