@@ -155,23 +155,25 @@ struct MainView: View {
           .foregroundColor(secondaryColor)
           .padding(.leading, geo.size.width * (0.5/10))
           .overlay {
-            VStack {
-              Spacer()
-              HStack {
+            if UserVM.shared.userTier == 0 {
+              VStack {
                 Spacer()
-                Button { } label: {
-                  BannerAd()
-                    .frame(width: 468, height: 60)
-                    .cornerRadius(15)
+                HStack {
+                  Spacer()
+                  Button { } label: {
+                    BannerAd()
+                      .frame(width: 468, height: 60)
+                      .cornerRadius(15)
+                  }
+                  .softButtonStyle(
+                    RoundedRectangle(cornerRadius: 15),
+                    padding: 0,
+                    pressedEffect: .flat
+                  )
+                  Spacer()
                 }
-                .softButtonStyle(
-                  RoundedRectangle(cornerRadius: 15),
-                  padding: 0,
-                  pressedEffect: .flat
-                )
-                Spacer()
+                .padding(.bottom)
               }
-              .padding(.bottom)
             }
           }
         } else {
