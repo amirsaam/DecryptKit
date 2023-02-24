@@ -321,7 +321,7 @@ struct LoadingSourceView: View {
         .progressViewStyle(.linear)
         .onReceive(timer) { _ in
           if progressAmount < 100 {
-            progressAmount += 1
+            progressAmount += 3
           }
         }
       Spacer()
