@@ -18,6 +18,8 @@ struct LookupView: View {
   @State private var newStat = deStat()
   @ObservedResults(deReq.self) private var requests
   @State private var newReq = deReq()
+  
+  @State private var activeReqs: [deReq] = []
 
   @State private var freeSourceData = SourceVM.shared.freeSourceData
   @State private var userEmailAddress = UserVM.shared.userEmail
@@ -43,18 +45,49 @@ struct LookupView: View {
           SidebarBackground()
             .overlay {
               VStack(alignment: .leading, spacing: 25.0) {
-                Text("Our IPA Decryption service is made available through the generosity of dear Amachi!")
-                  .font(.headline)
+                if activeReqs.isEmpty {
+                  Text("Our IPA Decryption service is made available through the generosity of dear Amachi!")
+                    .font(.headline)
+                } else {
+                  Text("Your Active Requests:")
+                    .font(.subheadline.monospaced().bold())
+                  VStack(spacing: 10) {
+                    ForEach(activeReqs, id: \.requestedId) { req in
+                      HStack {
+                        RequestsAppDetails(bundleId: req.requestedId)
+                        Spacer()
+                        Button {
+                          Task {
+                            await removeRequestFromQueue(bundleId: req.requestedId)
+                          }
+                        } label: {
+                          Image(systemName: "trash.fill")
+                        }
+                        .softButtonStyle(
+                          Circle(),
+                          padding: 8,
+                          textColor: .red,
+                          pressedEffect: .flat
+                        )
+                      }
+                    }
+                  }
+                }
+                Divider()
+                Text("Decryption Request Form:")
+                  .font(.subheadline.monospaced().bold())
                 if !searchSuccess {
                   Text("Utilization of either the app store links or the numerical code at the end is required.\n" +
                        "e.g. 1517783697")
                     .font(.footnote.italic())
                 } else {
                   if lookedup != nil && (idIsValid || idOnSource || idIsPaid) {
-                    LookupAppDetails(lookedup: $lookedup)
+                    SearchAppDetails(lookedup: $lookedup)
                       .onAppear {
                         if lookedup != nil {
-                          doAddStat((lookedup?.results[0].bundleId)!)
+                          Task {
+                            await doAddStat(id: (lookedup?.results[0].bundleId)!)
+                          }
                         }
                       }
                     if idIsPaid {
@@ -116,7 +149,9 @@ struct LookupView: View {
                           try? await Task.sleep(nanoseconds: 3000000000)
                           withAnimation {
                             requestProgress = false
-                            doRequest((lookedup?.results[0].bundleId)!)
+                            Task {
+                              await doRequest(id: (lookedup?.results[0].bundleId)!)
+                            }
                             requestSubmitted = true
                           }
                         }
@@ -183,23 +218,64 @@ struct LookupView: View {
         await resolveSourceData()
       }
       freeSourceData = SourceVM.shared.freeSourceData
+      await retrieveActiveReqs()
     }
   }
+
+  // MARK: -
+  func retrieveActiveReqs() async {
+    let thawedReqs = requests.thaw()!
+    let requests = thawedReqs.where {
+      $0.requestersEmail.contains(userEmailAddress)
+    }
+    requests.forEach { req in
+      withAnimation {
+        activeReqs.append(req)
+      }
+    }
+  }
+
+  // MARK: -
+  func removeRequestFromQueue(bundleId: String) async {
+    let realm = requests.realm!.thaw()
+    let thawedReqs = requests.thaw()!
+    let request = thawedReqs.where {
+      $0.requestedId.contains(bundleId) && $0.requestersEmail.contains(userEmailAddress)
+    }
+    let reqToUpdate = request[0]
+    if reqToUpdate.requestersEmail.count > 1 {
+      try! realm.write {
+        if let index = reqToUpdate.requestersEmail.firstIndex(of: userEmailAddress) {
+          reqToUpdate.requestersEmail.remove(at: index)
+        }
+      }
+    } else {
+      activeReqs = []
+      try! realm.write {
+        $requests.remove(reqToUpdate)
+      }
+    }
+    await retrieveActiveReqs()
+  }
+
+  // MARK: - Search Button and Function
   func searchApp() {
+    lookedup = nil
     if inputID.isEmpty {
       withAnimation(.default) {
         self.appAttempts += 1
         searchSuccess = false
       }
     } else {
-      doGetLookup(inputID)
+      doGetLookup(input: inputID)
       withAnimation {
         searchSuccess = true
       }
     }
   }
+
   // MARK: - Get Lookup Function
-  func doGetLookup(_ input: String) {
+  func doGetLookup(input: String) {
     Task {
       var id: String
       idOnSource = false
@@ -223,8 +299,9 @@ struct LookupView: View {
       }
     }
   }
+
   // MARK: - Add Stat Function
-  func doAddStat(_ id: String) {
+  func doAddStat(id: String) async {
     let realm = stats.realm!.thaw()
     let thawedStats = stats.thaw()!
     let stat = thawedStats.where {
@@ -254,8 +331,9 @@ struct LookupView: View {
       }
     }
   }
+
   // MARK: - Send Request Function
-  func doRequest(_ id: String) {
+  func doRequest(id: String) async {
     Task {
       serviceIsOn = await isServiceRunning()
     }
@@ -283,5 +361,10 @@ struct LookupView: View {
         deResult = "Your request has been added to queue"
       }
     }
+    Task {
+      activeReqs = []
+      await retrieveActiveReqs()
+    }
   }
+
 }

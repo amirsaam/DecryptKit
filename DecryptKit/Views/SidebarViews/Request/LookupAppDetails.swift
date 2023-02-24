@@ -9,10 +9,27 @@ import SwiftUI
 import Neumorphic
 import CachedAsyncImage
 
-struct LookupAppDetails: View {
+struct RequestsAppDetails: View {
+  @State var bundleId: String
+  @State private var lookedup: ITunesResponse? = nil
+  var body: some View {
+    AppDetails(lookedup: $lookedup, isMinimal: true)
+      .task {
+        lookedup = await getITunesData(bundleId)
+      }
+  }
+}
 
+struct SearchAppDetails: View {
   @Binding var lookedup: ITunesResponse?
+  var body: some View {
+    AppDetails(lookedup: $lookedup, isMinimal: false)
+  }
+}
 
+struct AppDetails: View {
+  @Binding var lookedup: ITunesResponse?
+  @State var isMinimal: Bool
   var body: some View {
     VStack(alignment: .leading, spacing: 15) {
       HStack(spacing: 10) {
@@ -39,21 +56,22 @@ struct LookupAppDetails: View {
             .font(.caption)
         }
       }
-      HStack(spacing: 5) {
-        Text(lookedup?.results[0].formattedPrice ?? "")
-          .font(.caption)
-        Divider()
-          .frame(height: 10)
-        Text("vr\(lookedup?.results[0].version ?? "")")
-        Divider()
-          .frame(height: 10)
-        Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0, countStyle: .file)) or less")
-        Divider()
-          .frame(height: 10)
-        Text(lookedup?.results[0].primaryGenreName ?? "")
+      if !isMinimal {
+        HStack(spacing: 5) {
+          Text(lookedup?.results[0].formattedPrice ?? "")
+            .font(.caption)
+          Divider()
+            .frame(height: 10)
+          Text("vr\(lookedup?.results[0].version ?? "")")
+          Divider()
+            .frame(height: 10)
+          Text("\(ByteCountFormatter.string(fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0, countStyle: .file)) or less")
+          Divider()
+            .frame(height: 10)
+          Text(lookedup?.results[0].primaryGenreName ?? "")
+        }
+        .font(.caption)
       }
-      .font(.caption)
     }
-    .padding(.top)
   }
 }
