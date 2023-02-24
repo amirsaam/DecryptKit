@@ -16,7 +16,7 @@ struct RepoView: View {
 
   @State private var freeSourceData = SourceVM.shared.freeSourceData
   @State private var vipSourceData = SourceVM.shared.vipSourceData
-  @State private var selectedSource: SourceTabs = .free
+  @State private var selectedSource: SourceTabs = UserVM.shared.userTier > 1 ? .vip : .free
   @State private var progressAmount = 0.0
 
   // MARK: - View Body
@@ -51,7 +51,7 @@ struct RepoView: View {
                     progressAmount = 0
                     (freeSourceData, vipSourceData) = (nil, nil)
                     URLCache.shared.removeAllCachedResponses()
-                    try? await Task.sleep(nanoseconds: 5000000000)
+                    try? await Task.sleep(nanoseconds: 3000000000)
                     await resolveSourceData()
                     freeSourceData = SourceVM.shared.freeSourceData
                     vipSourceData = SourceVM.shared.vipSourceData
