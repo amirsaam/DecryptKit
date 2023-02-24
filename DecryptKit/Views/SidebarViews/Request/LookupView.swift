@@ -26,16 +26,17 @@ struct LookupView: View {
   @State private var requestProgress = false
   @State private var requestSubmitted = false
   @State private var serviceIsOn = false
-  @State private var deResult: String?
+  @State private var deResult = ""
 
-  @State private var searchSuccess: Bool = false
-  @State private var inputID: String = ""
-  @State private var appAttempts: Int = 0
+  @State private var searchSuccess = false
+  @State private var inputID = ""
+  @State private var appAttempts = 0
 
   @State private var lookedup: ITunesResponse?
-  @State private var idIsValid: Bool = false
-  @State private var idIsPaid: Bool = false
-  @State private var idOnSource: Bool = false
+  @State private var idIsValid = false
+  @State private var idIsPaid = false
+  @State private var idOnSource = false
+  @State private var reqLimit = UserVM.shared.userTier == 0 ? 1 : UserVM.shared.userTier < 3 ? 3 : 5
 
   // MARK: - View Body
   var body: some View {
@@ -94,6 +95,8 @@ struct LookupView: View {
                       ErrorMessage(errorLog: "We do not offer decryption for paid apps.")
                     } else if idOnSource {
                       ErrorMessage(errorLog: "It's already present within the public source.")
+                    } else if activeReqs.count >= reqLimit {
+                      ErrorMessage(errorLog: "You have reached your active request limit.")
                     }
                   } else {
                     ErrorMessage(errorLog: "Incorrect App Store Link or ID.")
@@ -113,7 +116,7 @@ struct LookupView: View {
                         .disabled(true)
                       if requestSubmitted {
                         Divider()
-                        Text(deResult ?? "")
+                        Text(deResult)
                         if !serviceIsOn {
                           Label("The process of decryption may be temporarily delayed due to a high volume of demand.",
                                 systemImage: "exclamationmark.triangle.fill")
@@ -176,7 +179,7 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(requestProgress || requestSubmitted)
+                      .disabled(requestProgress || requestSubmitted || activeReqs.count >= reqLimit)
                     }
                     .padding(.top)
                   } else {
