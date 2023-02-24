@@ -51,7 +51,7 @@ struct RepoView: View {
                     progressAmount = 0
                     (freeSourceData, vipSourceData) = (nil, nil)
                     URLCache.shared.removeAllCachedResponses()
-                    try? await Task.sleep(nanoseconds: 3000000000)
+                    try? await Task.sleep(nanoseconds: 4000000000)
                     await resolveSourceData()
                     freeSourceData = SourceVM.shared.freeSourceData
                     vipSourceData = SourceVM.shared.vipSourceData
@@ -321,7 +321,7 @@ struct LoadingSourceView: View {
         .progressViewStyle(.linear)
         .onReceive(timer) { _ in
           if progressAmount < 100 {
-            progressAmount += 3
+            progressAmount += 2.5
           }
         }
       Spacer()
