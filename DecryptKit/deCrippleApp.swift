@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Neumorphic
 import RealmSwift
-import GoogleMobileAds
 import DataCache
 import PatreonAPI
 
@@ -39,10 +38,6 @@ let realmApp = App(id: realmAppConfig.appId, configuration: appConfiguration)
 
 @main
 struct deCrippleApp: SwiftUI.App {
-
-  init() {
-    GADMobileAds.sharedInstance().start(completionHandler: nil)
-  }
 
   @StateObject var errorHandler = ErrorHandler(app: realmApp)
 

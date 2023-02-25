@@ -16,7 +16,7 @@ struct RepoView: View {
 
   @State private var freeSourceData = SourceVM.shared.freeSourceData
   @State private var vipSourceData = SourceVM.shared.vipSourceData
-  @State private var selectedSource: SourceTabs = UserVM.shared.userTier > 1 ? .vip : .free
+  @State private var selectedSource: SourceTabs = .free
   @State private var progressAmount = 0.0
 
   // MARK: - View Body

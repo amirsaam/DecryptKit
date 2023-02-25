@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealmSwift
+import GoogleMobileAds
 import Semaphore
 import PatreonAPI
 
@@ -126,6 +127,9 @@ struct OpenRealmView: View {
           userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
           patreonVM.patronTokensFetched = true
           patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userAccessToken: userVM.userPAT)
+        }
+        if userVM.userTier == 0 {
+          await GADMobileAds.sharedInstance().start()
         }
         withAnimation {
           dataLoaded = true

@@ -87,7 +87,7 @@ struct LookupView: View {
                       .onAppear {
                         if lookedup != nil {
                           Task {
-                            await doAddStat(id: (lookedup?.results[0].bundleId)!)
+                            await doAddStat(bundleId: (lookedup?.results[0].bundleId)!)
                           }
                         }
                       }
@@ -153,7 +153,7 @@ struct LookupView: View {
                           withAnimation {
                             requestProgress = false
                             Task {
-                              await doRequest(id: (lookedup?.results[0].bundleId)!)
+                              await doRequest(bundleId: (lookedup?.results[0].bundleId)!)
                             }
                             requestSubmitted = true
                           }
@@ -245,6 +245,7 @@ struct LookupView: View {
     let request = thawedReqs.where {
       $0.requestedId.contains(bundleId) && $0.requestersEmail.contains(userEmailAddress)
     }
+    activeReqs = []
     let reqToUpdate = request[0]
     if reqToUpdate.requestersEmail.count > 1 {
       try! realm.write {
@@ -253,10 +254,7 @@ struct LookupView: View {
         }
       }
     } else {
-      activeReqs = []
-      try! realm.write {
-        $requests.remove(reqToUpdate)
-      }
+      $requests.remove(reqToUpdate)
     }
     await retrieveActiveReqs()
   }
@@ -304,14 +302,14 @@ struct LookupView: View {
   }
 
   // MARK: - Add Stat Function
-  func doAddStat(id: String) async {
+  func doAddStat(bundleId: String) async {
     let realm = stats.realm!.thaw()
     let thawedStats = stats.thaw()!
     let stat = thawedStats.where {
-      $0.lookedId.contains(id)
+      $0.lookedId.contains(bundleId)
     }
     if stat.isEmpty {
-      debugPrint("Appending stat for \(id) to deStat")
+      debugPrint("Appending stat for \(bundleId) to deStat")
       newStat.lookedId = lookedup?.results[0].bundleId ?? ""
       newStat.lookersEmail.append(userEmailAddress)
       newStat.lookersStat = 1
@@ -320,12 +318,12 @@ struct LookupView: View {
     } else {
       let statToUpdate = stat[0]
       if statToUpdate.lookersEmail.contains(userEmailAddress) {
-        debugPrint("\(userEmailAddress) is already in stat for \(id)")
+        debugPrint("\(userEmailAddress) is already in stat for \(bundleId)")
         try! realm.write {
           statToUpdate.lookStats += 1
         }
       } else {
-        debugPrint("Appending \(userEmailAddress) to stat for \(id)")
+        debugPrint("Appending \(userEmailAddress) to stat for \(bundleId)")
         try! realm.write {
           statToUpdate.lookersEmail.append(userEmailAddress)
           statToUpdate.lookersStat += 1
@@ -336,17 +334,15 @@ struct LookupView: View {
   }
 
   // MARK: - Send Request Function
-  func doRequest(id: String) async {
-    Task {
-      serviceIsOn = await isServiceRunning()
-    }
+  func doRequest(bundleId: String) async {
+    serviceIsOn = await isServiceRunning()
     let realm = requests.realm!.thaw()
     let thawedReqs = requests.thaw()!
     let request = thawedReqs.where {
-      $0.requestedId.contains(id)
+      $0.requestedId.contains(bundleId)
     }
     if request.isEmpty {
-      debugPrint("Appending request for \(id) to deReq")
+      debugPrint("Appending request for \(bundleId) to deReq")
       newReq.requestedId = lookedup?.results[0].bundleId ?? ""
       newReq.requestersEmail.append(userEmailAddress)
       $requests.append(newReq)
@@ -354,20 +350,18 @@ struct LookupView: View {
     } else {
       let reqToUpdate = request[0]
       if reqToUpdate.requestersEmail.contains(userEmailAddress) {
-        debugPrint("\(userEmailAddress) already requested \(id)")
+        debugPrint("\(userEmailAddress) already requested \(bundleId)")
         deResult = "Your request is already in queue"
       } else {
-        debugPrint("Appending \(userEmailAddress) to requests for \(id)")
+        debugPrint("Appending \(userEmailAddress) to requests for \(bundleId)")
         try! realm.write {
           reqToUpdate.requestersEmail.append(userEmailAddress)
         }
         deResult = "Your request has been added to queue"
       }
     }
-    Task {
-      activeReqs = []
-      await retrieveActiveReqs()
-    }
+    activeReqs = []
+    await retrieveActiveReqs()
   }
 
 }
