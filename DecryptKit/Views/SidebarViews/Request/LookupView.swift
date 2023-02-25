@@ -303,7 +303,7 @@ struct LookupView: View {
 
   // MARK: - Add Stat Function
   func doAddStat(bundleId: String) async {
-    var newStat = deStat()
+    let newStat = deStat()
     let realm = stats.realm!.thaw()
     let thawedStats = stats.thaw()!
     let stat = thawedStats.where {
@@ -336,7 +336,7 @@ struct LookupView: View {
 
   // MARK: - Send Request Function
   func doRequest(bundleId: String) async {
-    var newReq = deReq()
+    let newReq = deReq()
     serviceIsOn = await isServiceRunning()
     let realm = requests.realm!.thaw()
     let thawedReqs = requests.thaw()!
