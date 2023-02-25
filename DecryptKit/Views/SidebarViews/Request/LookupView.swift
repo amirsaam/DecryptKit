@@ -15,9 +15,7 @@ struct LookupView: View {
   @Binding var showLookup: Bool
 
   @ObservedResults(deStat.self) private var stats
-  @State private var newStat = deStat()
   @ObservedResults(deReq.self) private var requests
-  @State private var newReq = deReq()
   
   @State private var activeReqs: [deReq] = []
 
@@ -254,7 +252,9 @@ struct LookupView: View {
         }
       }
     } else {
-      $requests.remove(reqToUpdate)
+      try! realm.write {
+        $requests.remove(reqToUpdate)
+      }
     }
     await retrieveActiveReqs()
   }
@@ -303,6 +303,7 @@ struct LookupView: View {
 
   // MARK: - Add Stat Function
   func doAddStat(bundleId: String) async {
+    var newStat = deStat()
     let realm = stats.realm!.thaw()
     let thawedStats = stats.thaw()!
     let stat = thawedStats.where {
@@ -335,6 +336,7 @@ struct LookupView: View {
 
   // MARK: - Send Request Function
   func doRequest(bundleId: String) async {
+    var newReq = deReq()
     serviceIsOn = await isServiceRunning()
     let realm = requests.realm!.thaw()
     let thawedReqs = requests.thaw()!

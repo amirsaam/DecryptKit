@@ -17,7 +17,7 @@ struct RealmAppConfig {
 
 /// Read the Realm.plist file and store the app ID and baseUrl to use elsewhere.
 func loadRealmAppConfig() -> RealmAppConfig {
-  guard let path = Bundle.main.path(forResource: "Realm", ofType: "plist") else {
+  guard let path = Bundle.main.path(forResource: "atlasConfig", ofType: "plist") else {
     // Any errors here indicate that the Realm.plist file has not been formatted properly.
     fatalError("Could not load Realm.plist file!")
   }
