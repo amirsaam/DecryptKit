@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Neumorphic
+import DataCache
 import CachedAsyncImage
 
 struct RequestsAppDetails: View {
@@ -15,7 +16,10 @@ struct RequestsAppDetails: View {
   var body: some View {
     AppDetails(lookedup: $lookedup, isMinimal: true)
       .task {
-        lookedup = await getITunesData(bundleId)
+        if !cache.hasData(forKey: bundleId) {
+          try? cache.write(codable: await getITunesData(bundleId), forKey: bundleId)
+        }
+        lookedup = try? cache.readCodable(forKey: bundleId)
       }
   }
 }
