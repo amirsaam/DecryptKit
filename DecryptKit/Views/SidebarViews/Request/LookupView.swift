@@ -82,11 +82,9 @@ struct LookupView: View {
                 } else {
                   if lookedup != nil && (idIsValid || idOnSource || idIsPaid) {
                     SearchAppDetails(lookedup: $lookedup)
-                      .onAppear {
-                        if lookedup != nil {
-                          Task {
-                            await doAddStat(bundleId: (lookedup?.results[0].bundleId)!)
-                          }
+                      .task(priority: .background) {
+                        if let bundleId = lookedup?.results[0].bundleId {
+                          await doAddStat(bundleId: bundleId)
                         }
                       }
                     if idIsPaid {
@@ -151,7 +149,9 @@ struct LookupView: View {
                           withAnimation {
                             requestProgress = false
                             Task {
-                              await doRequest(bundleId: (lookedup?.results[0].bundleId)!)
+                              if let bundleId = lookedup?.results[0].bundleId {
+                                await doRequest(bundleId: bundleId)
+                              }
                             }
                             requestSubmitted = true
                           }
@@ -362,7 +362,7 @@ struct LookupView: View {
         deResult = "Your request has been added to queue"
       }
     }
-    activeReqs = []
+    activeReqs.removeAll()
     await retrieveActiveReqs()
   }
 

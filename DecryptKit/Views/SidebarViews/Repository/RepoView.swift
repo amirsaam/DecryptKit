@@ -256,7 +256,7 @@ struct VIPSourceList: View {
                        appVersion: app.version)
         .onTapGesture {
           withAnimation {
-            if UserVM.shared.userTier >= 1 {
+            if UserVM.shared.userTier >= 3 {
               selectDeselect(app)
             }
           }
