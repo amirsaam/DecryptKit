@@ -158,6 +158,7 @@ struct FreeSourceList: View {
   @Binding var progressAmount: Double
 
   @State private var isSelected: Set<deCrippleSource> = []
+  @State private var linkCopied = false
 
   var body: some View {
     List {
@@ -190,14 +191,27 @@ struct FreeSourceList: View {
                   Spacer()
                   Button {
                     UIPasteboard.general.string = app.link
+                    withAnimation {
+                      linkCopied = true
+                    }
                   } label: {
                     HStack(spacing: 10) {
-                      Image(systemName: "arrow.down.square.fill")
-                      Text("Click to Copy Download Link to Clipboard")
+                      Image(systemName: linkCopied ? "checkmark.circle.fill" : "doc.on.doc.fill")
+                      Text(linkCopied ? "Download Link Copied to Clipboard" : "Click to Copy Download Link to Clipboard")
                     }
                     .font(.caption)
                   }
                   Spacer()
+                }
+                .onChange(of: linkCopied) { bool in
+                  if bool {
+                    Task {
+                      try? await Task.sleep(nanoseconds: 4000000000)
+                      withAnimation {
+                        linkCopied = false
+                      }
+                    }
+                  }
                 }
               }
           }
@@ -231,6 +245,7 @@ struct VIPSourceList: View {
   @Binding var progressAmount: Double
 
   @State private var isSelected: Set<deCrippleSource> = []
+  @State private var linkCopied = false
 
   var body: some View {
     List {
@@ -275,14 +290,27 @@ struct VIPSourceList: View {
                   Spacer()
                   Button {
                     UIPasteboard.general.string = app.link
+                    withAnimation {
+                      linkCopied = true
+                    }
                   } label: {
                     HStack(spacing: 10) {
-                      Image(systemName: "arrow.down.square.fill")
-                      Text("Click to Copy Download Link to Clipboard")
+                      Image(systemName: linkCopied ? "checkmark.circle.fill" : "doc.on.doc.fill")
+                      Text(linkCopied ? "Download Link Copied to Clipboard" : "Click to Copy Download Link to Clipboard")
                     }
                     .font(.caption)
                   }
                   Spacer()
+                }
+                .onChange(of: linkCopied) { bool in
+                  if bool {
+                    Task {
+                      try? await Task.sleep(nanoseconds: 4000000000)
+                      withAnimation {
+                        linkCopied = false
+                      }
+                    }
+                  }
                 }
               }
           }
