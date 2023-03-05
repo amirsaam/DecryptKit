@@ -234,6 +234,7 @@ struct FreeSourceList: View {
       isSelected.remove(app)
     } else {
       isSelected.removeAll()
+      linkCopied = false
       isSelected.insert(app)
     }
   }
@@ -333,6 +334,7 @@ struct VIPSourceList: View {
       isSelected.remove(app)
     } else {
       isSelected.removeAll()
+      linkCopied = false
       isSelected.insert(app)
     }
   }
