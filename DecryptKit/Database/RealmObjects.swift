@@ -11,10 +11,10 @@ import RealmSwift
 class deReq: Object, ObjectKeyIdentifiable {
   @Persisted(primaryKey: true) var _id: ObjectId
   @Persisted var requestedId: String
-//  @Persisted var requestedVersion: String
+  @Persisted var requestedVersion: String
   @Persisted var requestersEmail: List<String>
-//  @Persisted var requestedIsDecrypted: Bool
-//  @Persisted var requestedDecryptedLink: String
+  @Persisted var requestedIsDecrypted: Bool
+  @Persisted var requestedDecryptedLink: String
 }
 
 class deStat: Object, ObjectKeyIdentifiable {

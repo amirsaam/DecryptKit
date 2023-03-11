@@ -21,10 +21,12 @@ struct LookupView: View {
 
   @State private var freeSourceData = SourceVM.shared.freeSourceData
   @State private var userEmailAddress = UserVM.shared.userEmail
+
   @State private var requestProgress = false
   @State private var requestSubmitted = false
   @State private var serviceIsOn = false
   @State private var deResult = ""
+  @State private var readyLink = ""
 
   @State private var searchSuccess = false
   @State private var inputID = ""
@@ -149,8 +151,8 @@ struct LookupView: View {
                           withAnimation {
                             requestProgress = false
                             Task {
-                              if let bundleId = lookedup?.results[0].bundleId {
-                                await doRequest(bundleId: bundleId)
+                              if let data = lookedup?.results[0] {
+                                await doRequest(bundleId: data.bundleId, version: data.version)
                               }
                             }
                             requestSubmitted = true
@@ -227,7 +229,7 @@ struct LookupView: View {
   func retrieveActiveReqs() async {
     let thawedReqs = requests.thaw()!
     let requests = thawedReqs.where {
-      $0.requestersEmail.contains(userEmailAddress)
+      $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
     }
     requests.forEach { req in
       withAnimation {
@@ -311,7 +313,7 @@ struct LookupView: View {
     }
     if stat.isEmpty {
       debugPrint("Appending stat for \(bundleId) to deStat")
-      newStat.lookedId = lookedup?.results[0].bundleId ?? ""
+      newStat.lookedId = bundleId
       newStat.lookersEmail.append(userEmailAddress)
       newStat.lookersStat = 1
       newStat.lookStats = 1
@@ -335,7 +337,7 @@ struct LookupView: View {
   }
 
   // MARK: - Send Request Function
-  func doRequest(bundleId: String) async {
+  func doRequest(bundleId: String, version: String) async {
     let newReq = deReq()
     serviceIsOn = await isServiceRunning()
     let realm = requests.realm!.thaw()
@@ -345,21 +347,28 @@ struct LookupView: View {
     }
     if request.isEmpty {
       debugPrint("Appending request for \(bundleId) to deReq")
-      newReq.requestedId = lookedup?.results[0].bundleId ?? ""
+      newReq.requestedId = bundleId
+      newReq.requestedVersion = version
       newReq.requestersEmail.append(userEmailAddress)
+      newReq.requestedIsDecrypted = false
+      newReq.requestedDecryptedLink = ""
       $requests.append(newReq)
       deResult = "Your request has been added to queue"
     } else {
       let reqToUpdate = request[0]
-      if reqToUpdate.requestersEmail.contains(userEmailAddress) {
-        debugPrint("\(userEmailAddress) already requested \(bundleId)")
-        deResult = "Your request is already in queue"
+      if reqToUpdate.requestedIsDecrypted {
+        
       } else {
-        debugPrint("Appending \(userEmailAddress) to requests for \(bundleId)")
-        try! realm.write {
-          reqToUpdate.requestersEmail.append(userEmailAddress)
+        if reqToUpdate.requestersEmail.contains(userEmailAddress) {
+          debugPrint("\(userEmailAddress) already requested \(bundleId)")
+          deResult = "Your request is already in queue"
+        } else {
+          debugPrint("Appending \(userEmailAddress) to requests for \(bundleId)")
+          try! realm.write {
+            reqToUpdate.requestersEmail.append(userEmailAddress)
+          }
+          deResult = "Your request has been added to queue"
         }
-        deResult = "Your request has been added to queue"
       }
     }
     activeReqs.removeAll()
