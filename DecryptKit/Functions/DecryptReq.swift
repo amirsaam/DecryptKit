@@ -7,9 +7,11 @@
 
 import Foundation
 
-struct deCrippleResult: Codable {
-  var result: Int
-  var proximity: Int
+enum deResult: String, CaseIterable {
+  case null = ""
+  case beenAdded = "Your request has been added to queue"
+  case inQueue = "Your request is already in queue"
+  case isReady = "Your request is ready to download"
 }
 
 func isServiceRunning() async -> Bool {
@@ -25,6 +27,7 @@ func isServiceRunning() async -> Bool {
   }
 }
 
+/*
 func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
 
   var urlComponents = URLComponents()
@@ -50,3 +53,4 @@ func reqDecrypt(_ id: String, _ email: String) async -> deCrippleResult? {
   }
   return nil
 }
+*/

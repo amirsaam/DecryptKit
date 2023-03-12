@@ -25,8 +25,9 @@ struct LookupView: View {
   @State private var requestProgress = false
   @State private var requestSubmitted = false
   @State private var serviceIsOn = false
-  @State private var deResult = ""
+  @State private var resultMessage: deResult = .null
   @State private var readyLink = ""
+  @State private var linkCopied = false
 
   @State private var searchSuccess = false
   @State private var inputID = ""
@@ -93,7 +94,7 @@ struct LookupView: View {
                       ErrorMessage(errorLog: "We do not offer decryption for paid apps.")
                     } else if idOnSource {
                       ErrorMessage(errorLog: "It's already present within the public source.")
-                    } else if activeReqs.count >= reqLimit {
+                    } else if activeReqs.count >= reqLimit && resultMessage != .isReady {
                       ErrorMessage(errorLog: "You have reached your active request limit.")
                     }
                   } else {
@@ -114,13 +115,46 @@ struct LookupView: View {
                         .disabled(true)
                       if requestSubmitted {
                         Divider()
-                        Text(deResult)
-                        if !serviceIsOn {
+                        Text(resultMessage.rawValue)
+                        if !serviceIsOn && resultMessage != .isReady {
                           Label("The process of decryption may be temporarily delayed due to a high volume of demand.",
                                 systemImage: "exclamationmark.triangle.fill")
                           .font(.caption)
                           .foregroundColor(.red)
                           .padding(.top, 1)
+                        }
+                        if resultMessage == .isReady {
+                          HStack {
+                            Button {
+                              UIPasteboard.general.string = readyLink
+                              withAnimation {
+                                linkCopied = true
+                              }
+                            } label: {
+                              HStack(spacing: 10) {
+                                Image(systemName: linkCopied ? "checkmark.circle.fill" : "doc.on.doc.fill")
+                                Text(linkCopied ? "Download Link Copied to Clipboard" : "Click to Copy Download Link to Clipboard")
+                              }
+                              .font(.footnote)
+                              .frame(minWidth: geo.size.width * (7.4/10))
+                            }
+                            .softButtonStyle(
+                              RoundedRectangle(cornerRadius: 10),
+                              pressedEffect: .flat
+                            )
+                            .disabled(linkCopied)
+                          }
+                          .padding(.top)
+                          .onChange(of: linkCopied) { bool in
+                            if bool {
+                              Task {
+                                try? await Task.sleep(nanoseconds: 4000000000)
+                                withAnimation {
+                                  linkCopied = false
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -353,21 +387,28 @@ struct LookupView: View {
       newReq.requestedIsDecrypted = false
       newReq.requestedDecryptedLink = ""
       $requests.append(newReq)
-      deResult = "Your request has been added to queue"
+      resultMessage = .beenAdded
     } else {
       let reqToUpdate = request[0]
       if reqToUpdate.requestedIsDecrypted {
-        
+        if !reqToUpdate.requestersEmail.contains(userEmailAddress) {
+          debugPrint("Appending \(userEmailAddress) to requests for \(bundleId)")
+          try! realm.write {
+            reqToUpdate.requestersEmail.append(userEmailAddress)
+          }
+        }
+        readyLink = reqToUpdate.requestedDecryptedLink
+        resultMessage = .isReady
       } else {
         if reqToUpdate.requestersEmail.contains(userEmailAddress) {
           debugPrint("\(userEmailAddress) already requested \(bundleId)")
-          deResult = "Your request is already in queue"
+          resultMessage = .inQueue
         } else {
           debugPrint("Appending \(userEmailAddress) to requests for \(bundleId)")
           try! realm.write {
             reqToUpdate.requestersEmail.append(userEmailAddress)
           }
-          deResult = "Your request has been added to queue"
+          resultMessage = .beenAdded
         }
       }
     }
