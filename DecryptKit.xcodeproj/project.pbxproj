@@ -27,7 +27,6 @@
 		685B3EE3293292130010E24D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C61B292FB586008FDA73 /* ContentView.swift */; };
 		685D098B2942121D00AFD730 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098A2942121D00AFD730 /* MainView.swift */; };
 		685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098D29422D0A00AFD730 /* AccountingView.swift */; };
-		68752C6B2971BFAF00C39483 /* EncryptKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68752C6A2971BFAF00C39483 /* EncryptKit.swift */; };
 		68A33AEC2940F4E30024DFFE /* atlasConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68A33AEB2940F4E30024DFFE /* atlasConfig.plist */; };
 		68A33AF22940FDA50024DFFE /* SourceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF12940FDA50024DFFE /* SourceData.swift */; };
 		68A33AF52941045B0024DFFE /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A33AF42941045B0024DFFE /* RealmConfig.swift */; };
@@ -59,7 +58,6 @@
 		6851468E2973254B00FBDC4A /* PatreonCampaignDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonCampaignDetails.swift; sourceTree = "<group>"; };
 		685D098A2942121D00AFD730 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		685D098D29422D0A00AFD730 /* AccountingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountingView.swift; sourceTree = "<group>"; };
-		68752C6A2971BFAF00C39483 /* EncryptKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptKit.swift; sourceTree = "<group>"; };
 		68A33AEB2940F4E30024DFFE /* atlasConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = atlasConfig.plist; sourceTree = "<group>"; };
 		68A33AF12940FDA50024DFFE /* SourceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceData.swift; sourceTree = "<group>"; };
 		68A33AF42941045B0024DFFE /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 		68A33AF32940FE3E0024DFFE /* Functions */ = {
 			isa = PBXGroup;
 			children = (
-				68752C6A2971BFAF00C39483 /* EncryptKit.swift */,
 				6843C632292FDA93008FDA73 /* DecryptReq.swift */,
 				6843C62A292FB69F008FDA73 /* iTunesLookup.swift */,
 				68A33AF12940FDA50024DFFE /* SourceData.swift */,
@@ -325,7 +322,6 @@
 				68DE97F32938CF4B00A565B8 /* Components.swift in Sources */,
 				68100188293A925A00418B40 /* CustomLookups.swift in Sources */,
 				685D098B2942121D00AFD730 /* MainView.swift in Sources */,
-				68752C6B2971BFAF00C39483 /* EncryptKit.swift in Sources */,
 				685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */,
 				684EB84E2933A22500F3C57A /* LookupAppDetails.swift in Sources */,
 			);
