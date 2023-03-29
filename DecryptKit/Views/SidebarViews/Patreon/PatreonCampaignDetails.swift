@@ -23,6 +23,7 @@ struct PatreonCampaignDetails: View {
   @State private var newUser = deUser()
 
   @State private var userIsPatron = false
+  @State private var userTierId = ""
   @State private var presentSubscribeAlert = false
 
   var body: some View {
@@ -78,7 +79,7 @@ struct PatreonCampaignDetails: View {
                 presentSubscribeAlert = true
               } label: {
                 Group {
-                  if userIsPatron {
+                  if userIsPatron && userTierId == tier.id {
                     Label("Subscribed", systemImage: "signature")
                   } else {
                     Label(formattedPrice, systemImage: "arrow.up.right.square")
@@ -130,9 +131,16 @@ struct PatreonCampaignDetails: View {
           .task {
             try? await Task.sleep(nanoseconds: 5000000000)
             if !patronMembership.isEmpty {
-              userIsPatron = patronMembership.contains { data in
-                data.relationships.currently_entitled_tiers.data.contains { entitledTier in
-                  entitledTier.id == tier.id
+              if !userIsPatron {
+                userIsPatron = patronMembership.contains { data in
+                  data.relationships.currently_entitled_tiers.data.contains { entitledTier in
+                    if entitledTier.id == tier.id {
+                      userTierId = tier.id
+                      return true
+                    } else {
+                      return false
+                    }
+                  }
                 }
               }
             }

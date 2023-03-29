@@ -14,7 +14,7 @@ struct PatreonClient {
   
   let clientID = "MKzRZxagIOea-ceFt_54sjf9yyA2TzTHln9LiUoybU8ZRg7ljS4KE9HrBPa9i6aA"
   let clientSecret = "4kTPw037oTE6D9zGHDwBgxqljtd70UkLBXAA25lIk83ZRbrlQjNr3sN8-TFa8dI6"
-  let creatorAccessToken = "7MUFaJUB6SPIPdeqO7UANzcK0BUzM44b_XzJIccmoPw"
+  let creatorAccessToken = "f28mTaS7tddZRu3wNHDEJjbqemg_2gS2XLbgB8RoOxo"
   let creatorRefreshToken = "6YQIsyM1SYgD0NQfV_sPXi15VnaqDqvdfssX1tKacJs"
   let redirectURI = "https://decryptkit.xyz/patreon/6NvbE37T33cKTmpu1DkAtvuEK4XdWzF"
   let campaignID = "9760149"
