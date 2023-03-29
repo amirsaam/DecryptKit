@@ -22,8 +22,7 @@ struct PatreonCampaignDetails: View {
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
-  @State private var userIsPatron = false
-  @State private var userTierId = ""
+  @State private var patreonVM = PatreonVM.shared
   @State private var presentSubscribeAlert = false
 
   var body: some View {
@@ -79,7 +78,7 @@ struct PatreonCampaignDetails: View {
                 presentSubscribeAlert = true
               } label: {
                 Group {
-                  if userIsPatron && userTierId == tier.id {
+                  if patreonVM.userIsPatreon && patreonVM.userSubscribedTierId == tier.id {
                     Label("Subscribed", systemImage: "signature")
                   } else {
                     Label(formattedPrice, systemImage: "arrow.up.right.square")
@@ -96,7 +95,7 @@ struct PatreonCampaignDetails: View {
                 lightShadowColor: .redNeuLS,
                 pressedEffect: .flat
               )
-              .disabled(userIsPatron)
+              .disabled(patreonVM.userIsPatreon)
               .alert("Kindly Take Heed", isPresented: $presentSubscribeAlert) {
                 Button("Open Patreon", role: .none) {
                   if let url = URL(string: "https://www.patreon.com" + tier.attributes.url) {
@@ -131,11 +130,11 @@ struct PatreonCampaignDetails: View {
           .task {
             try? await Task.sleep(nanoseconds: 5000000000)
             if !patronMembership.isEmpty {
-              if !userIsPatron {
-                userIsPatron = patronMembership.contains { data in
+              if !patreonVM.userIsPatreon {
+                patreonVM.userIsPatreon = patronMembership.contains { data in
                   data.relationships.currently_entitled_tiers.data.contains { entitledTier in
                     if entitledTier.id == tier.id {
-                      userTierId = tier.id
+                      patreonVM.userSubscribedTierId = tier.id
                       return true
                     } else {
                       return false
@@ -144,14 +143,14 @@ struct PatreonCampaignDetails: View {
                 }
               }
             }
-            if userIsPatron {
+            if patreonVM.userIsPatreon && patreonVM.userSubscribedTierId == tier.id {
               let userTier = (formattedPrice == "$2.99" ? 1 : formattedPrice == "$4.99" ? 2 : 3)
               await handleSubscribedPatron(tier: userTier)
             }
           }
         }
       }
-      if !userIsPatron {
+      if !patreonVM.userIsPatreon {
         Text("You are using DecryptKit's FREE services.")
           .font(.caption.italic())
           .padding(.top)

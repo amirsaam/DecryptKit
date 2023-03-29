@@ -70,6 +70,8 @@ class PatreonVM: ObservableObject {
       }
     }
   }
+  @Published var userIsPatreon = false
+  @Published var userSubscribedTierId = ""
   
   func extractUserMembership(from identity: [UserIdentityIncludedAny]) -> [UserIdentityIncludedMembership] {
     var decodedArray = [UserIdentityIncludedMembership]()
