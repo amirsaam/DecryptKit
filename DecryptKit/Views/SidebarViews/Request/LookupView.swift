@@ -384,6 +384,7 @@ struct LookupView: View {
       newReq.requestedId = bundleId
       newReq.requestedVersion = version
       newReq.requestersEmail.append(userEmailAddress)
+      newReq.requestedDate = Date()
       newReq.requestedIsDecrypted = false
       newReq.requestedDecryptedLink = ""
       $requests.append(newReq)
