@@ -40,7 +40,7 @@ struct MainView: View {
                 SignOutButton()
                   .padding(.top, 1)
               }
-              VStack(alignment: .leading, spacing: geo.size.width * (0.35/10)) {
+              VStack(alignment: .leading, spacing: geo.size.width * (0.4/10)) {
                 Text("The Decrypted IPAs, made easy!")
                   .fontWeight(.heavy)
                   .font(.title.monospaced())
@@ -53,7 +53,7 @@ struct MainView: View {
                       .fontWeight(.medium)
                   }
                   .font(.subheadline)
-                  HStack(alignment: .center, spacing: 25.0) {
+                  HStack(alignment: .center) {
                     Button {
                       if let url = playcoverURL {
                         if UIApplication.shared.canOpenURL(url) {
@@ -83,6 +83,7 @@ struct MainView: View {
                     } message: {
                       Text("It is a requirement to have PlayCover installed for the utilization of the DecryptKit IPA Source.")
                     }
+                    Spacer()
                     Button {
                       withAnimation(.spring()) {
                         (showLookup, showPatreon) = (false, false)
@@ -96,6 +97,7 @@ struct MainView: View {
                       pressedEffect: .flat
                     )
                     .disabled(showRepo)
+                    Spacer()
                     Button {
                       withAnimation(.spring()) {
                         (showRepo, showPatreon) = (false, false)
@@ -112,26 +114,22 @@ struct MainView: View {
                   }
                   .padding(.top)
                 }
-                VStack(alignment: .leading, spacing: 5.0) {
-                  HStack {
-                    Text("If you wish help this repo on maintain costs")
-                      .font(.footnote)
-                    Button {
-                      withAnimation(.spring()) {
-                        (showRepo, showLookup) = (false, false)
-                        showPatreon.toggle()
-                      }
-                    } label: {
-                      Label("Patreon", systemImage: "giftcard.fill")
-                        .font(.caption)
-                        .foregroundColor(.red)
+                HStack(spacing: 20.0) {
+                  Text("Do you know we have Premium Memberships?")
+                    .font(.headline)
+                  Button {
+                    withAnimation(.spring()) {
+                      (showRepo, showLookup) = (false, false)
+                      showPatreon.toggle()
                     }
-                    .disabled(showPatreon)
-                    Text("is the only option")
-                      .font(.footnote)
+                  } label: {
+                    Label("Check our Patreon", systemImage: "giftcard.fill")
+                      .font(.headline)
+                      .foregroundColor(.red)
                   }
-                  Text("Be aware that our Patrons will gain access to our premium membership services!")
-                    .font(.caption)
+                  .disabled(showPatreon)
+                  .buttonStyle(.plain)
+                  .softOuterShadow()
                 }
               }
               .foregroundColor(secondaryColor)
