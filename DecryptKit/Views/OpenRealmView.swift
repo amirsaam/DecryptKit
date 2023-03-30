@@ -70,7 +70,9 @@ struct OpenRealmView: View {
         debugPrint("Failed to refresh custom data: \(error.localizedDescription)")
       case .success(let customData):
         if customData["userId"] == nil {
-          userVM.userUID = UIDevice.current.identifierForVendor?.uuidString ?? "UIDPlaceholder"
+          Task { @MainActor in
+            userVM.userUID = UIDevice.current.identifierForVendor?.uuidString ?? "UIDPlaceholder"
+          }
           debugPrint("Appending new custom data to Realm")
           Task { @MainActor in
             let email = defaults.string(forKey: "Email") ?? ""
@@ -86,12 +88,14 @@ struct OpenRealmView: View {
           }
         } else {
           debugPrint("Succesfully retrieved custom data from Realm")
-          userVM.userUID = customData["userUID"] as! String
-          userVM.userIsBanned = customData["userIsBanned"] as! Bool
-          userVM.userEmail = customData["userEmail"] as! String
-          userVM.userTier = customData["userTier"] as! Int
-          userVM.userPAT = customData["userPAT"] as! String
-          userVM.userPRT = customData["userPRT"] as! String
+          Task { @MainActor in
+            userVM.userUID = customData["userUID"] as! String
+            userVM.userIsBanned = customData["userIsBanned"] as! Bool
+            userVM.userEmail = customData["userEmail"] as! String
+            userVM.userTier = customData["userTier"] as! Int
+            userVM.userPAT = customData["userPAT"] as! String
+            userVM.userPRT = customData["userPRT"] as! String
+          }
           debugPrint(customData)
         }
       }
