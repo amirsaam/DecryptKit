@@ -55,7 +55,7 @@ struct MainView: View {
                   .font(.subheadline)
                   HStack(alignment: .center) {
                     Button {
-                      if let url = playcoverURL {
+                      if let url = playcoverPublicURL {
                         if UIApplication.shared.canOpenURL(url) {
                           UIApplication.shared.open(url)
                         } else {

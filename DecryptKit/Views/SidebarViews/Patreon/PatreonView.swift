@@ -23,6 +23,7 @@ struct PatreonView: View {
   @ObservedResults(deUser.self) private var users
   @State private var newUser = deUser()
 
+  @State private var noPlayCover = false
   @State private var presentPatreonUnlink = false
 
   var body: some View {
@@ -31,7 +32,7 @@ struct PatreonView: View {
         if showPatreon {
           SidebarBackground()
             .overlay {
-              VStack(alignment: .leading, spacing: 25.0) {
+              VStack(alignment: .leading, spacing: 20) {
                 Text("Join our Patreon for access to premium services!")
                   .font(.headline)
                 if patreonVM.patreonCampaign == nil {
@@ -47,6 +48,45 @@ struct PatreonView: View {
                                          patreonTiers: $patreonVM.campaignTiers,
                                          patreonBenefits: $patreonVM.campaignBenefits,
                                          patronMembership: $patreonVM.patronMembership)
+                }
+                if !patreonVM.userIsPatreon && userVM.userTier < 4 {
+                  Text("You are using DecryptKit's FREE services.")
+                    .font(.caption.italic())
+                    .padding(.top)
+                } else if userVM.userTier > 1 {
+                  Button {
+                    if let url = playcoverVIPURL {
+                      if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                      } else {
+                        noPlayCover = true
+                      }
+                    }
+                  } label: {
+                    Label("Add VIP Source to PlayCover", systemImage: "airplane.departure")
+                      .font(.caption2.bold())
+                      .frame(maxWidth: .infinity)
+                  }
+                  .softButtonStyle(
+                    RoundedRectangle(cornerRadius: 7.5),
+                    padding: 10,
+                    mainColor: .red,
+                    textColor: .white,
+                    darkShadowColor: .redNeuDS,
+                    lightShadowColor: .redNeuLS,
+                    pressedEffect: .flat
+                  )
+                  .padding(.top)
+                  .alert("PlayCover is not Installed!", isPresented: $noPlayCover) {
+                    Button("Install PlayCover", role: .none) {
+                      if let url = URL(string: "https://github.com/PlayCover/PlayCover/releases") {
+                        UIApplication.shared.open(url)
+                      }
+                    }
+                    Button("Cancel", role: .cancel) { return }
+                  } message: {
+                    Text("It is a requirement to have PlayCover installed for the utilization of the DecryptKit IPA Source.")
+                  }
                 }
                 Button {
                   if userVM.userPAT.isEmpty {
@@ -74,7 +114,6 @@ struct PatreonView: View {
                   padding: 10,
                   pressedEffect: .flat
                 )
-                .padding(.top)
                 .alert("Are you sure?", isPresented: $presentPatreonUnlink) {
                   Button("Yes, Unlink!", role: .none) {
                     Task {

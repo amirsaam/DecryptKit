@@ -150,11 +150,6 @@ struct PatreonCampaignDetails: View {
           }
         }
       }
-      if !patreonVM.userIsPatreon {
-        Text("You are using DecryptKit's FREE services.")
-          .font(.caption.italic())
-          .padding(.top)
-      }
     }
   }
   
