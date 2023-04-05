@@ -137,7 +137,8 @@ struct MainView: View {
               if showLookup {
                 LookupView(showLookup: $showLookup)
               } else if showRepo {
-                RepoView(showRepo: $showRepo)
+                RepoView(showRepo: $showRepo,
+                         showPatreon: $showPatreon)
               } else if showPatreon {
                 PatreonView(user: user,
                             isDeeplink: $isDeeplink,

@@ -12,6 +12,7 @@ import Neumorphic
 struct RepoView: View {
 
   @Binding var showRepo: Bool
+  @Binding var showPatreon: Bool
   @Namespace var animation
 
   @State private var freeSourceData = SourceVM.shared.freeSourceData
@@ -113,7 +114,9 @@ struct RepoView: View {
                                progressAmount: $progressAmount)
                 .padding(.top)
                 .tag(SourceTabs.free)
-                VIPSourceList(vipSourceData: $vipSourceData,
+                VIPSourceList(showRepo: $showRepo,
+                              showPatreon: $showPatreon,
+                              vipSourceData: $vipSourceData,
                               progressAmount: $progressAmount)
                 .padding(.top)
                 .tag(SourceTabs.vip)
@@ -242,6 +245,8 @@ struct FreeSourceList: View {
 
 // MARK: - VIP Source ListView
 struct VIPSourceList: View {
+  @Binding var showRepo: Bool
+  @Binding var showPatreon: Bool
   @Binding var vipSourceData: [deCrippleSource]?
   @Binding var progressAmount: Double
 
@@ -254,17 +259,29 @@ struct VIPSourceList: View {
         LoadingSourceView(progressAmount: $progressAmount)
           .listRowBackground(mainColor)
       } else {
-        if UserVM.shared.userTier < 2 {
-          Label("Subscribe to Partron to use VIP source!", systemImage: "exclamationmark.triangle.fill")
-            .font(.subheadline)
-            .foregroundColor(.red)
-            .listRowBackground(mainColor)
-        } else {
-          Label("VIP source is available to use for you!", systemImage: "checkmark.diamond.fill")
-            .font(.subheadline)
-            .foregroundColor(.green)
-            .listRowBackground(mainColor)
+        HStack {
+          Text(UserVM.shared.userTier < 2
+                  ? "Subscribe to Partron to use VIP source!"
+                  : "VIP source is available to use for you!")
+          Spacer()
+          Button {
+            withAnimation(.spring()) {
+              (showRepo, showPatreon) = (false, true)
+            }
+          } label: {
+            Image(systemName: "arrow.right")
+          }
+          .softButtonStyle(
+            Circle(),
+            padding: 8,
+            pressedEffect: .flat
+          )
+          .disabled(UserVM.shared.userTier < 2)
+          .padding(.trailing)
         }
+        .font(.subheadline)
+        .padding(.vertical, 5)
+        .listRowBackground(mainColor)
       }
       ForEach(vipSourceData ?? [], id: \.bundleID) { app in
         RepoAppDetails(appBundleID: app.bundleID,

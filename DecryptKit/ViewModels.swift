@@ -24,29 +24,29 @@ struct PatreonClient {
 class UserVM: ObservableObject {
   public static let shared = UserVM()
 
-  @Published var userId: String = ""
-  @Published var userUID: String = ""
-  @Published var userIsBanned: Bool = false
-  @Published var userEmail: String = ""
-  @Published var userTier: Int = 0
-  @Published var userPAT: String = ""
-  @Published var userPRT: String = ""
+  @Published var userId = ""
+  @Published var userUID = ""
+  @Published var userIsBanned = false
+  @Published var userEmail = ""
+  @Published var userTier = 0
+  @Published var userPAT = ""
+  @Published var userPRT = ""
 }
 
 // MARK: - Source's Data VM
 class SourceVM: ObservableObject {
   public static let shared = SourceVM()
   
-  @Published var freeSourceData: [deCrippleSource]? = nil
-  @Published var vipSourceData: [deCrippleSource]? = nil
+  @Published var freeSourceData: [deCrippleSource]?
+  @Published var vipSourceData: [deCrippleSource]?
 }
 
 // MARK: - Patreon's Data VM
 class PatreonVM: ObservableObject {
   public static let shared = PatreonVM()
   
-  @Published var patronTokensFetched: Bool = false
-  @Published var patreonOAuth: PatronOAuth? = nil
+  @Published var patronTokensFetched = false
+  @Published var patreonOAuth: PatronOAuth?
   @Published var patronMembership: [UserIdentityIncludedMembership] = []
   @Published var patronIdentity: PatreonUserIdentity? {
     didSet {
