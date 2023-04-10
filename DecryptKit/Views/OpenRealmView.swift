@@ -78,6 +78,10 @@ struct OpenRealmView: View {
         }
         .modifier(NoPlayCoverAlert(noPlayCover: $noPlayCover))
         .task(priority: .high) {
+          await updaterVM.checkUpstream()
+          if !updaterVM.appIsUpToDate {
+            showUpdateAlert = true
+          }
           await doCheckUser()
         }
       case .progress(let progress):
