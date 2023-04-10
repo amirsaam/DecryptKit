@@ -128,21 +128,6 @@ struct PatreonCampaignDetails: View {
           }
           .padding(.top)
           .task {
-            try? await Task.sleep(nanoseconds: 5000000000)
-            if !patronMembership.isEmpty {
-              if !patreonVM.userIsPatreon {
-                patreonVM.userIsPatreon = patronMembership.contains { data in
-                  data.relationships.currently_entitled_tiers.data.contains { entitledTier in
-                    if entitledTier.id == tier.id {
-                      patreonVM.userSubscribedTierId = tier.id
-                      return true
-                    } else {
-                      return false
-                    }
-                  }
-                }
-              }
-            }
             if patreonVM.userIsPatreon && patreonVM.userSubscribedTierId == tier.id {
               let userTier = (formattedPrice == "$2.99" ? 1 : formattedPrice == "$4.99" ? 2 : 3)
               await handleSubscribedPatron(tier: userTier)

@@ -40,10 +40,10 @@ struct MainView: View {
                 SignOutButton()
                   .padding(.top, 1)
               }
-              VStack(alignment: .leading, spacing: geo.size.width * (0.4/10)) {
-                Text("The Decrypted IPAs, made easy!")
+              VStack(alignment: .leading, spacing: geo.size.width * (0.35/10)) {
+                Text("Decrypted IPAs, made easy!")
                   .fontWeight(.heavy)
-                  .font(.title.monospaced())
+                  .font(.largeTitle.monospaced())
                 VStack(alignment: .leading, spacing: geo.size.width * (0.25/10)) {
                   Text("DecryptKit is a gratis IPA Repository and Decrypting Service, crafted for the convenience of PlayCover users and the Mac Gaming Community.")
                     .font(.headline)
@@ -73,16 +73,7 @@ struct MainView: View {
                       lightShadowColor: .redNeuLS,
                       pressedEffect: .flat
                     )
-                    .alert("PlayCover is not Installed!", isPresented: $noPlayCover) {
-                      Button("Install PlayCover", role: .none) {
-                        if let url = URL(string: "https://github.com/PlayCover/PlayCover/releases") {
-                          UIApplication.shared.open(url)
-                        }
-                      }
-                      Button("Cancel", role: .cancel) { return }
-                    } message: {
-                      Text("It is a requirement to have PlayCover installed for the utilization of the DecryptKit IPA Source.")
-                    }
+                    .modifier(NoPlayCoverAlert(noPlayCover: $noPlayCover))
                     Spacer()
                     Button {
                       withAnimation(.spring()) {
@@ -136,6 +127,7 @@ struct MainView: View {
               .frame(width: geo.size.width * (4.25/10))
               if showLookup {
                 LookupView(showLookup: $showLookup)
+                  .environmentObject(RealmVM.shared)
               } else if showRepo {
                 RepoView(showRepo: $showRepo,
                          showPatreon: $showPatreon)
@@ -157,21 +149,8 @@ struct MainView: View {
             if UserVM.shared.userTier == 0 {
               VStack {
                 Spacer()
-                HStack {
-                  Spacer()
-                  Button { } label: {
-                    BannerAd()
-                      .frame(width: 468, height: 60)
-                      .cornerRadius(15)
-                  }
-                  .softButtonStyle(
-                    RoundedRectangle(cornerRadius: 15),
-                    padding: 0,
-                    pressedEffect: .flat
-                  )
-                  Spacer()
-                }
-                .padding(.bottom)
+                AdMobView()
+                  .padding()
               }
             }
           }

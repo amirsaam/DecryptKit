@@ -1,45 +1,12 @@
 //
-//  ViewModels.swift
-//  DecryptKit
+//  PatreonVM.swift
+//  deCripple
 //
-//  Created by Amir Mohammadi on 11/9/1401 AP.
+//  Created by Amir Mohammadi on 1/20/1402 AP.
 //
 
 import Foundation
 import PatreonAPI
-
-// MARK: - Patreon Client Data
-struct PatreonClient {
-  public static let shared = PatreonClient()
-  
-  let clientID = "MKzRZxagIOea-ceFt_54sjf9yyA2TzTHln9LiUoybU8ZRg7ljS4KE9HrBPa9i6aA"
-  let clientSecret = "4kTPw037oTE6D9zGHDwBgxqljtd70UkLBXAA25lIk83ZRbrlQjNr3sN8-TFa8dI6"
-  let creatorAccessToken = "f28mTaS7tddZRu3wNHDEJjbqemg_2gS2XLbgB8RoOxo"
-  let creatorRefreshToken = "6YQIsyM1SYgD0NQfV_sPXi15VnaqDqvdfssX1tKacJs"
-  let redirectURI = "https://decryptkit.xyz/patreon/6NvbE37T33cKTmpu1DkAtvuEK4XdWzF"
-  let campaignID = "9760149"
-}
-
-// MARK: - User's Data VM
-class UserVM: ObservableObject {
-  public static let shared = UserVM()
-
-  @Published var userId = ""
-  @Published var userUID = ""
-  @Published var userIsBanned = false
-  @Published var userEmail = ""
-  @Published var userTier = 0
-  @Published var userPAT = ""
-  @Published var userPRT = ""
-}
-
-// MARK: - Source's Data VM
-class SourceVM: ObservableObject {
-  public static let shared = SourceVM()
-  
-  @Published var freeSourceData: [deCrippleSource]?
-  @Published var vipSourceData: [deCrippleSource]?
-}
 
 // MARK: - Patreon's Data VM
 class PatreonVM: ObservableObject {
@@ -52,8 +19,6 @@ class PatreonVM: ObservableObject {
     didSet {
       if let identity = patronIdentity {
         patronMembership = extractUserMembership(from: identity.included)
-      } else {
-        patronMembership = []
       }
     }
   }
@@ -64,9 +29,6 @@ class PatreonVM: ObservableObject {
       if let campaign = patreonCampaign {
         campaignTiers = extractCampaignTiers(from: campaign.included)
         campaignBenefits = extractCampaignBenefits(from: campaign.included)
-      } else {
-        campaignTiers = []
-        campaignBenefits = []
       }
     }
   }
@@ -110,5 +72,18 @@ class PatreonVM: ObservableObject {
       }
     }
     return decodedArray
+  }
+
+  func identifyPatronTier() {
+    campaignTiers.forEach { tier in
+      userIsPatreon = patronMembership.contains { data in
+        data.relationships.currently_entitled_tiers.data.contains { entitledTier in
+          if entitledTier.id == tier.id {
+            userSubscribedTierId = tier.id
+          }
+          return entitledTier.id == tier.id
+        }
+      }
+    }
   }
 }

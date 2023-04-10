@@ -77,16 +77,7 @@ struct PatreonView: View {
                     pressedEffect: .flat
                   )
                   .padding(.top)
-                  .alert("PlayCover is not Installed!", isPresented: $noPlayCover) {
-                    Button("Install PlayCover", role: .none) {
-                      if let url = URL(string: "https://github.com/PlayCover/PlayCover/releases") {
-                        UIApplication.shared.open(url)
-                      }
-                    }
-                    Button("Cancel", role: .cancel) { return }
-                  } message: {
-                    Text("It is a requirement to have PlayCover installed for the utilization of the DecryptKit IPA Source.")
-                  }
+                  .modifier(NoPlayCoverAlert(noPlayCover: $noPlayCover))
                 }
                 Button {
                   if userVM.userPAT.isEmpty {

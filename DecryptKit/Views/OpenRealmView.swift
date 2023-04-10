@@ -23,8 +23,11 @@ struct OpenRealmView: View {
 
   // We must pass the user, so we can set the user.id when we create database objects
   @State var user: User
+  @State private var updaterVM = UpdaterVM.shared
   @State private var userVM = UserVM.shared
   @State private var patreonVM = PatreonVM.shared
+  @State private var showUpdateAlert = false
+  @State private var noPlayCover = false
   @State private var dataLoaded = false
 
   @ObservedResults(deUser.self) private var users
@@ -49,6 +52,31 @@ struct OpenRealmView: View {
                  dataLoaded: $dataLoaded)
         .environment(\.realm, realm)
         .environmentObject(errorHandler)
+        .alert("An Update is Available!", isPresented: $showUpdateAlert) {
+          Button("Open PlayCover", role: .none) {
+            if let url = URL(string: "apple-magnifier://") {
+              if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+              } else {
+                noPlayCover = true
+              }
+            }
+          }
+          Button("Dismiss", role: .cancel) {
+            if updaterVM.upstreamIsCritical {
+              exit(0)
+            } else {
+              return
+            }
+          }
+        } message: {
+          if updaterVM.upstreamIsCritical {
+            Text("This is an necessary update that will break functionality of older versions, if you choose to not update, the app will be closed automatically.")
+          } else {
+            Text("A routine update that contains improvements and bug fixes, you can choose to update later.")
+          }
+        }
+        .modifier(NoPlayCoverAlert(noPlayCover: $noPlayCover))
         .task(priority: .high) {
           await doCheckUser()
         }
@@ -87,7 +115,7 @@ struct OpenRealmView: View {
             userVM.userEmail = email
           }
         } else {
-          debugPrint("Succesfully retrieved custom data from Realm")
+          debugPrint("Succesfully retrieved custom data from Realm. Data: \(customData)")
           Task { @MainActor in
             userVM.userUID = customData["userUID"] as! String
             userVM.userIsBanned = customData["userIsBanned"] as! Bool
@@ -96,7 +124,6 @@ struct OpenRealmView: View {
             userVM.userPAT = customData["userPAT"] as! String
             userVM.userPRT = customData["userPRT"] as! String
           }
-          debugPrint(customData)
         }
       }
       semaphore.signal()

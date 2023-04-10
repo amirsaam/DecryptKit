@@ -137,6 +137,50 @@ struct SidebarBackground: View {
   }
 }
 
+// MARK: -
+struct NoPlayCoverAlert: ViewModifier {
+  @Binding var noPlayCover: Bool
+    func body(content: Content) -> some View {
+        content
+        .alert("PlayCover is not Installed!", isPresented: $noPlayCover) {
+          Button("Install PlayCover", role: .none) {
+            if let url = URL(string: "https://github.com/PlayCover/PlayCover/releases") {
+              UIApplication.shared.open(url)
+              if UpdaterVM.shared.upstreamIsCritical {
+                exit(0)
+              }
+            }
+          }
+          Button("Cancel", role: .cancel) {
+            if UpdaterVM.shared.upstreamIsCritical {
+              exit(0)
+            } else {
+              return
+            }
+          }
+        } message: {
+          Text("It is a requirement to have PlayCover installed for utilization of DecryptKit IPA Sources or App Updates.")
+        }
+    }
+}
+
+struct AdMobView: View {
+  var body: some View {
+    Button {
+
+    } label: {
+      BannerAd()
+        .frame(width: 468, height: 60)
+        .cornerRadius(15)
+    }
+    .softButtonStyle(
+      RoundedRectangle(cornerRadius: 15),
+      padding: 0,
+      pressedEffect: .flat
+    )
+  }
+}
+
 // MARK: - DecryptKit Errors
 struct ErrorMessage: View {
   @State var errorLog: String
