@@ -29,3 +29,10 @@ func checkStatusCode(url: String, statusCode: Int) -> Bool {
   semaphore.wait()
   return result
 }
+
+enum deResult: String, CaseIterable {
+   case null = ""
+   case beenAdded = "Your request has been added to queue"
+   case inQueue = "Your request is already in queue"
+   case isReady = "Your request is ready to download"
+ }

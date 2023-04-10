@@ -373,7 +373,7 @@ struct LookupView: View {
   // MARK: - Send Request Function
   func doRequest(bundleId: String, version: String) async {
     let newReq = deReq()
-    serviceIsOn = await isServiceRunning()
+    serviceIsOn = checkStatusCode(url: "https://run.decryptkit.xyz", statusCode: 200)
     let realm = requests.realm!.thaw()
     let thawedReqs = requests.thaw()!
     let request = thawedReqs.where {

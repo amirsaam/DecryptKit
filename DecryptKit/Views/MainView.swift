@@ -127,7 +127,6 @@ struct MainView: View {
               .frame(width: geo.size.width * (4.25/10))
               if showLookup {
                 LookupView(showLookup: $showLookup)
-                  .environmentObject(RealmVM.shared)
               } else if showRepo {
                 RepoView(showRepo: $showRepo,
                          showPatreon: $showPatreon)
