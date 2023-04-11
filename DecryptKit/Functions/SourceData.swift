@@ -18,8 +18,8 @@ struct deCrippleSource: Codable, Hashable {
 
 // MARK: - Sources
 enum SourcesURLs: String, CaseIterable {
-  case free = "https://amrsm.ir/decrypted.json"
-  case vip = "https://amrsm.ir/vip.json"
+  case free = "https://repo.decryptkit.xyz/decrypted.json"
+  case vip = "https://repo.decryptkit.xyz/vip.json"
 }
 
 // MARK: - Get Live Source Data
