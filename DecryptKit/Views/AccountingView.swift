@@ -109,7 +109,7 @@ struct AccountingView: View {
               }
               .padding(.top)
             }
-            Creators()
+            CreatorsView()
               .frame(width: geo.size.width * (2/10))
             Spacer()
           }

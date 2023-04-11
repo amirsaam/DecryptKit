@@ -138,7 +138,7 @@ struct MainView: View {
                 .environmentObject(PatreonVM.shared)
                 .environmentObject(UserVM.shared)
               } else {
-                Creators()
+                CreatorsView()
               }
             }
           }
@@ -148,7 +148,7 @@ struct MainView: View {
             if UserVM.shared.userTier == 0 {
               VStack {
                 Spacer()
-                AdMobView()
+                AdView()
                   .padding()
               }
             }

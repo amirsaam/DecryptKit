@@ -175,7 +175,7 @@ struct FreeSourceList: View {
                        appVersion: app.version)
         .onTapGesture {
           withAnimation {
-            if UserVM.shared.userTier >= 1 {
+            if UserVM.shared.userTier > 0 {
               selectDeselect(app)
             }
           }
@@ -276,7 +276,6 @@ struct VIPSourceList: View {
             padding: 8,
             pressedEffect: .flat
           )
-          .disabled(UserVM.shared.userTier < 2)
           .padding(.trailing)
         }
         .font(.subheadline)
@@ -289,7 +288,7 @@ struct VIPSourceList: View {
                        appVersion: app.version)
         .onTapGesture {
           withAnimation {
-            if UserVM.shared.userTier >= 3 {
+            if UserVM.shared.userTier > 2 {
               selectDeselect(app)
             }
           }

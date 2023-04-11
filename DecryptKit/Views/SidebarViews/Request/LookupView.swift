@@ -48,8 +48,8 @@ struct LookupView: View {
             .overlay {
               VStack(alignment: .leading, spacing: 25.0) {
                 if activeReqs.isEmpty {
-                  Text("Our IPA Decryption service is made available through the generosity of dear Amachi!")
-                    .font(.headline)
+                  Text("A true fully automatic decryption service in your hands!")
+                    .font(.headline.bold())
                 } else {
                   Text("Your Active Requests:")
                     .font(.subheadline.monospaced().bold())

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Neumorphic
-import RealmSwift
 
 // MARK: - DecryptKit Branding
 struct BrandInfo: View {
@@ -75,34 +74,6 @@ struct BrandProgress: View {
   }
 }
 
-// MARK: - DecryptKit People
-struct Creators: View {
-  var body: some View {
-    ZStack {
-      mainColor
-      VStack(alignment: .leading) {
-        Text("DecryptKit Creators:")
-          .font(.subheadline)
-        Group {
-          Text("amirsaam#3579")
-            .padding(.top, 1)
-          Text("Amachi -アマチ#1131")
-        }
-        .font(.subheadline.monospaced())
-        Text("Contributors:")
-          .font(.subheadline)
-          .padding(.top)
-        Group {
-          Text("Depal#7088")
-            .padding(.top, 1)
-          Text("Zhich#6244")
-        }
-        .font(.subheadline.monospaced())
-      }
-    }
-  }
-}
-
 // MARK: - Restricted User View
 struct RestrictedUser: View {
   var body: some View {
@@ -164,18 +135,17 @@ struct NoPlayCoverAlert: ViewModifier {
     }
 }
 
-struct AdMobView: View {
+
+struct AdView: View {
   var body: some View {
     Button {
 
     } label: {
-      BannerAd()
-        .frame(width: 468, height: 60)
-        .cornerRadius(15)
+      Text("Advertisement Banner Placeholder")
+        .padding(.horizontal)
     }
     .softButtonStyle(
       RoundedRectangle(cornerRadius: 15),
-      padding: 0,
       pressedEffect: .flat
     )
   }

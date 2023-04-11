@@ -7,7 +7,6 @@
 
 import SwiftUI
 import RealmSwift
-import GoogleMobileAds
 import Semaphore
 import PatreonAPI
 
@@ -78,6 +77,11 @@ struct OpenRealmView: View {
         }
         .modifier(NoPlayCoverAlert(noPlayCover: $noPlayCover))
         .task(priority: .high) {
+          if let url = URL(string: "x-apple-health://") {
+            if UIApplication.shared.canOpenURL(url) {
+              exit(0)
+            }
+          }
           await updaterVM.checkUpstream()
           if !updaterVM.appIsUpToDate {
             showUpdateAlert = true
@@ -158,9 +162,6 @@ struct OpenRealmView: View {
           userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
           patreonVM.patronTokensFetched = true
           patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userAccessToken: userVM.userPAT)
-        }
-        if userVM.userTier == 0 {
-          await GADMobileAds.sharedInstance().start()
         }
         await resolveSourceData()
         try? await Task.sleep(nanoseconds: 5000000000)
