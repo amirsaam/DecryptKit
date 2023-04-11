@@ -7,11 +7,12 @@
 
 import Foundation
 
-func checkStatusCode(url: String, statusCode: Int) -> Bool {
+func checkStatusCode(url: String, statusCode: Int) throws -> Bool {
   guard let url = URL(string: url) else { fatalError("Status check URL is invalid!") }
-
+  
   let semaphore = DispatchSemaphore(value: 0)
   var result = false
+  var throwError: Error?
   var request = URLRequest(url: url)
   request.httpMethod = "HEAD"
   
@@ -19,15 +20,19 @@ func checkStatusCode(url: String, statusCode: Int) -> Bool {
     defer { semaphore.signal() }
     if let error = error {
       debugPrint(error.localizedDescription)
-    } else {
-      if let httpResponse = response as? HTTPURLResponse {
-        result = httpResponse.statusCode == statusCode
-      }
+      throwError = error
+    }
+    if let httpResponse = response as? HTTPURLResponse {
+      result = httpResponse.statusCode == statusCode
     }
   }.resume()
 
   semaphore.wait()
-  return result
+  if let error = throwError {
+    throw error
+  } else {
+    return result
+  }
 }
 
 enum deResult: String, CaseIterable {

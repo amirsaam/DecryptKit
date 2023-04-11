@@ -45,7 +45,7 @@ struct PatreonCampaignDetails: View {
         Text(patreonCampaign?.data.attributes.is_monthly ?? true ? "Monthly Subscription" : "One Time Pay")
         Divider()
           .frame(height: 10)
-        Text("Total Patrons Count: \(patreonCampaign?.data.attributes.patron_count ?? 0)")
+        Text("All-Time: \(patreonCampaign?.data.attributes.patron_count ?? 0) Patron(s)")
       }
       .font(.caption)
       VStack {

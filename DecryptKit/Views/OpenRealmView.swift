@@ -117,7 +117,7 @@ struct OpenRealmView: View {
             $users.append(newUser)
             userVM.userEmail = email
           } else {
-            debugPrint("Succesfully retrieved custom data from Realm. Data: \(customData)")
+            debugPrint("Succesfully retrieved custom data from Realm.")
             userVM.userUID = customData["userUID"] as! String
             userVM.userIsBanned = customData["userIsBanned"] as! Bool
             userVM.userEmail = customData["userEmail"] as! String
@@ -145,7 +145,7 @@ struct OpenRealmView: View {
       $0.userId.contains(user.id)
     }
     if duplicateUser.isEmpty {
-      debugPrint("No duplicate user found")
+      print("Investigated user, they're good fellas!")
       Task { @MainActor in
         patreonVM.patreonCampaign = await patreonAPI.getDataForCampaign()
         if !userVM.userPAT.isEmpty && !patreonVM.patronTokensFetched {
@@ -167,10 +167,10 @@ struct OpenRealmView: View {
         withAnimation {
           dataLoaded = true
         }
-        debugPrint("Did data load?", dataLoaded)
+        print("AppData loaded, didn't it? Anyway, what you looking for in here mate?")
       }
     } else {
-      debugPrint("Duplicate user found, banning user")
+      print("A guilty user has been found!")
       try! realm.write {
         currentUser[0].userIsBanned = true
       }

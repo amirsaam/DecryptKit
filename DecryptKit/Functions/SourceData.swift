@@ -31,10 +31,9 @@ func getSourceData(source: SourcesURLs) async -> [deCrippleSource]? {
     )
     let decoder = JSONDecoder()
     let jsonResult: [deCrippleSource] = try decoder.decode([deCrippleSource].self, from: data)
-    debugPrint("SourceData from \(source.rawValue) Fetched")
     return jsonResult
   } catch {
-    debugPrint("Error getting Result data from URL: \(url): \(error)")
+    debugPrint("Error getting Result data from a source URL.")
   }
   return nil
 }

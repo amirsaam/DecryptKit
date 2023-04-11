@@ -373,7 +373,11 @@ struct LookupView: View {
   // MARK: - Send Request Function
   func doRequest(bundleId: String, version: String) async {
     let newReq = deReq()
-    serviceIsOn = checkStatusCode(url: "https://run.decryptkit.xyz", statusCode: 200)
+    do {
+      serviceIsOn = try checkStatusCode(url: "https://run.decryptkit.xyz", statusCode: 200)
+    } catch {
+      serviceIsOn = false
+    }
     let realm = requests.realm!.thaw()
     let thawedReqs = requests.thaw()!
     let request = thawedReqs.where {
@@ -392,7 +396,12 @@ struct LookupView: View {
     } else {
       let reqToUpdate = request[0]
       if reqToUpdate.requestedIsDecrypted {
-        let fileIs404 = checkStatusCode(url: reqToUpdate.requestedDecryptedLink, statusCode: 404)
+        var fileIs404 = false
+        do {
+          fileIs404 = try checkStatusCode(url: reqToUpdate.requestedDecryptedLink, statusCode: 404)
+        } catch {
+          fileIs404 = true
+        }
         if !fileIs404 && reqToUpdate.requestedVersion == version {
           readyLink = reqToUpdate.requestedDecryptedLink
           resultMessage = .isReady
