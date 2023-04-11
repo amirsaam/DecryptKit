@@ -2,7 +2,7 @@
 
 <br />
 <div align="center">
-  <a href="https://www.decripple.tech">
+  <a href="https://decryptkit.xyz/">
     <img src="DecryptKit.png" alt="Logo" width="120">
   </a>
 
