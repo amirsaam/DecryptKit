@@ -49,7 +49,7 @@ Back-end - [@Amachik2](https://twitter.com/Amachik2) - amachi@hiyori.cz
 <br>
 Front-end - [@amirsaam](https://twitter.com/amirsaam) - amirsaam@me.com
 
-Project Link: [https://github.com/amirsaam/deCripple](https://github.com/amirsaam/deCripple)
+Project Link: [https://github.com/Paramea/DecryptKit](https://github.com/Paramea/DecryptKit)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
