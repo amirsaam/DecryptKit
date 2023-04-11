@@ -71,7 +71,6 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
     ? [URLQueryItem(name: "id", value: id)]
     : [URLQueryItem(name: "bundleId", value: id)]
   guard let url = urlComponents.url else { return nil }
-  debugPrint(url)
   do {
     let (data, _) = try await URLSession.shared.data(
       for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
@@ -79,9 +78,10 @@ func getITunesData(_ id: String) async -> ITunesResponse? {
     let decoder = JSONDecoder()
     let jsonResult: ITunesResponse = try decoder.decode(ITunesResponse.self, from: data)
     if jsonResult.resultCount > 0 {
+      debugPrint("iTunesLookup: Valid file from \(url) fetched.")
       return jsonResult
     } else {
-      debugPrint("resultCount is smaller or equal to 0")
+      debugPrint("iTunesLookup: File from \(url) is empty or not valid.")
     }
   } catch {
     debugPrint("Error getting iTunes data from URL: \(url): \(error)")
@@ -95,7 +95,6 @@ func resolveLookupData(_ id: String) {
     if let refreshedLookupData: ITunesResponse = await getITunesData(id) {
       cache.clean(byKey: id)
       try? cache.write(codable: refreshedLookupData, forKey: id)
-      debugPrint("\(id) Lookup Refreshed")
     }
   }
 }

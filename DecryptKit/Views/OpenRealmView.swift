@@ -100,13 +100,12 @@ struct OpenRealmView: View {
       switch result {
       case .failure(let error):
         debugPrint("Failed to refresh custom data: \(error.localizedDescription)")
+        semaphore.signal()
       case .success(let customData):
-        if customData["userId"] == nil {
-          Task { @MainActor in
+        Task { @MainActor in
+          if customData["userId"] == nil {
             userVM.userUID = UIDevice.current.identifierForVendor?.uuidString ?? "UIDPlaceholder"
-          }
-          debugPrint("Appending new custom data to Realm")
-          Task { @MainActor in
+            debugPrint("Appending new custom data to Realm")
             let email = defaults.string(forKey: "Email") ?? ""
             newUser.userId = user.id
             newUser.userUID = userVM.userUID
@@ -117,10 +116,8 @@ struct OpenRealmView: View {
             newUser.userPRT = ""
             $users.append(newUser)
             userVM.userEmail = email
-          }
-        } else {
-          debugPrint("Succesfully retrieved custom data from Realm. Data: \(customData)")
-          Task { @MainActor in
+          } else {
+            debugPrint("Succesfully retrieved custom data from Realm. Data: \(customData)")
             userVM.userUID = customData["userUID"] as! String
             userVM.userIsBanned = customData["userIsBanned"] as! Bool
             userVM.userEmail = customData["userEmail"] as! String
@@ -128,9 +125,9 @@ struct OpenRealmView: View {
             userVM.userPAT = customData["userPAT"] as! String
             userVM.userPRT = customData["userPRT"] as! String
           }
+          semaphore.signal()
         }
       }
-      semaphore.signal()
     }
     await semaphore.wait()
     if !userVM.userIsBanned {
@@ -150,7 +147,6 @@ struct OpenRealmView: View {
     if duplicateUser.isEmpty {
       debugPrint("No duplicate user found")
       Task { @MainActor in
-        await resolveSourceData()
         patreonVM.patreonCampaign = await patreonAPI.getDataForCampaign()
         if !userVM.userPAT.isEmpty && !patreonVM.patronTokensFetched {
           patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(userRefreshToken: userVM.userPRT)
@@ -166,9 +162,12 @@ struct OpenRealmView: View {
         if userVM.userTier == 0 {
           await GADMobileAds.sharedInstance().start()
         }
+        await resolveSourceData()
+        try? await Task.sleep(nanoseconds: 5000000000)
         withAnimation {
           dataLoaded = true
         }
+        debugPrint("Did data load?", dataLoaded)
       }
     } else {
       debugPrint("Duplicate user found, banning user")

@@ -392,14 +392,24 @@ struct LookupView: View {
     } else {
       let reqToUpdate = request[0]
       if reqToUpdate.requestedIsDecrypted {
+        let fileIs404 = checkStatusCode(url: reqToUpdate.requestedDecryptedLink, statusCode: 404)
+        if !fileIs404 && reqToUpdate.requestedVersion == version {
+          readyLink = reqToUpdate.requestedDecryptedLink
+          resultMessage = .isReady
+        } else if fileIs404 || reqToUpdate.requestedVersion != version {
+          try! realm.write {
+            reqToUpdate.requestedVersion = version
+            reqToUpdate.requestedDate = Date()
+            reqToUpdate.requestedIsDecrypted = false
+            reqToUpdate.requestedDecryptedLink = ""
+          }
+        }
         if !reqToUpdate.requestersEmail.contains(userEmailAddress) {
           debugPrint("Appending \(userEmailAddress) to requests for \(bundleId)")
           try! realm.write {
             reqToUpdate.requestersEmail.append(userEmailAddress)
           }
         }
-        readyLink = reqToUpdate.requestedDecryptedLink
-        resultMessage = .isReady
       } else {
         if reqToUpdate.requestersEmail.contains(userEmailAddress) {
           debugPrint("\(userEmailAddress) already requested \(bundleId)")
@@ -410,6 +420,10 @@ struct LookupView: View {
             reqToUpdate.requestersEmail.append(userEmailAddress)
           }
           resultMessage = .beenAdded
+        }
+        if reqToUpdate.requestedVersion != version {
+          reqToUpdate.requestedVersion = version
+          reqToUpdate.requestedDate = Date()
         }
       }
     }

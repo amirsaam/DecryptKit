@@ -38,7 +38,6 @@ let appConfiguration = AppConfiguration(
   localAppVersion: nil,
   defaultRequestTimeoutMS: 30000
 )
-@MainActor
 let realmApp = App(id: realmAppConfig.appId, configuration: appConfiguration)
 
 @main

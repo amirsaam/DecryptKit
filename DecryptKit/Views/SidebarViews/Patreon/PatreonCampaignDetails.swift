@@ -78,7 +78,7 @@ struct PatreonCampaignDetails: View {
                 presentSubscribeAlert = true
               } label: {
                 Group {
-                  if patreonVM.userIsPatreon && patreonVM.userSubscribedTierId == tier.id {
+                  if patreonVM.userIsPatron && patreonVM.userSubscribedTierId == tier.id {
                     Label("Subscribed", systemImage: "signature")
                   } else {
                     Label(formattedPrice, systemImage: "arrow.up.right.square")
@@ -95,7 +95,7 @@ struct PatreonCampaignDetails: View {
                 lightShadowColor: .redNeuLS,
                 pressedEffect: .flat
               )
-              .disabled(patreonVM.userIsPatreon)
+              .disabled(patreonVM.userIsPatron)
               .alert("Kindly Take Heed", isPresented: $presentSubscribeAlert) {
                 Button("Open Patreon", role: .none) {
                   if let url = URL(string: "https://www.patreon.com" + tier.attributes.url) {
@@ -128,7 +128,7 @@ struct PatreonCampaignDetails: View {
           }
           .padding(.top)
           .task {
-            if patreonVM.userIsPatreon && patreonVM.userSubscribedTierId == tier.id {
+            if patreonVM.userIsPatron && patreonVM.userSubscribedTierId == tier.id {
               let userTier = (formattedPrice == "$2.99" ? 1 : formattedPrice == "$4.99" ? 2 : 3)
               await handleSubscribedPatron(tier: userTier)
             }

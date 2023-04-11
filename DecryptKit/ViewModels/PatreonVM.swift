@@ -11,10 +11,14 @@ import PatreonAPI
 // MARK: - Patreon's Data VM
 class PatreonVM: ObservableObject {
   public static let shared = PatreonVM()
-  
+
   @Published var patronTokensFetched = false
   @Published var patreonOAuth: PatronOAuth?
-  @Published var patronMembership: [UserIdentityIncludedMembership] = []
+  @Published var patronMembership: [UserIdentityIncludedMembership] = [] {
+    didSet {
+      identifyPatronTier()
+    }
+  }
   @Published var patronIdentity: PatreonUserIdentity? {
     didSet {
       if let identity = patronIdentity {
@@ -32,9 +36,9 @@ class PatreonVM: ObservableObject {
       }
     }
   }
-  @Published var userIsPatreon = false
-  @Published var userSubscribedTierId = ""
-  
+  @Published var userIsPatron = false
+  @Published var userSubscribedTierId = "Not Subscribed"
+
   func extractUserMembership(from identity: [UserIdentityIncludedAny]) -> [UserIdentityIncludedMembership] {
     var decodedArray = [UserIdentityIncludedMembership]()
     for identityIncluded in identity {
@@ -60,7 +64,7 @@ class PatreonVM: ObservableObject {
     }
     return decodedArray
   }
-  
+
   func extractCampaignBenefits(from campaign: [CampaignIncludedAny]) -> [CampaignIncludedBenefit] {
     var decodedArray = [CampaignIncludedBenefit]()
     for campaignIncluded in campaign {
@@ -76,14 +80,15 @@ class PatreonVM: ObservableObject {
 
   func identifyPatronTier() {
     campaignTiers.forEach { tier in
-      userIsPatreon = patronMembership.contains { data in
-        data.relationships.currently_entitled_tiers.data.contains { entitledTier in
-          if entitledTier.id == tier.id {
-            userSubscribedTierId = tier.id
+      if !userIsPatron {
+        userIsPatron = patronMembership.contains { data in
+          data.relationships.currently_entitled_tiers.data.contains { entitledTier in
+            userSubscribedTierId = entitledTier.id == tier.id ? tier.id : "Not Subscribed"
+            return entitledTier.id == tier.id
           }
-          return entitledTier.id == tier.id
         }
       }
     }
   }
+
 }

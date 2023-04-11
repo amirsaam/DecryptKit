@@ -30,7 +30,7 @@ enum NotAPApp: String, CaseIterable {
   }
   var appDeveloper: String {
     switch self {
-    case .deCripple: return "DecryptKit Team"
+    case .deCripple: return "Paramea Team"
     case .deltroid: return "Joelle Stickney"
     case .rosiecord: return "Acquite#0001"
     case .pojav: return "PojavLauncherTeam"

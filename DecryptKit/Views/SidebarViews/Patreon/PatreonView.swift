@@ -49,7 +49,7 @@ struct PatreonView: View {
                                          patreonBenefits: $patreonVM.campaignBenefits,
                                          patronMembership: $patreonVM.patronMembership)
                 }
-                if !patreonVM.userIsPatreon && userVM.userTier < 4 {
+                if !patreonVM.userIsPatron && userVM.userTier < 4 {
                   Text("You are using DecryptKit's FREE services.")
                     .font(.caption.italic())
                     .padding(.top)
