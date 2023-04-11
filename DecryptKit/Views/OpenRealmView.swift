@@ -149,8 +149,8 @@ struct OpenRealmView: View {
       $0.userId.contains(user.id)
     }
     if duplicateUser.isEmpty {
-      print("Investigated user, they're good fellas!")
       Task { @MainActor in
+        print("Investigated user, they're good fellas!")
         patreonVM.patreonCampaign = await patreonAPI.getDataForCampaign()
         if !userVM.userPAT.isEmpty && !patreonVM.patronTokensFetched {
           patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(userRefreshToken: userVM.userPRT)
