@@ -37,7 +37,7 @@ struct AccountingView: View {
             BrandInfo(logoSize: geo.size.width * (2/10))
             VStack(alignment: .leading, spacing: geo.size.width * (0.25/10)) {
               VStack(alignment: .leading) {
-                Text("Thank you for choosing DecryptKit")
+                Text("Thanks for choosing DecryptKit")
                   .font(.title.monospaced())
                   .padding(.bottom)
                 Text("Our IPA decryption service sends download links for your requsts only via email, so make sure to enter a valid and available address when you are creating an account!")
@@ -111,6 +111,7 @@ struct AccountingView: View {
             }
             CreatorsView()
               .frame(width: geo.size.width * (2/10))
+              .padding(.leading)
             Spacer()
           }
           Spacer()

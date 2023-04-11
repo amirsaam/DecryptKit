@@ -24,6 +24,7 @@ struct PatreonCampaignDetails: View {
 
   @State private var patreonVM = PatreonVM.shared
   @State private var presentSubscribeAlert = false
+  @State private var pledgeUrlToShow: URL?
 
   var body: some View {
     VStack(alignment: .leading, spacing: 15) {
@@ -75,6 +76,7 @@ struct PatreonCampaignDetails: View {
               }
               Spacer()
               Button {
+                pledgeUrlToShow = URL(string: "https://www.patreon.com" + tier.attributes.url)
                 presentSubscribeAlert = true
               } label: {
                 Group {
@@ -98,7 +100,7 @@ struct PatreonCampaignDetails: View {
               .disabled(patreonVM.userIsPatron)
               .alert("Kindly Take Heed", isPresented: $presentSubscribeAlert) {
                 Button("Open Patreon", role: .none) {
-                  if let url = URL(string: "https://www.patreon.com" + tier.attributes.url) {
+                  if let url = pledgeUrlToShow {
                     UIApplication.shared.open(url)
                   }
                 }

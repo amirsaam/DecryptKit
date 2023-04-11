@@ -79,16 +79,31 @@ struct RestrictedUser: View {
   var body: some View {
     HStack {
       Spacer()
-      VStack {
+      VStack(spacing: 25) {
         Spacer()
-        Text("This account has been Restricted!")
-          .font(.title.monospaced())
-        Text("support@decryptkit.xyz")
-          .font(.headline.monospaced())
-          .padding(.top)
-        Text("Contact above Email Address for more Information")
-          .font(.headline.monospaced())
-          .padding(.top, 1)
+        VStack(spacing: 10) {
+          Text("Your account has been Restricted!")
+            .font(.title.monospaced())
+          Text("Open a ticket in our discord server for Support.")
+            .font(.headline.monospaced())
+        }
+        .softOuterShadow()
+        Button {
+          if let url = URL(string: "https://discord.gg/22znF2eHGw") {
+            UIApplication.shared.open(url)
+          }
+        } label: {
+          Text("Join DecryptKit's Discord Server")
+        }
+        .softButtonStyle(
+          RoundedRectangle(cornerRadius: 15),
+          mainColor: .red,
+          textColor: .white,
+          darkShadowColor: .redNeuDS,
+          lightShadowColor: .redNeuLS,
+          pressedEffect: .flat
+        )
+        .padding(.top)
         Spacer()
       }
       Spacer()
