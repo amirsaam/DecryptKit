@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://decryptkit.xyz/">
-    <img src="DecryptKit.png" alt="Logo" width="120">
+    <img src="DecryptKit-Dark.png" alt="Logo" width="120">
   </a>
 
   <h3 align="center">DecryptKit</h3>
