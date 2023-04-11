@@ -26,8 +26,8 @@ let patreonAPI = PatreonAPI(
   campaignID: "9760149"
 )
 
-let playcoverPublicURL = URL(string: "apple-magnifier://source?action=add&url=https://repo.decryptkit.xyz/decrypted.json")
-let playcoverVIPURL = URL(string: "apple-magnifier://source?action=add&url=https://repo.decryptkit.xyz/vip.json")
+let playcoverPublicURL = URL(string: SourcesURLs.playCoverHandler.rawValue + SourcesURLs.free.rawValue)
+let playcoverVIPURL = URL(string: SourcesURLs.playCoverHandler.rawValue + SourcesURLs.vip.rawValue)
 
 /// Load app config details from a Realm.plist we generated
 let realmAppConfig = loadRealmAppConfig()

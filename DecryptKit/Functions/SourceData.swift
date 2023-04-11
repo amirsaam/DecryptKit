@@ -20,6 +20,7 @@ struct deCrippleSource: Codable, Hashable {
 enum SourcesURLs: String, CaseIterable {
   case free = "https://repo.decryptkit.xyz/decrypted.json"
   case vip = "https://repo.decryptkit.xyz/vip.json"
+  case playCoverHandler = "apple-magnifier://source?action=add&url="
 }
 
 // MARK: - Get Live Source Data
