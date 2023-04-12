@@ -22,8 +22,11 @@
 
 
 ## Usage
-<video src='https://github.com/Paramea/DecryptKit/blob/main/Screen_Recording1402-01-23_at_03.31.11.mov' width=180/></video>
-<a href="{https://github.com/Paramea/DecryptKit/blob/main/Screen_Recording1402-01-23_at_03.31.11.mov}" title="Link Title"><img src="{https://github.com/Paramea/DecryptKit/blob/main/Screen_Recording1402-01-23_at_03.31.11.mov}" alt="Alternate Text" /></a>
+
+<p>Quick guide how to add it to PlayCover and Install Genshin.</p>
+<video src="https://user-images.githubusercontent.com/37242088/231392107-6d96aadd-94e7-4f1e-bc72-62903eefe16b.mp4" alt="install guide" width="120">
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
