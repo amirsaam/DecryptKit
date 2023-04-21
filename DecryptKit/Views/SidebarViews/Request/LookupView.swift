@@ -431,8 +431,10 @@ struct LookupView: View {
           resultMessage = .beenAdded
         }
         if reqToUpdate.requestedVersion != version {
-          reqToUpdate.requestedVersion = version
-          reqToUpdate.requestedDate = Date()
+          try! realm.write {
+            reqToUpdate.requestedVersion = version
+            reqToUpdate.requestedDate = Date()
+          }
         }
       }
     }
