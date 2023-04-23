@@ -374,7 +374,7 @@ struct LookupView: View {
   func doRequest(bundleId: String, version: String) async {
     let newReq = deReq()
     do {
-      serviceIsOn = try checkStatusCode(url: "https://run.decryptkit.xyz", statusCode: 200)
+      serviceIsOn = try checkStatusCode(url: "https://run.decryptkit.xyz/status", statusCode: 200)
     } catch {
       serviceIsOn = false
     }
