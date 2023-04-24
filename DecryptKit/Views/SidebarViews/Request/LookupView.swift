@@ -18,6 +18,7 @@ struct LookupView: View {
   @ObservedResults(deReq.self) private var requests
 
   @State private var freeSourceData = SourceVM.shared.freeSourceData
+  @State private var theBlacklist = SourceVM.shared.theBlacklistData
   @State private var userEmailAddress = UserVM.shared.userEmail
 
   @State private var requestProgress = false
@@ -121,7 +122,7 @@ struct LookupView: View {
                       if requestSubmitted {
                         Divider()
                         Text(resultMessage.rawValue)
-                        if !serviceIsOn && resultMessage != .isReady {
+                        if !serviceIsOn && (resultMessage != .isReady && resultMessage != .isBlocked) {
                           Label("The process of decryption may be temporarily delayed due to a high volume of demand.",
                                 systemImage: "exclamationmark.triangle.fill")
                           .font(.caption)
@@ -189,12 +190,16 @@ struct LookupView: View {
                           try? await Task.sleep(nanoseconds: 3000000000)
                           withAnimation {
                             requestProgress = false
-                            Task {
-                              if let data = lookedup?.results[0] {
-                                await doRequest(bundleId: data.bundleId, version: data.version)
-                              }
+                          }
+                          if let data = lookedup?.results[0] {
+                            if theBlacklist.contains(data.bundleId) {
+                              resultMessage = .isBlocked
+                            } else {
+                              await doRequest(bundleId: data.bundleId, version: data.version)
                             }
-                            requestSubmitted = true
+                            withAnimation {
+                              requestSubmitted = true
+                            }
                           }
                         }
                       } label: {

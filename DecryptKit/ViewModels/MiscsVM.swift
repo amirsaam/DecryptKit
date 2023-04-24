@@ -63,4 +63,5 @@ class SourceVM: ObservableObject {
   
   @Published var freeSourceData: [deCrippleSource]?
   @Published var vipSourceData: [deCrippleSource]?
+  @Published var theBlacklistData: [String] = []
 }

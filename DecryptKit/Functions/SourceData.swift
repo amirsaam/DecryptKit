@@ -61,4 +61,23 @@ func resolveSourceData() async {
       }
     }
   }
+  let refreshedBlacklist: [String] = await getTheBlacklist() ?? []
+  debugPrint("The Blacklist Refreshed")
+  SourceVM.shared.theBlacklistData = refreshedBlacklist
+}
+
+// MARK: -
+func getTheBlacklist() async -> [String]? {
+  guard let url = URL(string: "https://repo.decryptkit.xyz/blacklisted.json") else { return nil }
+  do {
+    let (data, _) = try await URLSession.shared.data(
+      for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
+    )
+    let decoder = JSONDecoder()
+    let jsonResult: [String] = try decoder.decode([String].self, from: data)
+    return jsonResult
+  } catch {
+    debugPrint("Error retrieving the Blacklist.")
+  }
+  return nil
 }
