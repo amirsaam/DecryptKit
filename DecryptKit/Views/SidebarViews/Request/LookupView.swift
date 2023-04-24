@@ -16,8 +16,6 @@ struct LookupView: View {
 
   @ObservedResults(deStat.self) private var stats
   @ObservedResults(deReq.self) private var requests
-  
-  @State private var activeReqs: [deReq] = []
 
   @State private var freeSourceData = SourceVM.shared.freeSourceData
   @State private var userEmailAddress = UserVM.shared.userEmail
@@ -47,20 +45,21 @@ struct LookupView: View {
           SidebarBackground()
             .overlay {
               VStack(alignment: .leading, spacing: 25.0) {
-                if activeReqs.isEmpty {
-                  Text("A true fully automatic decryption service in your hands!")
-                    .font(.headline.bold())
-                } else {
+                if requests.contains(where: {
+                  $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
+                }) {
                   Text("Your Active Requests:")
                     .font(.subheadline.monospaced().bold())
                   VStack(spacing: 10) {
-                    ForEach(activeReqs, id: \.requestedId) { req in
+                    ForEach(requests.filter {
+                      $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
+                    }) { req in
                       HStack {
                         RequestsAppDetails(bundleId: req.requestedId)
                         Spacer()
                         Button {
-                          Task {
-                            await removeRequestFromQueue(bundleId: req.requestedId)
+                          withAnimation {
+                            removeRequestFromQueue(bundleId: req.requestedId)
                           }
                         } label: {
                           Image(systemName: "trash.fill")
@@ -74,6 +73,9 @@ struct LookupView: View {
                       }
                     }
                   }
+                } else {
+                  Text("A true fully automatic decryption service in your hands!")
+                    .font(.headline.bold())
                 }
                 Divider()
                 Text("Decryption Request Form:")
@@ -94,7 +96,10 @@ struct LookupView: View {
                       ErrorMessage(errorLog: "We do not offer decryption for paid apps.")
                     } else if idOnSource {
                       ErrorMessage(errorLog: "It's already present within the public source.")
-                    } else if activeReqs.count >= reqLimit && resultMessage != .isReady {
+                    }
+                    else if (requests.filter {
+                      $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
+                    }.count) >= reqLimit && resultMessage != .isReady {
                       ErrorMessage(errorLog: "You have reached your active request limit.")
                     }
                   } else {
@@ -213,7 +218,9 @@ struct LookupView: View {
                         lightShadowColor: .redNeuLS,
                         pressedEffect: .flat
                       )
-                      .disabled(requestProgress || requestSubmitted || activeReqs.count >= reqLimit)
+                      .disabled(requestProgress || requestSubmitted || (requests.filter {
+                        $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
+                      }.count) >= reqLimit)
                     }
                     .padding(.top)
                   } else {
@@ -255,31 +262,16 @@ struct LookupView: View {
         await resolveSourceData()
       }
       freeSourceData = SourceVM.shared.freeSourceData
-      await retrieveActiveReqs()
     }
   }
 
   // MARK: -
-  func retrieveActiveReqs() async {
-    let thawedReqs = requests.thaw()!
-    let requests = thawedReqs.where {
-      $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
-    }
-    requests.forEach { req in
-      withAnimation {
-        activeReqs.append(req)
-      }
-    }
-  }
-
-  // MARK: -
-  func removeRequestFromQueue(bundleId: String) async {
+  func removeRequestFromQueue(bundleId: String) {
     let realm = requests.realm!.thaw()
     let thawedReqs = requests.thaw()!
     let request = thawedReqs.where {
       $0.requestedId.contains(bundleId) && $0.requestersEmail.contains(userEmailAddress)
     }
-    activeReqs = []
     let reqToUpdate = request[0]
     if reqToUpdate.requestersEmail.count > 1 {
       try! realm.write {
@@ -292,7 +284,6 @@ struct LookupView: View {
         $requests.remove(reqToUpdate)
       }
     }
-    await retrieveActiveReqs()
   }
 
   // MARK: - Search Button and Function
@@ -438,8 +429,6 @@ struct LookupView: View {
         }
       }
     }
-    activeReqs.removeAll()
-    await retrieveActiveReqs()
   }
 
 }
