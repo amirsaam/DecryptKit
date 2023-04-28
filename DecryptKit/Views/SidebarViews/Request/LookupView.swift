@@ -20,6 +20,7 @@ struct LookupView: View {
   @State private var freeSourceData = SourceVM.shared.freeSourceData
   @State private var theBlacklist = SourceVM.shared.theBlacklistData
   @State private var userEmailAddress = UserVM.shared.userEmail
+  @State private var userReqLimit = UserVM.shared.userReqLimit
 
   @State private var requestProgress = false
   @State private var requestSubmitted = false
@@ -36,7 +37,6 @@ struct LookupView: View {
   @State private var idIsValid = false
   @State private var idIsPaid = false
   @State private var idOnSource = false
-  @State private var reqLimit = UserVM.shared.userTier == 0 ? 1 : UserVM.shared.userTier < 3 ? 3 : 5
 
   // MARK: - View Body
   var body: some View {
@@ -100,7 +100,7 @@ struct LookupView: View {
                     }
                     else if (requests.filter {
                       $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
-                    }.count) >= reqLimit && resultMessage != .isReady {
+                    }.count) >= userReqLimit && resultMessage != .isReady {
                       ErrorMessage(errorLog: "You have reached your active request limit.")
                     }
                   } else {
@@ -225,7 +225,7 @@ struct LookupView: View {
                       )
                       .disabled(requestProgress || requestSubmitted || (requests.filter {
                         $0.requestersEmail.contains(userEmailAddress) && $0.requestedIsDecrypted == false
-                      }.count) >= reqLimit)
+                      }.count) >= userReqLimit)
                     }
                     .padding(.top)
                   } else {

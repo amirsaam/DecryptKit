@@ -52,9 +52,14 @@ class UserVM: ObservableObject {
   @Published var userUID = ""
   @Published var userIsBanned = false
   @Published var userEmail = ""
-  @Published var userTier = 0
+  @Published var userTier = 0 {
+    didSet {
+      userReqLimit = userTier == 0 ? 1 : userTier < 3 ? 3 : userTier == 3 ? 5 : .max
+    }
+  }
   @Published var userPAT = ""
   @Published var userPRT = ""
+  @Published var userReqLimit = 1
 }
 
 // MARK: - Source's Data VM
