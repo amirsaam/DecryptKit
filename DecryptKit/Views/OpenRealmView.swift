@@ -151,9 +151,10 @@ struct OpenRealmView: View {
     if duplicateUser.isEmpty {
       Task { @MainActor in
         print("Investigated user, they're good fellas!")
-        patreonVM.patreonCampaign = await patreonAPI.getDataForCampaign()
+        patreonVM.patreonClient = await patreonVM.loadPatreonClientDetails()
+        patreonVM.patreonCampaign = await patreonVM.patreonAPI!.getDataForCampaign()
         if !userVM.userPAT.isEmpty && !patreonVM.patronTokensFetched {
-          patreonVM.patreonOAuth = await patreonAPI.refreshOAuthTokens(userRefreshToken: userVM.userPRT)
+          patreonVM.patreonOAuth = await patreonVM.patreonAPI!.refreshOAuthTokens(userRefreshToken: userVM.userPRT)
           try! realm.write {
             currentUser[0].userPAT = patreonVM.patreonOAuth?.access_token ?? ""
             currentUser[0].userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
@@ -161,7 +162,7 @@ struct OpenRealmView: View {
           userVM.userPAT = patreonVM.patreonOAuth?.access_token ?? ""
           userVM.userPRT = patreonVM.patreonOAuth?.refresh_token ?? ""
           patreonVM.patronTokensFetched = true
-          patreonVM.patronIdentity = await patreonAPI.getUserIdentity(userAccessToken: userVM.userPAT)
+          patreonVM.patronIdentity = await patreonVM.patreonAPI!.getUserIdentity(userAccessToken: userVM.userPAT)
         }
         await resolveSourceData()
         try? await Task.sleep(nanoseconds: 5000000000)

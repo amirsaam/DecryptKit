@@ -12,6 +12,21 @@ import PatreonAPI
 class PatreonVM: ObservableObject {
   public static let shared = PatreonVM()
 
+  @Published var patreonClient: PatreonClient? {
+    didSet {
+      if let client = patreonClient {
+        patreonAPI = PatreonAPI(
+          clientID: client.clientID,
+          clientSecret: client.clientSecret,
+          creatorAccessToken: client.creatorAccessToken,
+          creatorRefreshToken: client.creatorRefreshToken,
+          redirectURI: client.redirectURI,
+          campaignID: client.campaignID
+        )
+      }
+    }
+  }
+  @Published var patreonAPI: PatreonAPI?
   @Published var patronTokensFetched = false
   @Published var patreonOAuth: PatronOAuth?
   @Published var patronMembership: [UserIdentityIncludedMembership] = [] {
@@ -38,6 +53,20 @@ class PatreonVM: ObservableObject {
   }
   @Published var userIsPatron = false
   @Published var userSubscribedTierId = "Not Subscribed"
+
+  func loadPatreonClientDetails() async -> PatreonClient? {
+    guard let url = URL(string: "https://repo.decryptkit.xyz/patreon.json") else { return nil }
+    do {
+      let (data, _) = try await URLSession.shared.data(
+        for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
+      )
+      let jsonResult: PatreonClient = try JSONDecoder().decode(PatreonClient.self, from: data)
+      return jsonResult
+    } catch {
+      debugPrint("Error retrieving the Blacklist.")
+    }
+    return nil
+  }
 
   func extractUserMembership(from identity: [UserIdentityIncludedAny]) -> [UserIdentityIncludedMembership] {
     var decodedArray = [UserIdentityIncludedMembership]()
@@ -91,4 +120,12 @@ class PatreonVM: ObservableObject {
     }
   }
 
+  internal struct PatreonClient: Codable {
+    let clientID: String
+    let clientSecret: String
+    let creatorAccessToken: String
+    let creatorRefreshToken: String
+    let redirectURI: String
+    let campaignID: String
+  }
 }
