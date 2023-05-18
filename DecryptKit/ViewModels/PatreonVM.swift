@@ -56,14 +56,16 @@ class PatreonVM: ObservableObject {
 
   func loadPatreonClientDetails() async -> PatreonClient? {
     guard let url = URL(string: "https://repo.decryptkit.xyz/patreon.json") else { return nil }
+    debugPrint("Trying to retrieve Patreon client details.")
     do {
       let (data, _) = try await URLSession.shared.data(
         for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
       )
       let jsonResult: PatreonClient = try JSONDecoder().decode(PatreonClient.self, from: data)
+      debugPrint("Retrieved Patreon client details.")
       return jsonResult
     } catch {
-      debugPrint("Error retrieving the Blacklist.")
+      debugPrint("Error retrieving Patreon client details.")
     }
     return nil
   }
