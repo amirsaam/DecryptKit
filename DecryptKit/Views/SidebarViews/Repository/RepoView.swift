@@ -161,7 +161,6 @@ struct FreeSourceList: View {
   @Binding var progressAmount: Double
 
   @State private var isSelected: Set<deCrippleSource> = []
-  @State private var linkCopied = false
 
   var body: some View {
     List {
@@ -181,43 +180,7 @@ struct FreeSourceList: View {
           }
         }
         if isSelected.contains(app) {
-          ZStack {
-            Rectangle()
-              .fill(mainColor)
-              .softInnerShadow(
-                Rectangle(),
-                radius: 2.5
-              )
-              .frame(height: 45)
-              .overlay {
-                HStack {
-                  Spacer()
-                  Button {
-                    UIPasteboard.general.string = app.link
-                    withAnimation {
-                      linkCopied = true
-                    }
-                  } label: {
-                    HStack(spacing: 10) {
-                      Image(systemName: linkCopied ? "checkmark.circle.fill" : "doc.on.doc.fill")
-                      Text(linkCopied ? "Download Link Copied to Clipboard" : "Click to Copy Download Link to Clipboard")
-                    }
-                    .font(.caption)
-                  }
-                  Spacer()
-                }
-                .onChange(of: linkCopied) { bool in
-                  if bool {
-                    Task {
-                      try? await Task.sleep(nanoseconds: 4000000000)
-                      withAnimation {
-                        linkCopied = false
-                      }
-                    }
-                  }
-                }
-              }
-          }
+          SourceListActionsView(app: app)
           .listRowInsets(
             .init(
               top: 0,
@@ -237,7 +200,6 @@ struct FreeSourceList: View {
       isSelected.remove(app)
     } else {
       isSelected.removeAll()
-      linkCopied = false
       isSelected.insert(app)
     }
   }
@@ -251,7 +213,6 @@ struct VIPSourceList: View {
   @Binding var progressAmount: Double
 
   @State private var isSelected: Set<deCrippleSource> = []
-  @State private var linkCopied = false
 
   var body: some View {
     List {
@@ -294,43 +255,7 @@ struct VIPSourceList: View {
           }
         }
         if isSelected.contains(app) {
-          ZStack {
-            Rectangle()
-              .fill(mainColor)
-              .softInnerShadow(
-                Rectangle(),
-                radius: 2.5
-              )
-              .frame(height: 45)
-              .overlay {
-                HStack {
-                  Spacer()
-                  Button {
-                    UIPasteboard.general.string = app.link
-                    withAnimation {
-                      linkCopied = true
-                    }
-                  } label: {
-                    HStack(spacing: 10) {
-                      Image(systemName: linkCopied ? "checkmark.circle.fill" : "doc.on.doc.fill")
-                      Text(linkCopied ? "Download Link Copied to Clipboard" : "Click to Copy Download Link to Clipboard")
-                    }
-                    .font(.caption)
-                  }
-                  Spacer()
-                }
-                .onChange(of: linkCopied) { bool in
-                  if bool {
-                    Task {
-                      try? await Task.sleep(nanoseconds: 4000000000)
-                      withAnimation {
-                        linkCopied = false
-                      }
-                    }
-                  }
-                }
-              }
-          }
+          SourceListActionsView(app: app)
           .listRowInsets(
             .init(
               top: 0,
@@ -350,8 +275,80 @@ struct VIPSourceList: View {
       isSelected.remove(app)
     } else {
       isSelected.removeAll()
-      linkCopied = false
       isSelected.insert(app)
+    }
+  }
+}
+
+// MARK: -
+struct SourceListActionsView: View {
+  @State var app: deCrippleSource
+
+  @State private var bundleCopied = false
+  @State private var linkCopied = false
+
+  var body: some View {
+    ZStack {
+      Rectangle()
+        .fill(mainColor)
+        .softInnerShadow(
+          Rectangle(),
+          radius: 2.5
+        )
+        .frame(height: 45)
+        .overlay {
+          HStack {
+            HStack(spacing: 10) {
+              Image(systemName: linkCopied ? "checkmark.circle.fill" : "doc.on.doc.fill")
+              Text(linkCopied ? "Download Link Copied to Clipboard" : "Click to Copy Download Link to Clipboard")
+            }
+            .font(.caption)
+            .frame(width: 275)
+            .onTapGesture {
+              UIPasteboard.general.string = app.link
+              withAnimation {
+                bundleCopied = false
+                linkCopied = true
+              }
+            }
+            if UserVM.shared.userTier == 4 {
+              Divider()
+                .frame(height: 15)
+              HStack {
+                Image(systemName: bundleCopied ? "option" : "alt")
+                  .font(.caption)
+                  .frame(width: 50)
+              }
+              .onTapGesture {
+                UIPasteboard.general.string = app.bundleID
+                withAnimation {
+                  linkCopied = false
+                  bundleCopied = true
+                }
+              }
+            }
+          }
+          .onChange(of: linkCopied) { bool in
+            if bool {
+              Task {
+                try? await Task.sleep(nanoseconds: 4000000000)
+                withAnimation {
+                  linkCopied = false
+                }
+              }
+            }
+          }
+          .onChange(of: bundleCopied) { bool in
+            if bool {
+              Task {
+                try? await Task.sleep(nanoseconds: 4000000000)
+                withAnimation {
+                  bundleCopied = false
+                }
+              }
+            }
+          }
+        }
     }
   }
 }
