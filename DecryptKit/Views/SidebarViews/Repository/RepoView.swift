@@ -80,24 +80,28 @@ struct RepoView: View {
                 HStack {
                   ForEach(SourceTabs.allCases, id: \.rawValue) { source in
                     ZStack {
-                      if selectedSource == source {
-                        Capsule()
-                          .fill(mainColor)
-                          .frame(height: 30)
-                          .matchedGeometryEffect(id: "source", in: animation)
-                          .softOuterShadow(offset: 2)
+                      if source == .vip && UserVM.shared.userTier < 2 {
+                        
                       } else {
-                        Capsule()
-                          .foregroundColor(.clear)
-                          .frame(height: 30)
+                        if selectedSource == source {
+                          Capsule()
+                            .fill(mainColor)
+                            .frame(height: 30)
+                            .matchedGeometryEffect(id: "source", in: animation)
+                            .softOuterShadow(offset: 2)
+                        } else {
+                          Capsule()
+                            .foregroundColor(.clear)
+                            .frame(height: 30)
+                        }
+                        HStack {
+                          Image(systemName: source.icon)
+                          Text(source.title)
+                            .fontWeight(selectedSource == source ? .semibold : .regular)
+                        }
+                        .font(.subheadline)
+                        .foregroundColor(selectedSource == source ? secondaryColor : .gray)
                       }
-                      HStack {
-                        Image(systemName: source.icon)
-                        Text(source.title)
-                          .fontWeight(selectedSource == source ? .semibold : .regular)
-                      }
-                      .font(.subheadline)
-                      .foregroundColor(selectedSource == source ? secondaryColor : .gray)
                     }
                     .onTapGesture {
                       withAnimation(.easeInOut) {
@@ -114,12 +118,14 @@ struct RepoView: View {
                                progressAmount: $progressAmount)
                 .padding(.top)
                 .tag(SourceTabs.free)
-                VIPSourceList(showRepo: $showRepo,
-                              showPatreon: $showPatreon,
-                              vipSourceData: $vipSourceData,
-                              progressAmount: $progressAmount)
-                .padding(.top)
-                .tag(SourceTabs.vip)
+                if UserVM.shared.userTier > 1 {
+                  VIPSourceList(showRepo: $showRepo,
+                                showPatreon: $showPatreon,
+                                vipSourceData: $vipSourceData,
+                                progressAmount: $progressAmount)
+                  .padding(.top)
+                  .tag(SourceTabs.vip)
+                }
               }
               .tabViewStyle(.page(indexDisplayMode: .never))
             }
