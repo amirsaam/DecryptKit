@@ -12,21 +12,13 @@ import PatreonAPI
 class PatreonVM: ObservableObject {
   public static let shared = PatreonVM()
 
-  @Published var patreonClient: PatreonClient? {
-    didSet {
-      if let client = patreonClient {
-        patreonAPI = PatreonAPI(
-          clientID: client.clientID,
-          clientSecret: client.clientSecret,
-          creatorAccessToken: client.creatorAccessToken,
-          creatorRefreshToken: client.creatorRefreshToken,
-          redirectURI: client.redirectURI,
-          campaignID: client.campaignID
-        )
-      }
-    }
-  }
-  @Published var patreonAPI: PatreonAPI?
+  @Published var patreonClient: PatreonClient?
+  @Published var patreonAPI: PatreonAPI = PatreonAPI(clientID: "",
+                                                     clientSecret: "",
+                                                     creatorAccessToken: "",
+                                                     creatorRefreshToken: "",
+                                                     redirectURI: "",
+                                                     campaignID: "")
   @Published var patronTokensFetched = false
   @Published var patreonOAuth: PatronOAuth?
   @Published var patronMembership: [UserIdentityIncludedMembership] = [] {
