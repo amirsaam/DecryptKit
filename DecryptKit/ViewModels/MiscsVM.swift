@@ -11,18 +11,22 @@ import Foundation
 class UpdaterVM: ObservableObject {
   public static let shared = UpdaterVM()
 
-  private let appVersion = "1.0.0"
+  private let appVersion = "1.1.0"
   private var upstreamData: VersionData? {
     didSet {
       if let data = upstreamData {
         upstreamVersion = data.version
         upstreamIsCritical = data.isCritical
+        if let link = data.downloadURL {
+          upstreamDownloadLink = link
+        }
         appIsUpToDate = data.version == appVersion
       }
     }
   }
   @Published var upstreamVersion = ""
   @Published var upstreamIsCritical = false
+  @Published var upstreamDownloadLink = ""
   @Published var appIsUpToDate = false
 
   func checkUpstream() async {
@@ -41,6 +45,7 @@ class UpdaterVM: ObservableObject {
   internal struct VersionData: Codable {
     let version: String
     let isCritical: Bool
+    let downloadURL: String?
   }
 }
 

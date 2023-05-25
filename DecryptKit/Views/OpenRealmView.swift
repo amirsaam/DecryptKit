@@ -52,13 +52,9 @@ struct OpenRealmView: View {
         .environment(\.realm, realm)
         .environmentObject(errorHandler)
         .alert("An Update is Available!", isPresented: $showUpdateAlert) {
-          Button("Open PlayCover", role: .none) {
-            if let url = URL(string: "apple-magnifier://") {
-              if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-              } else {
-                noPlayCover = true
-              }
+          Button("Download", role: .none) {
+            if let url = URL(string: updaterVM.upstreamDownloadLink) {
+              UIApplication.shared.open(url)
             }
           }
           Button("Dismiss", role: .cancel) {
@@ -94,6 +90,7 @@ struct OpenRealmView: View {
       case .error(let error):
         RealmError(error: error)
           .padding()
+          .foregroundColor(.red)
       }
     }
   }
