@@ -8,7 +8,7 @@
 import Foundation
 
 let outAppStoreBundleID: Array = [
-  "ir.amrsm.deCripple",
+  "tech.deCripple",
   "com.rileytestut.Deltroid",
   "com.hammerandchisel.discord",
   "net.kdt.pojavlauncher",
@@ -19,7 +19,7 @@ let outAppStoreBundleID: Array = [
 ]
 
 enum NotAPApp: String, CaseIterable {
-  case deCripple = "ir.amrsm.deCripple"
+  case deCripple = "tech.deCripple"
   case deltroid = "com.rileytestut.Deltroid"
   case rosiecord = "com.hammerandchisel.discord"
   case pojav = "net.kdt.pojavlauncher"
