@@ -175,7 +175,8 @@ struct FreeSourceList: View {
           .listRowBackground(mainColor)
       }
       ForEach(freeSourceData ?? [], id: \.bundleID) { app in
-        RepoAppDetails(appBundleID: app.bundleID,
+        RepoAppDetails(isVIP: false,
+                       appBundleID: app.bundleID,
                        appName: app.name,
                        appVersion: app.version)
         .onTapGesture {
@@ -250,7 +251,8 @@ struct VIPSourceList: View {
         .listRowBackground(mainColor)
       }
       ForEach(vipSourceData ?? [], id: \.bundleID) { app in
-        RepoAppDetails(appBundleID: app.bundleID,
+        RepoAppDetails(isVIP: true,
+                       appBundleID: app.bundleID,
                        appName: app.name,
                        appVersion: app.version)
         .onTapGesture {

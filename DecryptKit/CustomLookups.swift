@@ -15,7 +15,9 @@ let outAppStoreBundleID: Array = [
   "xyz.skitty.Aidoku",
   "io.dreamteck.lifeslide",
   "com.rovio.AngryBirdsSpace",
-  "com.valentinradu.silvertune"
+  "com.valentinradu.silvertune",
+  "com.rockstargames.gtalcs",
+  "com.squareenixmontreal.deusexgo"
 ]
 
 enum NotAPApp: String, CaseIterable {
@@ -27,17 +29,21 @@ enum NotAPApp: String, CaseIterable {
   case lifeslide = "io.dreamteck.lifeslide"
   case abSpace = "com.rovio.AngryBirdsSpace"
   case cadenza = "com.valentinradu.silvertune"
+  case gtalcs = "com.rockstargames.gtalcs"
+  case deusexgo = "com.squareenixmontreal.deusexgo"
   
   var appIcon: String {
     switch self {
-    case .deCripple: return "https://raw.githubusercontent.com/amirsaam/DecryptKit/main/DecryptKit.jpg"
+    case .deCripple: return "https://raw.githubusercontent.com/Paramea/DecryptKit/main/DecryptKit-BBG.jpg"
     case .deltroid: return "https://raw.githubusercontent.com/lonkelle/Deltroid/356f9c50abcd7ef5f0f21581b36d27a8905390d4/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
     case .rosiecord: return "https://raw.githubusercontent.com/acquitelol/rosiecord/master/Icons/EnmityIcon-Icon-60_Normal%402x.png"
     case .pojav: return "https://raw.githubusercontent.com/PojavLauncherTeam/PojavLauncher_iOS/main/Natives/Assets.xcassets/AppIcon-Dark.appiconset/AppIcon-Dark_1024x1024.png"
     case .aidoku: return "https://raw.githubusercontent.com/Aidoku/Aidoku/main/Shared/Assets.xcassets/AppIcon.appiconset/Icon.png"
-    case .lifeslide: return "https://is5-ssl.mzstatic.com/image/thumb/Purple115/v4/19/40/55/19405582-e492-2155-a753-96d3b838a24d/AppIcon-1x_U007emarketing-0-7-0-85-220.png/512x512bb.jpg"
-    case .abSpace: return "https://play-lh.googleusercontent.com/CXqjoN_u3sFyV_Z1M7E-4KmyI0tYe5FLHV5KosQC-0s5LsZuhm4omg-5nP6VBpIwilI=w480-h960"
-    case .cadenza: return "https://is3-ssl.mzstatic.com/image/thumb/Purple123/v4/61/13/1a/61131a66-76c8-d89e-410e-f6d8024cedbf/source/420x420bb.png"
+    case .lifeslide: return "https://repo.decryptkit.xyz/icons/Lifeslide.png"
+    case .abSpace: return "https://repo.decryptkit.xyz/icons/AngryBirdsSpace.png"
+    case .cadenza: return "https://repo.decryptkit.xyz/icons/Cadenza.png"
+    case .gtalcs: return "https://repo.decryptkit.xyz/icons/GTA-LC-S.png"
+    case .deusexgo: return "https://repo.decryptkit.xyz/icons/DeusExGO.png"
     }
   }
   var appDeveloper: String {
@@ -49,19 +55,23 @@ enum NotAPApp: String, CaseIterable {
     case .aidoku: return "Aidoku"
     case .lifeslide: return "Dreamteck"
     case .abSpace: return "Rovio Entertainment Oyj"
-    case .cadenza: return "UNKNOWN"
+    case .cadenza: return "Codewise Systems SRL-D"
+    case .gtalcs: return "Rockstar Games"
+    case .deusexgo: return "CDE Entertainment Ltd."
     }
   }
   var appSize: String {
     switch self {
-    case .deCripple: return "2097152"
+    case .deCripple: return "4300000"
     case .deltroid: return "19713229"
     case .rosiecord: return "81474355"
     case .pojav: return "110100480"
     case .aidoku: return "4194304"
-    case .lifeslide: return "775946240"
-    case .abSpace: return "146800640"
-    case .cadenza: return "6291456"
+    case .lifeslide: return "739980000"
+    case .abSpace: return "139990000"
+    case .cadenza: return "5930000"
+    case .gtalcs: return "1860000000"
+    case .deusexgo: return "278780000"
     }
   }
   var appGenre: String {
@@ -74,6 +84,8 @@ enum NotAPApp: String, CaseIterable {
     case .lifeslide: return "Games"
     case .abSpace: return "Games"
     case .cadenza: return "Utilities"
+    case .gtalcs: return "Games"
+    case .deusexgo: return "Games"
     }
   }
 }

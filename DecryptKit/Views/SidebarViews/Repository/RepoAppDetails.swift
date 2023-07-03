@@ -13,13 +13,15 @@ import DataCache
 // MARK: - App Details Definer
 struct RepoAppDetails: View {
 
+  @State var isVIP: Bool
   @State var appBundleID: String
   @State var appName: String
   @State var appVersion: String
   
   var body: some View {
     if outAppStoreBundleID.contains(appBundleID) {
-      OutAppStore(appBundleID: appBundleID,
+      OutAppStore(isVIP: $isVIP,
+                  appBundleID: appBundleID,
                   appName: appName,
                   appVersion: appVersion)
     } else {
@@ -64,12 +66,15 @@ struct InAppStore: View {
         }
       }
       HStack(spacing: 5) {
+        Text(lookedup?.results[0].formattedPrice ?? "")
+        Divider()
+          .frame(height: 10)
         let dataSize = ByteCountFormatter
           .string(
             fromByteCount: Int64(lookedup?.results[0].fileSizeBytes ?? "") ?? 0,
             countStyle: .file
           )
-        Text("\(dataSize) or less")
+        Text(dataSize)
         Divider()
           .frame(height: 10)
         Text(lookedup?.results[0].primaryGenreName ?? "")
@@ -93,6 +98,8 @@ struct InAppStore: View {
 
 // MARK: - Custom Apps View
 struct OutAppStore: View {
+
+  @Binding var isVIP: Bool
 
   @State var appBundleID: String
   @State var appName: String
@@ -126,12 +133,15 @@ struct OutAppStore: View {
         }
       }
       HStack(spacing: 5) {
+        Text(isVIP ? "Unbuyable" : "From GitHub")
+        Divider()
+          .frame(height: 10)
         let dataSize = ByteCountFormatter
           .string(
             fromByteCount: Int64(app?.appSize ?? "") ?? 0,
             countStyle: .file
           )
-        Text("\(dataSize) or less")
+        Text(dataSize)
         Divider()
           .frame(height: 10)
         Text(app?.appGenre ?? "")
