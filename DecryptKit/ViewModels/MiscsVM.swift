@@ -11,7 +11,7 @@ import Foundation
 class UpdaterVM: ObservableObject {
   public static let shared = UpdaterVM()
 
-  private let appVersion = "1.1.0"
+  private let appVersion = "1.1.16"
   private var upstreamData: VersionData? {
     didSet {
       if let data = upstreamData {
