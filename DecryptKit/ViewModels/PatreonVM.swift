@@ -47,7 +47,7 @@ class PatreonVM: ObservableObject {
   @Published var userSubscribedTierId = "Not Subscribed"
 
   func loadPatreonClientDetails() async -> PatreonClient? {
-    guard let url = URL(string: "https://repo.decryptkit.xyz/patreon.json") else { return nil }
+    guard let url = URL(string: "https://raw.githubusercontent.com/amirsaam/DecryptKit/Senior/patreon.json?token=GHSAT0AAAAAACR66U3PEPZBBB626VJ23OESZUVC4XQ") else { return nil }
     debugPrint("Trying to retrieve Patreon client details.")
     do {
       let (data, _) = try await URLSession.shared.data(

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		68100188293A925A00418B40 /* CustomLookups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68100187293A925A00418B40 /* CustomLookups.swift */; };
 		6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6810018A293A982B00418B40 /* CachedAsyncImage */; };
-		681B37CF2995B053002649D4 /* PatreonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 681B37CE2995B053002649D4 /* PatreonAPI */; };
 		6822BBB829E5D01E000BB2A8 /* CreatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6822BBB729E5D01E000BB2A8 /* CreatorsView.swift */; };
 		683E3674294E80A900B1DAA7 /* DataCache in Frameworks */ = {isa = PBXBuildFile; productRef = 683E3673294E80A900B1DAA7 /* DataCache */; };
 		6842A25E29E30F220053CDDE /* MiscsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6842A25D29E30F220053CDDE /* MiscsVM.swift */; };
@@ -26,6 +25,7 @@
 		684EB84E2933A22500F3C57A /* LookupAppDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EB84D2933A22500F3C57A /* LookupAppDetails.swift */; };
 		6851468F2973254C00FBDC4A /* PatreonCampaignDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6851468E2973254B00FBDC4A /* PatreonCampaignDetails.swift */; };
 		685B3EE3293292130010E24D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843C61B292FB586008FDA73 /* ContentView.swift */; };
+		685C83B42C455B6D00B2DFCA /* PatreonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 685C83B32C455B6D00B2DFCA /* PatreonAPI */; };
 		685D098B2942121D00AFD730 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098A2942121D00AFD730 /* MainView.swift */; };
 		685D098E29422D0A00AFD730 /* AccountingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D098D29422D0A00AFD730 /* AccountingView.swift */; };
 		68A33AEC2940F4E30024DFFE /* atlasConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68A33AEB2940F4E30024DFFE /* atlasConfig.plist */; };
@@ -92,11 +92,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				68F320BF2C4547BC00D701A6 /* RealmSwift in Frameworks */,
+				685C83B42C455B6D00B2DFCA /* PatreonAPI in Frameworks */,
 				68E6CE0F296EB68200C474F0 /* Semaphore in Frameworks */,
 				683E3674294E80A900B1DAA7 /* DataCache in Frameworks */,
 				6843C629292FB636008FDA73 /* Neumorphic in Frameworks */,
 				6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */,
-				681B37CF2995B053002649D4 /* PatreonAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,8 +257,8 @@
 				6810018A293A982B00418B40 /* CachedAsyncImage */,
 				683E3673294E80A900B1DAA7 /* DataCache */,
 				68E6CE0E296EB68200C474F0 /* Semaphore */,
-				681B37CE2995B053002649D4 /* PatreonAPI */,
 				68F320BE2C4547BC00D701A6 /* RealmSwift */,
+				685C83B32C455B6D00B2DFCA /* PatreonAPI */,
 			);
 			productName = deCripple;
 			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
@@ -293,8 +293,8 @@
 				68100189293A982B00418B40 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */,
 				68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */,
-				681B37CD2995B053002649D4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */,
 				68F320BD2C4547BC00D701A6 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				685C83B22C455B6D00B2DFCA /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */,
 			);
 			productRefGroup = 6843C617292FB586008FDA73 /* Products */;
 			projectDirPath = "";
@@ -577,14 +577,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		681B37CD2995B053002649D4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/amirsaam/PatreonAPI-Swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.10;
-			};
-		};
 		683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/huynguyencong/DataCache";
@@ -599,6 +591,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.5;
+			};
+		};
+		685C83B22C455B6D00B2DFCA /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amirsaam/PatreonAPI-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.15;
 			};
 		};
 		68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */ = {
@@ -625,11 +625,6 @@
 			package = 68100189293A982B00418B40 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
 			productName = CachedAsyncImage;
 		};
-		681B37CE2995B053002649D4 /* PatreonAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 681B37CD2995B053002649D4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */;
-			productName = PatreonAPI;
-		};
 		683E3673294E80A900B1DAA7 /* DataCache */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */;
@@ -639,6 +634,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6843C627292FB636008FDA73 /* XCRemoteSwiftPackageReference "neumorphic" */;
 			productName = Neumorphic;
+		};
+		685C83B32C455B6D00B2DFCA /* PatreonAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 685C83B22C455B6D00B2DFCA /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */;
+			productName = PatreonAPI;
 		};
 		68E6CE0E296EB68200C474F0 /* Semaphore */ = {
 			isa = XCSwiftPackageProductDependency;

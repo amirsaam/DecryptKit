@@ -1,5 +1,5 @@
 {
-  "originHash" : "d1bc0880f43a9636b3afc2bb1ed9444d0703dc3ea6c6e8dd91607ddbc4611804",
+  "originHash" : "eda628133d3abeaada1908903a5bbcf89dd00c832a252cfa14199e5c950a504e",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -11,12 +11,12 @@
       }
     },
     {
-      "identity" : "anycodable",
+      "identity" : "codableany",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Flight-School/AnyCodable.git",
+      "location" : "https://github.com/amirsaam/CodableAny.git",
       "state" : {
-        "revision" : "862808b2070cd908cb04f9aafe7de83d35f81b05",
-        "version" : "0.6.7"
+        "revision" : "cfbee4e4ff2d3cf7f1f097a95be22d108ac91cc4",
+        "version" : "0.2.0"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/amirsaam/PatreonAPI-Swift.git",
       "state" : {
-        "revision" : "abd1d1d3f0d3869ec727769d801885ccec1d23b4",
-        "version" : "0.9.20"
+        "revision" : "ebb99a7e5243566b9df5b02bd95025601303c097",
+        "version" : "0.9.15"
       }
     },
     {
