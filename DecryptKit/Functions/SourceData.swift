@@ -68,7 +68,7 @@ func resolveSourceData() async {
 
 // MARK: -
 func getTheBlacklist() async -> [String]? {
-  guard let url = URL(string: "https://repo.decryptkit.xyz/blacklisted.json") else { return nil }
+  guard let url = URL(string: "https://raw.githubusercontent.com/amirsaam/DecryptKit/Senior/blacklisted.json") else { return nil }
   do {
     let (data, _) = try await URLSession.shared.data(
       for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
