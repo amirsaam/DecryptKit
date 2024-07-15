@@ -11,7 +11,7 @@ import Foundation
 class UpdaterVM: ObservableObject {
   public static let shared = UpdaterVM()
 
-  private let appVersion = "1.1.16"
+  private let appVersion = "1.2.0"
   private var upstreamData: VersionData? {
     didSet {
       if let data = upstreamData {
@@ -30,7 +30,7 @@ class UpdaterVM: ObservableObject {
   @Published var appIsUpToDate = false
 
   func checkUpstream() async {
-    guard let url = URL(string: "https://repo.decryptkit.xyz/appversion.json") else { return }
+    guard let url = URL(string: "https://raw.githubusercontent.com/amirsaam/DecryptKit/Senior/appversion.json") else { return }
     do {
       let (data, _) = try await URLSession.shared.data(
         for: URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)

@@ -50,7 +50,7 @@ struct PatreonCampaignDetails: View {
       }
       .font(.caption)
       VStack {
-        ForEach(patreonTiers, id: \.id) { tier in
+        ForEach(patreonTiers.dropFirst(), id: \.id) { tier in
           let formattedPrice = String(format: "$%.2f", Double(tier.attributes.amount_cents) / 100)
           VStack(alignment: .leading) {
             HStack(spacing: 10) {
