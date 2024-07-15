@@ -11,8 +11,6 @@
 		6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6810018A293A982B00418B40 /* CachedAsyncImage */; };
 		681B37CF2995B053002649D4 /* PatreonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 681B37CE2995B053002649D4 /* PatreonAPI */; };
 		6822BBB829E5D01E000BB2A8 /* CreatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6822BBB729E5D01E000BB2A8 /* CreatorsView.swift */; };
-		6823E625293FDFC3007E5438 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 6823E624293FDFC3007E5438 /* Realm */; };
-		6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6823E626293FDFC3007E5438 /* RealmSwift */; };
 		683E3674294E80A900B1DAA7 /* DataCache in Frameworks */ = {isa = PBXBuildFile; productRef = 683E3673294E80A900B1DAA7 /* DataCache */; };
 		6842A25E29E30F220053CDDE /* MiscsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6842A25D29E30F220053CDDE /* MiscsVM.swift */; };
 		6842A26229E30F960053CDDE /* PatreonVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6842A26129E30F960053CDDE /* PatreonVM.swift */; };
@@ -39,7 +37,23 @@
 		68DE97F5293987B400A565B8 /* RepoAppDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE97F4293987B400A565B8 /* RepoAppDetails.swift */; };
 		68E6CE0F296EB68200C474F0 /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = 68E6CE0E296EB68200C474F0 /* Semaphore */; };
 		68EFC738296AC1CB00C8819A /* PatreonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EFC737296AC1CB00C8819A /* PatreonView.swift */; };
+		68F320BF2C4547BC00D701A6 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 68F320BE2C4547BC00D701A6 /* RealmSwift */; };
+		68F320C02C454AD600D701A6 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 68F320BE2C4547BC00D701A6 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		68F320C12C454AD600D701A6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				68F320C02C454AD600D701A6 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		68100187293A925A00418B40 /* CustomLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLookups.swift; sourceTree = "<group>"; };
@@ -77,10 +91,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68F320BF2C4547BC00D701A6 /* RealmSwift in Frameworks */,
 				68E6CE0F296EB68200C474F0 /* Semaphore in Frameworks */,
-				6823E627293FDFC3007E5438 /* RealmSwift in Frameworks */,
 				683E3674294E80A900B1DAA7 /* DataCache in Frameworks */,
-				6823E625293FDFC3007E5438 /* Realm in Frameworks */,
 				6843C629292FB636008FDA73 /* Neumorphic in Frameworks */,
 				6810018B293A982B00418B40 /* CachedAsyncImage in Frameworks */,
 				681B37CF2995B053002649D4 /* PatreonAPI in Frameworks */,
@@ -232,6 +245,7 @@
 				6843C612292FB586008FDA73 /* Sources */,
 				6843C613292FB586008FDA73 /* Frameworks */,
 				6843C614292FB586008FDA73 /* Resources */,
+				68F320C12C454AD600D701A6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -241,11 +255,10 @@
 			packageProductDependencies = (
 				6843C628292FB636008FDA73 /* Neumorphic */,
 				6810018A293A982B00418B40 /* CachedAsyncImage */,
-				6823E624293FDFC3007E5438 /* Realm */,
-				6823E626293FDFC3007E5438 /* RealmSwift */,
 				683E3673294E80A900B1DAA7 /* DataCache */,
 				68E6CE0E296EB68200C474F0 /* Semaphore */,
 				681B37CE2995B053002649D4 /* PatreonAPI */,
+				68F320BE2C4547BC00D701A6 /* RealmSwift */,
 			);
 			productName = deCripple;
 			productReference = 6843C616292FB586008FDA73 /* DecryptKit.app */;
@@ -278,10 +291,10 @@
 			packageReferences = (
 				6843C627292FB636008FDA73 /* XCRemoteSwiftPackageReference "neumorphic" */,
 				68100189293A982B00418B40 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
-				6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */,
 				68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */,
 				681B37CD2995B053002649D4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */,
+				68F320BD2C4547BC00D701A6 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 6843C617292FB586008FDA73 /* Products */;
 			projectDirPath = "";
@@ -572,14 +585,6 @@
 				minimumVersion = 0.9.10;
 			};
 		};
-		6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
-			};
-		};
 		683E3672294E80A900B1DAA7 /* XCRemoteSwiftPackageReference "DataCache" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/huynguyencong/DataCache";
@@ -604,6 +609,14 @@
 				minimumVersion = 0.0.6;
 			};
 		};
+		68F320BD2C4547BC00D701A6 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -616,16 +629,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 681B37CD2995B053002649D4 /* XCRemoteSwiftPackageReference "PatreonAPI-Swift" */;
 			productName = PatreonAPI;
-		};
-		6823E624293FDFC3007E5438 /* Realm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = Realm;
-		};
-		6823E626293FDFC3007E5438 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6823E623293FDFC3007E5438 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
 		};
 		683E3673294E80A900B1DAA7 /* DataCache */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -641,6 +644,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68E6CE0D296EB68200C474F0 /* XCRemoteSwiftPackageReference "Semaphore" */;
 			productName = Semaphore;
+		};
+		68F320BE2C4547BC00D701A6 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68F320BD2C4547BC00D701A6 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

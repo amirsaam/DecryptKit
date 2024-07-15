@@ -26,8 +26,6 @@ let realmAppConfig = loadRealmAppConfig()
 let appConfiguration = AppConfiguration(
   baseURL: realmAppConfig.baseUrl,
   transport: nil,
-  localAppName: nil,
-  localAppVersion: nil,
   defaultRequestTimeoutMS: 30000
 )
 let realmApp = App(id: realmAppConfig.appId, configuration: appConfiguration)

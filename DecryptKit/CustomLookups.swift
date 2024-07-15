@@ -34,7 +34,7 @@ enum NotAPApp: String, CaseIterable {
   
   var appIcon: String {
     switch self {
-    case .deCripple: return "https://raw.githubusercontent.com/Paramea/DecryptKit/main/DecryptKit-BBG.jpg"
+    case .deCripple: return "https://raw.githubusercontent.com/amirsaam/DecryptKit/main/AppLogos/DecryptKit-BBG.jpg"
     case .deltroid: return "https://raw.githubusercontent.com/lonkelle/Deltroid/356f9c50abcd7ef5f0f21581b36d27a8905390d4/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
     case .rosiecord: return "https://raw.githubusercontent.com/acquitelol/rosiecord/master/Icons/EnmityIcon-Icon-60_Normal%402x.png"
     case .pojav: return "https://raw.githubusercontent.com/PojavLauncherTeam/PojavLauncher_iOS/main/Natives/Assets.xcassets/AppIcon-Dark.appiconset/AppIcon-Dark_1024x1024.png"
